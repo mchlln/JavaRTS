@@ -1,6 +1,8 @@
 @startuml
 
 package "Model" <<Frame>> {
+
+    package Building{
     interface Building {
         + getSize() : Size
         + getCost() : Integer
@@ -63,6 +65,8 @@ package "Model" <<Frame>> {
         STEELMILL
         TOOLFACTORY
     }
+    }
+    
 
     class People{
         - House : Building
@@ -79,7 +83,7 @@ package "Model" <<Frame>> {
         OCCUPIED
     }
 
-
+    package Resource{
     interface Resource {
         + getType() : RessourceType
         + getQuantity() : Integer
@@ -136,6 +140,7 @@ package "Model" <<Frame>> {
         LUMBER
         TOOLS
     }
+}
 
     class GameManager <<(S,#FF7700)Singleton>> implements Subject{
         - buildings : Set<Building>
@@ -155,9 +160,11 @@ package "Model" <<Frame>> {
         Design Pattern Observer (Subject)
     end note
 
+    package Exception{
     exception NotEnoughSpace{}
     exception TooManyInhabitants{}
     exception NotEnoughResources{}
+    }
 
 
     class Size{
