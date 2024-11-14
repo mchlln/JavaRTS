@@ -2,24 +2,28 @@
 
 package "Model" <<Frame>> {
     interface Building {
-        + getSize()
-        + getCost()
-        + getConstructionTime()
-        + getInhabitants()
-        + getWorkers()
-        + getMaxInhabitants()
-        + getMaxWorkers()
-        + getNumberWorkers()
-        + getNumberInhabitants()
+        + getSize() : Size
+        + getCost() : Integer
+        + getConstructionTime() : ??
+        + getInhabitants() : Set<People>
+        + getWorkers() : Set<People>
+        + getMaxInhabitants() : Integer
+        + getMaxWorkers() : Integer
+        + getNumberWorkers() : Integer
+        + getNumberInhabitants() : Integer
     }
     abstract class BuildingDecorator implements Building{
-        - ID
-        - Type
-        - Inhabitants
-        - Workers
-        - ConstructionTime
-        - Size
+        - ID : UUID
+        - type : BuildingType
+        - inhabitants : Set<People>
+        - workers : Set<People>
+        - constructionTime : ??
+        - size : Size
     }
+    note left of BuildingDecorator
+        Design Pattern Decorator
+    end note
+
 
     class WoodenCabin extends BuildingDecorator{
 
@@ -49,25 +53,33 @@ package "Model" <<Frame>> {
         
     }
     enum BuildingType{
-        WoodenCabin
-        House
-        AppartmentBuilding
-        Farm
-        Quarry
-        LumberMill
-        CementPlant
-        SteelMill
-        ToolFactory
+        WOODENCABIN
+        HOUSE
+        APPARTMENTBUILDING
+        FARM
+        QUARRY
+        LUMBERMILL
+        CEMENTPLANT
+        STEELMILL
+        TOOLFACTORY
     }
 
     class People{
-        - House
-        - Job
-        - FoodCost
+        - House : Building
+        - Job : Building
+        - FoodCost : Integer
     }
-    class Map{
-        - Size
+    class Map <<(S,#FF7700)Singleton>>{
+        - size : Size
+        - tiles : MapTileStatus[][]
     }
+
+    enum MapTileStatus {
+        FREE
+        OCCUPIED
+    }
+
+
     interface Resource {
         + getType() : RessourceType
         + getQuantity() : Integer
@@ -79,8 +91,12 @@ package "Model" <<Frame>> {
         - Type : RessourceType
         - Quantity : Integer
     }
-    interface Durability{
+    note right of ResourceDecorator
+        Design Pattern Decorator
+    end note
 
+    interface Durability{
+        + getDurability() : time??
     }
     class Food extends ResourceDecorator implements Durability{
 
@@ -110,30 +126,65 @@ package "Model" <<Frame>> {
 
     }
     enum ResourceType{
-        Food
-        Wood
-        Stone
-        Coal
-        Iron
-        Steel
-        Cement
-        Lumber
-        Tools
+        FOOD
+        WOOD
+        STONE
+        COAL
+        IRON
+        STEEL
+        CEMENT
+        LUMBER
+        TOOLS
     }
 
-    class GameManager{
-        + BuildingList : Building
-        + PeopleList
-        + Map
-        + ResouceList
-        + addBuilding()
-        + removeBuilding()
-        + addInhabitantsInto()
-        + removeInhabitantsFrom()
+    class GameManager <<(S,#FF7700)Singleton>> implements Subject{
+        - buildings : Set<Building>
+        - worldInhabitants : Set<People>
+        - map : Map
+        - resources : HashMap<ResourceType, Integer>
+        - observers : Set<Observer>
+        + addBuilding() : void
+        + removeBuilding() : void
+        + addInhabitantsInto() : void
+        + removeInhabitantsFrom() : void
+        + update() : void
+    }
+    note left of GameManager
+        Design Pattern Singleton
+        Design Pattern Composite
+        Design Pattern Observer (Subject)
+    end note
+
+    exception NotEnoughSpace{}
+    exception TooManyInhabitants{}
+    exception NotEnoughResources{}
+
+
+    class Size{
+        - width : Integer
+        - length : Integer
+        + getSize() : [Integer, Integer]
+        + getWidth() : Integer
+        + getLength() : Integer
+    }
+
+    interface Subject{
+        + addObserver(Observer) : void
+        + removeObserver(Observer) : void
+        + notifyAll() : void
     }
 
     ResourceType -->ResourceDecorator::Type
     BuildingType -->BuildingDecorator::Type
+    Map --> GameManager::Map
+    Size --> BuildingDecorator::size
+    Size --> Map::size
+    People --> GameManager::worldInhabitants
+    People --> BuildingDecorator::inhabitants
+    People --> BuildingDecorator::workers
+    BuildingDecorator --> GameManager::buildings
+    ResourceDecorator --> GameManager::resources
+    MapTileStatus --> Map::tiles
 
 }
 
