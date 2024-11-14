@@ -1,0 +1,142 @@
+@startuml
+
+package "Model" <<Frame>> {
+    interface Building {
+        + getSize()
+        + getCost()
+        + getConstructionTime()
+        + getInhabitants()
+        + getWorkers()
+        + getMaxInhabitants()
+        + getMaxWorkers()
+        + getNumberWorkers()
+        + getNumberInhabitants()
+    }
+    abstract class BuildingDecorator implements Building{
+        - ID
+        - Type
+        - Inhabitants
+        - Workers
+        - ConstructionTime
+        - Size
+    }
+
+    class WoodenCabin extends BuildingDecorator{
+
+    }
+    class House extends BuildingDecorator{
+        
+    }
+    class AppartmentBuilding extends BuildingDecorator{
+        
+    }
+    class Farm extends BuildingDecorator{
+        
+    }
+    class Quarry extends BuildingDecorator{
+        
+    }
+    class LumberMill extends BuildingDecorator{
+        
+    }
+    class CementPlant extends BuildingDecorator{
+        
+    }
+    class SteelMill extends BuildingDecorator{
+        
+    }
+    class ToolFactory extends BuildingDecorator{
+        
+    }
+    enum BuildingType{
+        WoodenCabin
+        House
+        AppartmentBuilding
+        Farm
+        Quarry
+        LumberMill
+        CementPlant
+        SteelMill
+        ToolFactory
+    }
+
+    class People{
+        - House
+        - Job
+        - FoodCost
+    }
+    class Map{
+        - Size
+    }
+    interface Resource {
+        + getType() : RessourceType
+        + getQuantity() : Integer
+        + addResources(quantity : Integer)
+        + removeResources(quantity : Integer)
+
+    }
+    abstract class ResourceDecorator implements Resource{
+        - Type : RessourceType
+        - Quantity : Integer
+    }
+    interface Durability{
+
+    }
+    class Food extends ResourceDecorator implements Durability{
+
+    }
+    class Wood extends ResourceDecorator{
+
+    }
+    class Stone extends ResourceDecorator{
+
+    }
+    class Coal extends ResourceDecorator{
+
+    }
+    class Iron extends ResourceDecorator{
+
+    }
+    class Steel extends ResourceDecorator{
+
+    }
+    class Cement extends ResourceDecorator{
+
+    }
+    class Lumber extends ResourceDecorator{
+
+    }
+    class Tools extends ResourceDecorator implements Durability{
+
+    }
+    enum ResourceType{
+        Food
+        Wood
+        Stone
+        Coal
+        Iron
+        Steel
+        Cement
+        Lumber
+        Tools
+    }
+
+    class GameManager{
+        + BuildingList : Building
+        + PeopleList
+        + Map
+        + ResouceList
+        + addBuilding()
+        + removeBuilding()
+        + addInhabitantsInto()
+        + removeInhabitantsFrom()
+    }
+
+    ResourceType -->ResourceDecorator::Type
+    BuildingType -->BuildingDecorator::Type
+
+}
+
+
+
+@enduml
