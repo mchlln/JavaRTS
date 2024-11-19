@@ -15,6 +15,8 @@ package "Model" <<Frame>> {
         + getNumberInhabitants() : Integer
         + getType() : BuildingType
         + getPosition() : Position
+        + getDailyConsumption() : Map<ResourceType, Integer>
+        + getDailyProduction() : Map<ResourceType, Integer> 
     }
     abstract class BuildingDecorator implements Building{
         - ID : UUID
@@ -22,11 +24,15 @@ package "Model" <<Frame>> {
         - workers : Set<People>
         + addInhabitants(int number) : boolean
         + add workers(int number) : boolean
+        + equals(Object) : Boolean
     }
     note left of BuildingDecorator
         Design Pattern Decorator
     end note
 
+    class BuildingBuilder{
+        + createBuilding(BuildingType) : Building
+    }
 
     class WoodenCabin extends BuildingDecorator{
 
@@ -78,6 +84,9 @@ package "Model" <<Frame>> {
         - size : Size
         - tiles : MapTileStatus[][]
         + getTileStatus(Position) : MapTilestatus
+        + isAreaFree(Position, Size) : Boolean
+        + Construct(Position, Size)
+        + Destruct(Position, Size)
     }
 
     enum MapTileStatus {
@@ -156,10 +165,10 @@ package "Model" <<Frame>> {
         - map : Map
         - resources : ResourceManager
         - observers : Set<Observer>
-        + addBuilding() : void
-        + removeBuilding() : void
-        + addInhabitantsInto() : void
-        + removeInhabitantsFrom() : void
+        + addBuilding(Building, Position) : void
+        + removeBuilding(Building) : void
+        + createInhabitantsInto(Building, Integer) : void
+        + deleteInhabitantsFrom(Buildings, Integer) : void
         + update() : void
     }
     note left of GameManager
@@ -179,7 +188,7 @@ package "Model" <<Frame>> {
     interface Subject{
         + addObserver(Observer) : void
         + removeObserver(Observer) : void
-        + notifyAll() : void
+        + notifyObservers() : void
     }
     class Position{
         - x : Integer

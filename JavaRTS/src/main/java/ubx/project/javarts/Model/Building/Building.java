@@ -19,4 +19,7 @@ public interface Building {
     int getNumberWorkers();
     int getNumberInhabitants();
     BuildingType getType();
+    //Position getPostion();
+    Map<ResourceType, Integer> getDailyProduction();
+    Map<ResourceType, Integer> getDailyConsumption();
 }
