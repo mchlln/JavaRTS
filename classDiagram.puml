@@ -5,7 +5,7 @@ package "Model" <<Frame>> {
     package Building{
     interface Building {
         + getSize() : Size
-        + getCost() : Integer
+        + getCost() : HashMap<Resource, Integer>
         + getConstructionTime() : ??
         + getInhabitants() : Set<People>
         + getWorkers() : Set<People>
@@ -13,14 +13,15 @@ package "Model" <<Frame>> {
         + getMaxWorkers() : Integer
         + getNumberWorkers() : Integer
         + getNumberInhabitants() : Integer
+        + getType() : BuildingType
+        + getPosition() : Position
     }
     abstract class BuildingDecorator implements Building{
         - ID : UUID
-        - type : BuildingType
         - inhabitants : Set<People>
         - workers : Set<People>
-        - constructionTime : ??
-        - size : Size
+        + addInhabitants(int number) : boolean
+        + add workers(int number) : boolean
     }
     note left of BuildingDecorator
         Design Pattern Decorator
@@ -76,6 +77,7 @@ package "Model" <<Frame>> {
     class Map <<(S,#FF7700)Singleton>>{
         - size : Size
         - tiles : MapTileStatus[][]
+        + getTileStatus(Position) : MapTilestatus
     }
 
     enum MapTileStatus {
@@ -140,13 +142,19 @@ package "Model" <<Frame>> {
         LUMBER
         TOOLS
     }
+
+    class ResourceManager{
+        - resources : HashMap<ResourceType,ResourceDecorator>
+        + addResources(ResourceType type, Integer quantity)
+        + removeResources(ResourceType type, Integer quantity)
+    }
 }
 
     class GameManager <<(S,#FF7700)Singleton>> implements Subject{
         - buildings : Set<Building>
         - worldInhabitants : Set<People>
         - map : Map
-        - resources : HashMap<ResourceType, Integer>
+        - resources : ResourceManager
         - observers : Set<Observer>
         + addBuilding() : void
         + removeBuilding() : void
@@ -159,13 +167,6 @@ package "Model" <<Frame>> {
         Design Pattern Composite
         Design Pattern Observer (Subject)
     end note
-
-    package Exception{
-    exception NotEnoughSpace{}
-    exception TooManyInhabitants{}
-    exception NotEnoughResources{}
-    }
-
 
     class Size{
         - width : Integer
@@ -180,21 +181,55 @@ package "Model" <<Frame>> {
         + removeObserver(Observer) : void
         + notifyAll() : void
     }
-
-    ResourceType -->ResourceDecorator::Type
-    BuildingType -->BuildingDecorator::Type
-    Map --> GameManager::Map
-    Size --> BuildingDecorator::size
-    Size --> Map::size
-    People --> GameManager::worldInhabitants
-    People --> BuildingDecorator::inhabitants
-    People --> BuildingDecorator::workers
-    BuildingDecorator --> GameManager::buildings
-    ResourceDecorator --> GameManager::resources
-    MapTileStatus --> Map::tiles
+    class Position{
+        - x : Integer
+        - y : Integer
+    }
 
 }
 
+package Exception <<Frame>>{
+    exception NotEnoughSpace{}
+    exception TooManyInhabitants{}
+    exception NotEnoughResources{}
+}
 
+package View {}
 
+package Controller {
+    interface Command{
+        + execute()
+    }
+    class AddBuilding implements Command{}
+    class RemoveBuilding implements Command{}
+    class AddInhabitants implements Command{}
+    class RemoveInhabitants implements Command{}
+    class AddWorkers implements Command{}
+    class RemoveWorkers implements Command{}
+    class GameController{
+        - model : GameManager
+        - view : View
+        - commands : BagOfCommands
+    }
+    class BagOfCommands{
+        - commands : Queue<Command>
+        + executeFirst()
+        + executeAll()
+    }
+}
+
+ResourceType -->ResourceDecorator::Type
+BuildingType -->BuildingDecorator::Type
+Map --> GameManager::Map
+Size --> BuildingDecorator::size
+Size --> Map::size
+People --> GameManager::worldInhabitants
+People --> BuildingDecorator::inhabitants
+People --> BuildingDecorator::workers
+BuildingDecorator --> GameManager::buildings
+ResourceManager --> GameManager::resources
+MapTileStatus --> Map::tiles
+ResourceDecorator --> ResourceManager::resources
+BagOfCommands --> GameController::commands
+GameManager --> GameController::model
 @enduml
