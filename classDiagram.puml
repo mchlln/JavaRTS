@@ -2,7 +2,7 @@
 
 package "Model" <<Frame>> {
 
-    package Building{
+    package "Building"{
     interface Building {
         + getSize() : Size
         + getCost() : HashMap<Resource, Integer>
@@ -85,7 +85,7 @@ package "Model" <<Frame>> {
         OCCUPIED
     }
 
-    package Resource{
+    package "Resource"{
     interface Resource {
         + getType() : RessourceType
         + getQuantity() : Integer
@@ -186,50 +186,70 @@ package "Model" <<Frame>> {
         - y : Integer
     }
 
+
 }
 
-package Exception <<Frame>>{
+package "Exception" <<Frame>>{
     exception NotEnoughSpace{}
     exception TooManyInhabitants{}
     exception NotEnoughResources{}
 }
 
-package View {}
+package "View" {
+    interface Observer{
+        + update()
+    }
+    note left of Observer
+        Design Pattern Observer
+    end note
+    class View implements Observer{}
+}
 
-package Controller {
+package "Controller" {
     interface Command{
         + execute()
     }
+    note left of Command
+        Design Pattern Command
+    end note
+
     class AddBuilding implements Command{}
     class RemoveBuilding implements Command{}
     class AddInhabitants implements Command{}
     class RemoveInhabitants implements Command{}
     class AddWorkers implements Command{}
     class RemoveWorkers implements Command{}
+
     class GameController{
         - model : GameManager
         - view : View
         - commands : BagOfCommands
     }
-    class BagOfCommands{
+    class BagOfCommands  <<(S,#FF7700)Singleton>>{
         - commands : Queue<Command>
         + executeFirst()
         + executeAll()
     }
+    note bottom of BagOfCommands
+        Design Pattern Singleton
+    end note
 }
 
-ResourceType -->ResourceDecorator::Type
-BuildingType -->BuildingDecorator::Type
-Map --> GameManager::Map
-Size --> BuildingDecorator::size
-Size --> Map::size
-People --> GameManager::worldInhabitants
-People --> BuildingDecorator::inhabitants
-People --> BuildingDecorator::workers
-BuildingDecorator --> GameManager::buildings
-ResourceManager --> GameManager::resources
-MapTileStatus --> Map::tiles
-ResourceDecorator --> ResourceManager::resources
-BagOfCommands --> GameController::commands
-GameManager --> GameController::model
+
+    ResourceType -->ResourceDecorator::Type
+    BuildingType -->BuildingDecorator::Type
+    Map --> GameManager::Map
+    Size --> BuildingDecorator::size
+    Size --> Map::size
+    People --> GameManager::worldInhabitants
+    People --> BuildingDecorator::inhabitants
+    People --> BuildingDecorator::workers
+    BuildingDecorator --> GameManager::buildings
+    ResourceManager --> GameManager::resources
+    MapTileStatus --> Map::tiles
+    ResourceDecorator --> ResourceManager::resources
+    BagOfCommands --> GameController::commands
+    GameManager --> GameController::model
+    Position --> Map::getTileStatus
+    Command --> BagOfCommands::commands
 @enduml
