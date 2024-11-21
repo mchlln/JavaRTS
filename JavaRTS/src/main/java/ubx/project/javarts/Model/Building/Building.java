@@ -22,4 +22,8 @@ public interface Building {
     //Position getPostion();
     Map<ResourceType, Integer> getDailyProduction();
     Map<ResourceType, Integer> getDailyConsumption();
+    void removeInhabitant(People people);
+    void removeWorker(People people);
+    boolean addInhabitant(People people);
+    boolean addWorker(People people);
 }

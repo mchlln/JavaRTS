@@ -31,18 +31,40 @@ public class GameManager implements Subject {
     }
 
     public void addBuilding(Building building, Position position) {
-
+        if (map.isAreaFree(position, building.getSize())){
+            buildings.add(building);
+        }
     }
 
     public void removeBuilding(Building building) {
-
+        if (!buildings.contains(building)){
+            return;
+        }
+        map.Destruct(new Position(0,0), building.getSize()); //TODO: Replace Position(0,0) by building.getPosition() when implemented
+        buildings.remove(building);
     }
 
-    public void createInhabitantsInto(Building building, int number) {
-
+    public void createInhabitantInto(Building building) {
+        if (!buildings.contains(building)){
+            return;
+        }
+        People people = new People();
+        worldInhabitants.add(people);
+        //TODO: add world inhabitant to the given building
+        people.affectHouse(building);
     }
 
-    public void deleteInhabitantsFrom(Building building, int number) {
+    public void deleteInhabitantFrom(Building building) {
+        if (!buildings.contains(building)){
+            return;
+        }
+        Set<People> inhabitants = building.getInhabitants();
+        if (inhabitants.iterator().hasNext()){
+            People inhabitant = inhabitants.iterator().next();
+            building.removeInhabitant(inhabitant);
+
+        }
+
 
     }
 

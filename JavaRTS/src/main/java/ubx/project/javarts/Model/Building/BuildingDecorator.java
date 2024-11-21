@@ -30,6 +30,22 @@ public abstract class BuildingDecorator implements Building {
         return inhabitants.size();
     }
 
+    public boolean addInhabitant(People inhabitant) {
+        return this.inhabitants.add(inhabitant);
+    }
+
+    public boolean addWorker(People worker) {
+        return this.workers.add(worker);
+    }
+
+    public void removeInhabitant(People inhabitant) {
+        this.inhabitants.remove(inhabitant);
+    }
+
+    public void removeWorker(People worker) {
+        this.workers.remove(worker);
+    }
+
     public Map<ResourceType, Integer> getDailyConsumption() {
         return null;
     }
