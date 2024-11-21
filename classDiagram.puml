@@ -6,27 +6,41 @@ package "Model" <<Frame>> {
     interface Building {
         + getSize() : Size
         + getCost() : HashMap<Resource, Integer>
+        + getId() : UUID
         + getConstructionTime() : ??
+        + getType() : BuildingType
+        + getPosition() : Position        
+    }
+
+    class BasicBuilding implements Building{}
+    class ConsumptionBuilding extends BuildingDecorator{
+        + getDailyConsumption() : Map<ResourceType, Integer>
+    }
+    class ProductionBuilding extends BuildingDecorator{
+        + getDailyProduction() : Map<ResourceType, Integer> 
+    }
+    class LivingBuilding extends BuildingDecorator{
+        - inhabitants : Set<People>
         + getInhabitants() : Set<People>
-        + getWorkers() : Set<People>
         + getMaxInhabitants() : Integer
+        + getNumberInhabitants() : Integer
+        + addInhabitant(People) : boolean
+        + removeInhabitant(People) : void
+    }
+    class WorkingBuilding extends BuildingDecorator{
+        - workers : Set<People>
+        + getWorkers() : Set<People>
         + getMaxWorkers() : Integer
         + getNumberWorkers() : Integer
-        + getNumberInhabitants() : Integer
-        + getType() : BuildingType
-        + getPosition() : Position
-        + getDailyConsumption() : Map<ResourceType, Integer>
-        + getDailyProduction() : Map<ResourceType, Integer> 
-        + addInhabitant(People) : boolean
         + addWorker(People) : boolean
-        + removeInhabitant(People) : void
         + removeWorker(People) : void
     }
+
     abstract class BuildingDecorator implements Building{
-        - ID : UUID
-        - inhabitants : Set<People>
-        - workers : Set<People>
+        - Id : UUID 
+        + functions : ArrayList<BuildingFunctions>       
         + equals(Object) : Boolean
+        + getFunctions() : ArrayList<BuildingFunctions>
     }
     note left of BuildingDecorator
         Design Pattern Decorator
@@ -36,33 +50,13 @@ package "Model" <<Frame>> {
         + createBuilding(BuildingType) : Building
     }
 
-    class WoodenCabin extends BuildingDecorator{
+    enum BuildingFunction{
+        WORKING
+        LIVING
+        PRODUCING
+        CONSUMING
+    }
 
-    }
-    class House extends BuildingDecorator{
-        
-    }
-    class AppartmentBuilding extends BuildingDecorator{
-        
-    }
-    class Farm extends BuildingDecorator{
-        
-    }
-    class Quarry extends BuildingDecorator{
-        
-    }
-    class LumberMill extends BuildingDecorator{
-        
-    }
-    class CementPlant extends BuildingDecorator{
-        
-    }
-    class SteelMill extends BuildingDecorator{
-        
-    }
-    class ToolFactory extends BuildingDecorator{
-        
-    }
     enum BuildingType{
         WOODENCABIN
         HOUSE
@@ -169,6 +163,10 @@ package "Model" <<Frame>> {
 
     class GameManager <<(S,#FF7700)Singleton>> implements Subject{
         - buildings : Set<Building>
+        - livingBuildings : Set<Building>
+        - workingBuildings : Set<Building>
+        - consumingBuildings : Set<Building>
+        - producingBuildings : Set<Building>
         - worldInhabitants : Set<People>
         - map : Map
         - resources : ResourceManager
@@ -257,15 +255,15 @@ package "Controller" {
     ResourceType -->ResourceDecorator::Type
     BuildingType -->BuildingDecorator::Type
     Map --> GameManager::Map
-    Size --> BuildingDecorator::size
     Size --> Map::size
     People --> GameManager::worldInhabitants
-    People --> BuildingDecorator::inhabitants
-    People --> BuildingDecorator::workers
+    People --> LivingBuilding::inhabitants
+    People --> WorkingBuilding::workers
     BuildingDecorator --> GameManager::buildings
     ResourceManager --> GameManager::resources
     MapTileStatus --> Map::tiles
     ResourceDecorator --> ResourceManager::resources
+    BuildingFunction --> BuildingDecorator::functions
     BagOfCommands --> GameController::commands
     GameManager --> GameController::model
     Position --> Map::getTileStatus
