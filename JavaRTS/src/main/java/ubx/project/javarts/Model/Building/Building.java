@@ -4,6 +4,7 @@ import ubx.project.javarts.Model.Position;
 import ubx.project.javarts.Model.Resource.ResourceType;
 import ubx.project.javarts.Model.Size;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 
@@ -14,4 +15,6 @@ public interface Building {
     void getConstructionTime(); //TODO: find return type
     BuildingType getType();
     Position getPostion();
+    ArrayList<BuildingFunction> getFunctions();
+    void addFunction(BuildingFunction function);
 }

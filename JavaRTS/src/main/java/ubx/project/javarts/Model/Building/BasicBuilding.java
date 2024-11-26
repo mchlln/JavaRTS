@@ -5,6 +5,7 @@ import ubx.project.javarts.Model.Resource.Resource;
 import ubx.project.javarts.Model.Resource.ResourceType;
 import ubx.project.javarts.Model.Size;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ public class BasicBuilding implements Building{
     private Size size;
     private Position position;
     private BuildingType type;
+    private final ArrayList<BuildingFunction> functions = new ArrayList<BuildingFunction>();
 
     @Override
     public Size getSize() {
@@ -43,5 +45,13 @@ public class BasicBuilding implements Building{
     @Override
     public Position getPostion() {
         return position;
+    }
+
+    public ArrayList<BuildingFunction> getFunctions() {
+        return functions;
+    }
+
+    public void addFunction(BuildingFunction function){
+        functions.add(function);
     }
 }
