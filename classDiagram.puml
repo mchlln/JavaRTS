@@ -9,7 +9,8 @@ package "Model" <<Frame>> {
         + getId() : UUID
         + getConstructionTime() : ??
         + getType() : BuildingType
-        + getPosition() : Position        
+        + getPosition() : Position
+        + getFunctions() : ArrayList<BuildingFunctions>        
     }
 
     class BasicBuilding implements Building{}
@@ -40,11 +41,21 @@ package "Model" <<Frame>> {
         - Id : UUID 
         + functions : ArrayList<BuildingFunctions>       
         + equals(Object) : Boolean
-        + getFunctions() : ArrayList<BuildingFunctions>
     }
     note left of BuildingDecorator
         Design Pattern Decorator
     end note
+
+    class BuildingManager <<(S,#FF7700)Singleton>> {
+        - buildings : Set<Building>
+        - livingBuildings : Set<LivingBuilding>
+        - workingBuildings : Set<WorkingBuilding>
+        - consumingBuildings : Set<ConsumingBuilding>
+        - producingBuildings : Set<ProducingBuilding>
+        + addBuilding(Building) : void
+        + removeBuilding(Building) : void
+        + getInhabitants(Building) : void
+    }
 
     class BuildingBuilder{
         + createBuilding(BuildingType) : Building
@@ -162,14 +173,10 @@ package "Model" <<Frame>> {
 }
 
     class GameManager <<(S,#FF7700)Singleton>> implements Subject{
-        - buildings : Set<Building>
-        - livingBuildings : Set<Building>
-        - workingBuildings : Set<Building>
-        - consumingBuildings : Set<Building>
-        - producingBuildings : Set<Building>
         - worldInhabitants : Set<People>
         - map : Map
         - resources : ResourceManager
+        - buildings : BuildingManager
         - observers : Set<Observer>
         + addBuilding(Building, Position) : void
         + removeBuilding(Building) : void
