@@ -1,29 +1,17 @@
 package ubx.project.javarts.Model.Building;
 
-import ubx.project.javarts.Model.People;
+import ubx.project.javarts.Model.Position;
 import ubx.project.javarts.Model.Resource.ResourceType;
 import ubx.project.javarts.Model.Size;
 
 import java.util.Map;
-import java.util.Set;
+import java.util.UUID;
 
 public interface Building {
     Size getSize();
     Map<ResourceType, Integer> getCost();
-
+    UUID getId();
     void getConstructionTime(); //TODO: find return type
-    Set<People> getInhabitants();
-    Set<People> getWorkers();
-    int getMaxInhabitants();
-    int getMaxWorkers();
-    int getNumberWorkers();
-    int getNumberInhabitants();
     BuildingType getType();
-    //Position getPostion();
-    Map<ResourceType, Integer> getDailyProduction();
-    Map<ResourceType, Integer> getDailyConsumption();
-    void removeInhabitant(People people);
-    void removeWorker(People people);
-    boolean addInhabitant(People people);
-    boolean addWorker(People people);
+    Position getPostion();
 }
