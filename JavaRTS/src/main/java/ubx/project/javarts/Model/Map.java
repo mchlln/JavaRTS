@@ -31,7 +31,7 @@ public class Map {
     /**
      * ⚠️ Does not check if the area is free
      */
-    public void Construct(Position position, Size size){
+    public void construct(Position position, Size size){
         for (int x = 0; x < size.getWidth(); x++){
             for (int y = 0; y < size.getHeight(); y++){
                 tiles[position.getX()+x][position.getY()+y] = MapTileStatus.OCCUPIED;
@@ -39,7 +39,7 @@ public class Map {
         }
     }
 
-    public void Destruct(Position position, Size size){
+    public void destruct(Position position, Size size){
         for (int x = 0; x < size.getWidth(); x++){
             for (int y = 0; y < size.getHeight(); y++){
                 if (tiles[position.getX()+x][position.getY()+y] == MapTileStatus.FREE){

@@ -10,31 +10,34 @@ package "Model" <<Frame>> {
         + getConstructionTime() : ??
         + getType() : BuildingType
         + getPosition() : Position
-        + getFunctions() : ArrayList<BuildingFunctions>        
-    }
-
-    class BasicBuilding implements Building{}
-    class ConsumptionBuilding extends BuildingDecorator{
-        + getDailyConsumption() : Map<ResourceType, Integer>
-    }
-    class ProductionBuilding extends BuildingDecorator{
-        + getDailyProduction() : Map<ResourceType, Integer> 
-    }
-    class LivingBuilding extends BuildingDecorator{
-        - inhabitants : Set<People>
-        + getInhabitants() : Set<People>
-        + getMaxInhabitants() : Integer
-        + getNumberInhabitants() : Integer
-        + addInhabitant(People) : boolean
-        + removeInhabitant(People) : void
-    }
-    class WorkingBuilding extends BuildingDecorator{
-        - workers : Set<People>
+        + getFunctions() : ArrayList<BuildingFunctions>   
         + getWorkers() : Set<People>
         + getMaxWorkers() : Integer
         + getNumberWorkers() : Integer
         + addWorker(People) : boolean
-        + removeWorker(People) : void
+        + removeWorker(People) : void 
+        + getInhabitants() : Set<People>
+        + getMaxInhabitants() : Integer
+        + getNumberInhabitants() : Integer
+        + addInhabitant(People) : boolean
+        + removeInhabitant(People) : void    
+        + getDailyProduction() : Map<ResourceType, Integer> 
+        + getDailyConsumption() : Map<ResourceType, Integer>
+        + handle() : void
+    }
+
+    class BasicBuilding implements Building{}
+    class ConsumptionBuilding extends BuildingDecorator{
+    }
+    class ProductionBuilding extends BuildingDecorator{
+        
+    }
+    class LivingBuilding extends BuildingDecorator{
+        - inhabitants : Set<People>
+        
+    }
+    class WorkingBuilding extends BuildingDecorator{
+        - workers : Set<People>
     }
 
     abstract class BuildingDecorator implements Building{
@@ -48,10 +51,6 @@ package "Model" <<Frame>> {
 
     class BuildingManager <<(S,#FF7700)Singleton>> {
         - buildings : Set<Building>
-        - livingBuildings : Set<LivingBuilding>
-        - workingBuildings : Set<WorkingBuilding>
-        - consumingBuildings : Set<ConsumingBuilding>
-        - producingBuildings : Set<ProducingBuilding>
         + addBuilding(Building) : void
         + removeBuilding(Building) : void
         + getInhabitants(Building) : void

@@ -1,6 +1,7 @@
 package ubx.project.javarts.Model;
 
 import ubx.project.javarts.Model.Building.Building;
+import ubx.project.javarts.Model.Building.BuildingManager;
 import ubx.project.javarts.Model.Resource.ResourceManager;
 import ubx.project.javarts.View.Observer;
 
@@ -9,7 +10,7 @@ import java.util.Set;
 
 public class GameManager implements Subject {
     private static GameManager instance;
-    private Set<Building> buildings;
+    private BuildingManager buildings;
     private Set<People> worldInhabitants;
     private Map map;
     private ResourceManager resources;
@@ -17,7 +18,6 @@ public class GameManager implements Subject {
 
     private GameManager() {
         resources = ResourceManager.getInstance();
-        buildings = new HashSet<>();
         worldInhabitants = new HashSet<>();
         observers = new HashSet<>();
         map = Map.getInstance();
@@ -32,20 +32,21 @@ public class GameManager implements Subject {
 
     public void addBuilding(Building building, Position position) {
         if (map.isAreaFree(position, building.getSize())){
-            buildings.add(building);
+            buildings.addBuilding(building);
+            // Add
         }
     }
 
     public void removeBuilding(Building building) {
-        if (!buildings.contains(building)){
+        if (!buildings.exists(building)){
             return;
         }
-        map.Destruct(new Position(0,0), building.getSize()); //TODO: Replace Position(0,0) by building.getPosition() when implemented
-        buildings.remove(building);
+        map.destruct(new Position(0,0), building.getSize()); //TODO: Replace Position(0,0) by building.getPosition() when implemented
+        buildings.removeBuilding(building);
     }
 
     public void createInhabitantInto(Building building) {
-        if (!buildings.contains(building)){
+        if (!buildings.exists(building)){
             return;
         }
         People people = new People();
@@ -55,15 +56,10 @@ public class GameManager implements Subject {
     }
 
     public void deleteInhabitantFrom(Building building) {
-        if (!buildings.contains(building)){
+        if (!buildings.exists(building)){
             return;
         }
-        Set<People> inhabitants = building.getInhabitants();
-        if (inhabitants.iterator().hasNext()){
-            People inhabitant = inhabitants.iterator().next();
-            building.removeInhabitant(inhabitant);
-
-        }
+        building.removeInhabitant();
 
 
     }
