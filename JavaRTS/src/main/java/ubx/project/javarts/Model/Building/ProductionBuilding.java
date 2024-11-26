@@ -11,7 +11,7 @@ public class ProductionBuilding extends BuildingDecorator{
         super(b);
         this.dailyProduction = dailyProduction;
     }
-
+    @Override
     public Map<ResourceType, Integer> getDailyProduction() {
         return dailyProduction;
     }

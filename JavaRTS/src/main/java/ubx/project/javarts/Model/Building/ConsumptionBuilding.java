@@ -12,6 +12,7 @@ public class ConsumptionBuilding extends BuildingDecorator{
         this.dailyConsumption = dailyConsumption;
     }
 
+    @Override
     public Map<ResourceType, Integer> getDailyConsumption() {
         return dailyConsumption;
     }

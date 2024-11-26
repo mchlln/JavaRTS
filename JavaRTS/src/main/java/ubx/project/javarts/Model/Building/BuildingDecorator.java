@@ -1,11 +1,13 @@
 package ubx.project.javarts.Model.Building;
 
 
+import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Position;
 import ubx.project.javarts.Model.Resource.ResourceType;
 import ubx.project.javarts.Model.Size;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public abstract class BuildingDecorator implements Building {
@@ -58,5 +60,80 @@ public abstract class BuildingDecorator implements Building {
     @Override
     public void addFunction(BuildingFunction function){
         decoratedBuilding.addFunction(function);
+    }
+
+    @Override
+    public Map<ResourceType, Integer> getDailyConsumption() {
+        throw new WrongThreadException("Building cannot consume resources");
+    }
+
+    @Override
+    public Set<People> getWorkers() {
+        throw new WrongThreadException("Building cannot have workers");
+    }
+
+    @Override
+    public int getMaxWorkers() {
+        throw new WrongThreadException("Building cannot have workers");
+    }
+
+    @Override
+    public int getMinWorkers() {
+        throw new WrongThreadException("Building cannot have workers");
+    }
+
+    @Override
+    public int getNumberWorkers() {
+        throw new WrongThreadException("Building cannot have workers");
+    }
+
+    @Override
+    public void addWorker(People people) {
+        throw new WrongThreadException("Building cannot have workers");
+    }
+
+    @Override
+    public void removeWorker(People people) {
+        throw new WrongThreadException("Building cannot have workers");
+    }
+
+    @Override
+    public Map<ResourceType, Integer> getDailyProduction() {
+        throw new WrongThreadException("Building cannot produce resources");
+    }
+
+    @Override
+    public Set<People> getInhabitants() {
+        throw new WrongThreadException("Building cannot have inhabitants");
+    }
+
+    @Override
+    public int getMaxInhabitants() {
+        throw new WrongThreadException("Building cannot have inhabitants");
+    }
+
+    @Override
+    public int getMinInhabitants() {
+        throw new WrongThreadException("Building cannot have inhabitants");
+    }
+
+    @Override
+    public int getNumberInhabitants() {
+        throw new WrongThreadException("Building cannot have inhabitants");
+    }
+
+    @Override
+    public void addInhabitant(People people) {
+        throw new WrongThreadException("Building cannot have inhabitants");
+    }
+
+    @Override
+    public void removeInhabitant(People people) {
+        throw new WrongThreadException("Building cannot have inhabitants");
+    }
+
+    @Override
+    public void handle(){
+
     }
 }

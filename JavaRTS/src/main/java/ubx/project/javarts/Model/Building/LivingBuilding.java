@@ -16,28 +16,30 @@ public class LivingBuilding extends BuildingDecorator{
         this.minInhabitants = minInhabitants;
     }
 
+    @Override
     public Set<People> getInhabitants() {
         return inhabitants;
     }
 
+    @Override
     public int getMaxInhabitants() {
         return maxInhabitants;
     }
-
+    @Override
     public int getMinInhabitants() {
         return minInhabitants;
     }
-
+    @Override
     public int getNumberInhabitants(){
         return inhabitants.size();
     }
-
+    @Override
     public void addInhabitant(People people){
         if(getNumberInhabitants()<getMaxInhabitants()){
             inhabitants.add(people);
         }
     }
-
+    @Override
     public void removeInhabitant(People people){
         if(getNumberInhabitants()>getMinInhabitants()){
             inhabitants.remove(people);
