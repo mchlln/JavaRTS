@@ -10,16 +10,21 @@ import java.util.Map;
 import java.util.UUID;
 
 public class BasicBuilding implements Building{
-    private UUID id = new UUID(0, 0);
+    private final UUID id;
     private Map<ResourceType, Integer> cost;
-    private Size size;
-    private Position position;
+    private final Size size;
+    private final Position position;
     private BuildingType type;
     private final ArrayList<BuildingFunction> functions = new ArrayList<BuildingFunction>();
 
+    public BasicBuilding(Position pos, Size s){
+        this.id = UUID.randomUUID();
+        this.position = pos;
+        this.size = s;
+    }
     @Override
     public Size getSize() {
-        return null;
+        return size;
     }
 
     @Override

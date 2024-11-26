@@ -5,7 +5,12 @@ import ubx.project.javarts.Model.Resource.ResourceType;
 import java.util.Map;
 
 public class ProductionBuilding extends BuildingDecorator{
-    private Map<ResourceType, Integer> dailyProduction;
+    private final Map<ResourceType, Integer> dailyProduction;
+
+    public ProductionBuilding(Building b, Map<ResourceType, Integer> dailyProduction) {
+        super(b);
+        this.dailyProduction = dailyProduction;
+    }
 
     public Map<ResourceType, Integer> getDailyProduction() {
         return dailyProduction;

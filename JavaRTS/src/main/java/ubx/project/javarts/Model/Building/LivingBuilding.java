@@ -10,7 +10,8 @@ public class LivingBuilding extends BuildingDecorator{
     private int maxInhabitants;
     private int minInhabitants;
 
-    public LivingBuilding(int maxInhabitants, int minInhabitants) {
+    public LivingBuilding(Building b, int maxInhabitants, int minInhabitants) {
+        super(b);
         this.maxInhabitants = maxInhabitants;
         this.minInhabitants = minInhabitants;
     }
