@@ -1,8 +1,10 @@
 package ubx.project.javarts.Model.Building;
 
 import ubx.project.javarts.Model.People;
+import ubx.project.javarts.Model.Resource.ResourceType;
 
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Set;
 
 public class BuildingManager {
@@ -46,9 +48,11 @@ public class BuildingManager {
         }
     }
 
-    public void handle(){
+    public Hashtable<ResourceType, Integer> handle(){
+        Hashtable<ResourceType, Integer> global = new Hashtable<>();
         for (Building building : buildings) {
-            building.handle();
+            handle();
         }
+        return global;
     }
 }
