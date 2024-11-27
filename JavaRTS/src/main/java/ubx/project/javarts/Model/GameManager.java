@@ -59,7 +59,7 @@ public class GameManager implements Subject {
         if (!buildings.exists(building)){
             return;
         }
-        building.removeInhabitant();
+        //building.removeInhabitant();
 
 
     }

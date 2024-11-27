@@ -40,10 +40,10 @@ public class BuildingManager {
         }
     }
 
-    public void removeInhabitantFrom(Building building) {
+    public void removeInhabitantFrom(Building building, People people) {
         if (buildings.contains(building)) {
             if (building.getFunctions().contains(BuildingFunction.LIVING)){
-                building.removeInhabitant(null); // TODO: change to a random inhabitant
+                building.removeInhabitant(people);
             }
         }
     }
@@ -51,7 +51,7 @@ public class BuildingManager {
     public Hashtable<ResourceType, Integer> handle(){
         Hashtable<ResourceType, Integer> global = new Hashtable<>();
         for (Building building : buildings) {
-            handle();
+            //building.handle();
         }
         return global;
     }
