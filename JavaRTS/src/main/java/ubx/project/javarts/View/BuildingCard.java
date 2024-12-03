@@ -13,10 +13,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-import javax.imageio.ImageIO;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Objects;
 
 public class BuildingCard extends VBox {
     private VBox container;
