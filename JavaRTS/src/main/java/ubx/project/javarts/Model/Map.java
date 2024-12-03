@@ -8,7 +8,7 @@ public class Map {
     private MapTileStatus[][] tiles;
 
     private Map(){
-        this.size = new Size(40,20);
+        this.size = new Size(80,25);
         this.tiles = new MapTileStatus[size.getWidth()][size.getHeight()];
     }
 

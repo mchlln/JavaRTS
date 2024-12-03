@@ -8,10 +8,12 @@ import java.util.Map;
 
 public class ProductionBuilding extends BuildingDecorator{
     private final Map<ResourceType, Integer> dailyProduction;
+    Building b;
 
     public ProductionBuilding(Building b, Map<ResourceType, Integer> dailyProduction) {
         super(b);
         this.dailyProduction = dailyProduction;
+        this.b = b;
     }
     @Override
     public Map<ResourceType, Integer> getDailyProduction() {
@@ -31,5 +33,10 @@ public class ProductionBuilding extends BuildingDecorator{
             resources.put(rt, resources.getOrDefault(rt, 0) + dailyProduction.get(rt));
         }
         return resources;
+    }
+
+    @Override
+    public int getMaxInhabitants() {
+        return b.getMaxInhabitants();
     }
 }

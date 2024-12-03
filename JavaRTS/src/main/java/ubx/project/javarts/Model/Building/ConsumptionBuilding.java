@@ -1,5 +1,6 @@
 package ubx.project.javarts.Model.Building;
 
+import ubx.project.javarts.Exception.WrongBuildingType;
 import ubx.project.javarts.Model.Resource.ResourceType;
 
 import java.util.ArrayList;
@@ -8,10 +9,12 @@ import java.util.Map;
 
 public class ConsumptionBuilding extends BuildingDecorator{
     private Map<ResourceType, Integer> dailyConsumption;
+    Building b;
 
     public ConsumptionBuilding(Building b, Map<ResourceType, Integer> dailyConsumption) {
         super(b);
         this.dailyConsumption = dailyConsumption;
+        this.b = b;
     }
 
     @Override
@@ -32,6 +35,11 @@ public class ConsumptionBuilding extends BuildingDecorator{
             resources.put(rt, resources.getOrDefault(rt, 0) - dailyConsumption.get(rt));
         }
         return resources;
+    }
+
+    @Override
+    public int getMaxInhabitants() {
+        return b.getMaxInhabitants();
     }
 
 

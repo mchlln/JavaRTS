@@ -10,12 +10,14 @@ public class WorkingBuilding extends BuildingDecorator{
     private Set<People> workers;
     private final int maxWorkers;
     private final int minWorkers;
+    Building b;
 
     public WorkingBuilding(Building b, int maxWorkers, int minWorkers) {
         super(b);
         workers = new HashSet<>();
         this.maxWorkers = maxWorkers;
         this.minWorkers = minWorkers;
+        this.b = b;
     }
 
     @Override
@@ -51,5 +53,10 @@ public class WorkingBuilding extends BuildingDecorator{
     public void addFunction(ArrayList<BuildingFunction> functions){
         functions.add(BuildingFunction.WORKING);
         super.addFunction(functions);
+    }
+
+    @Override
+    public int getMaxInhabitants() {
+        return b.getMaxInhabitants();
     }
 }

@@ -127,6 +127,11 @@ public abstract class BuildingDecorator implements Building {
     }
 
     @Override
+    public String getName(){
+        return decoratedBuilding.getName();
+    }
+
+    @Override
     public void removeInhabitant(People people) {
         throw new WrongBuildingType("Building cannot have inhabitants");
     }

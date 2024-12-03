@@ -31,4 +31,5 @@ public interface Building {
     public void addInhabitant(People people);
     public void removeInhabitant(People people);
     public HashMap<ResourceType,Integer> handle();
+    public String getName();
 }

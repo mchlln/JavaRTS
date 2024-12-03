@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.geometry.Insets;
+import javafx.scene.transform.Scale;
 
 public class Footer extends ScrollPane {
 
@@ -27,6 +28,8 @@ public class Footer extends ScrollPane {
     }
 
     public void addWidget(javafx.scene.Node widget) {
+        Scale scale = new Scale(0.8, 0.8); // Scale factor 0.5 to reduce to 50%
+        widget.getTransforms().add(scale);
         container.getChildren().add(widget);
     }
 

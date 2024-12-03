@@ -15,11 +15,13 @@ public class BasicBuilding implements Building{
     private final Position position;
     private BuildingType type;
     private final ArrayList<BuildingFunction> functions = new ArrayList<BuildingFunction>();
+    private String name;
 
-    public BasicBuilding(Position pos, Size s){
+    public BasicBuilding(Position pos, Size s, String name){
         this.id = UUID.randomUUID();
         this.position = pos;
         this.size = s;
+        this.name = name;
     }
     @Override
     public Size getSize() {
@@ -133,5 +135,10 @@ public class BasicBuilding implements Building{
     @Override
     public HashMap<ResourceType,Integer> handle(){
         return new HashMap<>();
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

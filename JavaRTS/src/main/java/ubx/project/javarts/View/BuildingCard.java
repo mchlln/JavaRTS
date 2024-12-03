@@ -29,6 +29,7 @@ public class BuildingCard extends VBox {
 
 
     public BuildingCard(BuildingType buildingType) {
+        Building b = new BuildingBuilder().build(buildingType, new Position(0,0));
 
         VBox root = new VBox();
         root.setPadding(new Insets(10));
@@ -44,7 +45,7 @@ public class BuildingCard extends VBox {
         houseView.setFitHeight(100);
 
         // Text Label below House sprite
-        Label farmLabel = new Label("FARM");
+        Label farmLabel = new Label(b.getName());
         farmLabel.setFont(Font.font("Arial", 18));
         farmLabel.setTextFill(Color.DARKCYAN);
 
@@ -52,12 +53,11 @@ public class BuildingCard extends VBox {
         HBox bottomSection = new HBox(50);
         bottomSection.setAlignment(Pos.CENTER);
 
-
-        Building b = new BuildingBuilder().build(buildingType, new Position(0,0));
-        for (BuildingFunction buildingFunction : BuildingFunction.values()) {
+        for (BuildingFunction buildingFunction : b.getFunctions()) {
+            System.out.println(buildingFunction);
             switch (buildingFunction) {
                 case LIVING :
-                    VBox personBox = createSpriteWithLabel("/ubx/project/javarts/icons/pawn.png", "LIV");
+                    VBox personBox = createSpriteWithLabel("/ubx/project/javarts/icons/structure_house.png", String.valueOf(b.getMaxInhabitants()));
                     topSection.getChildren().add(personBox);
                     break;
                 case WORKING :
