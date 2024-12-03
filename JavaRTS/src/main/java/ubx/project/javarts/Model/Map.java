@@ -8,6 +8,8 @@ public class Map {
     private MapTileStatus[][] tiles;
 
     private Map(){
+        this.size = new Size(40,20);
+        this.tiles = new MapTileStatus[size.getWidth()][size.getHeight()];
     }
 
     public MapTileStatus getTileStatus(Position position){
@@ -55,5 +57,13 @@ public class Map {
             instance = new Map();
         }
         return instance;
+    }
+
+    public Size getSize(){
+        return size;
+    }
+
+    public MapTileStatus[][] getTiles(){
+        return tiles;
     }
 }

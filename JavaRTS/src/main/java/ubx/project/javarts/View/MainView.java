@@ -5,6 +5,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -15,8 +16,10 @@ public class MainView {
         stage.setTitle("JAVA RTS");
 
         CustomMenu topContainer = new CustomMenu();
+        MapView map = new MapView();
         BorderPane root = new BorderPane();
         root.setTop(topContainer);
+        root.setCenter(map);
 
         Scene scene = new Scene(root, 600, 400);
         stage.setScene(scene);

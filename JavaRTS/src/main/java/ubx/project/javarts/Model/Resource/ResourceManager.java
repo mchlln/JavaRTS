@@ -11,13 +11,14 @@ public class ResourceManager {
 
     private ResourceManager() {
         resources = new HashMap<>();
+        resources.put(ResourceType.WOOD, new Wood(10));
         resources.put(ResourceType.IRON, new Iron(0));
         resources.put(ResourceType.STONE, new Stone(0));
         resources.put(ResourceType.COAL, new Coal(0));
         resources.put(ResourceType.STEEL, new Steel(0));
         resources.put(ResourceType.CEMENT, new Cement(0));
         resources.put(ResourceType.LUMBER, new Lumber(0));
-        resources.put(ResourceType.FOOD, new Food(0));
+        resources.put(ResourceType.FOOD, new Food(5));
         resources.put(ResourceType.TOOLS, new Tools(0));
     }
 
@@ -52,5 +53,9 @@ public class ResourceManager {
             }
         }
         return true;
+    }
+
+    public static Map<ResourceType, ResourceDecorator> getResources() {
+        return resources;
     }
 }
