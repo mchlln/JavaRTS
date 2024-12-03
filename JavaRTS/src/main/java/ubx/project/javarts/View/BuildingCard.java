@@ -61,7 +61,7 @@ public class BuildingCard extends VBox {
                     topSection.getChildren().add(personBox);
                     break;
                 case WORKING :
-                    VBox workerBox = createSpriteWithLabel("/ubx/project/javarts/house.png", "WOR");
+                    VBox workerBox = createSpriteWithLabel("/ubx/project/javarts/icons/character.png", "WOR");
                     topSection.getChildren().add(workerBox);
                     break;
                 case CONSUMING :
