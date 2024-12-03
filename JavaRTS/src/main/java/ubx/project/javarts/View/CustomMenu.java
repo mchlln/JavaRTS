@@ -30,7 +30,8 @@ public class CustomMenu extends VBox {
         MenuItem loadGameItem = new MenuItem("Load Game");
         MenuItem saveGameItem = new MenuItem("Save Game");
         MenuItem exitItem = new MenuItem("Exit");
-        container = new HBox();
+        menuBar.setPrefHeight(40);
+
 
         HBox resourceBox = new HBox();
         Map<ResourceType, ResourceDecorator> resources = ResourceManager.getResources();
@@ -47,11 +48,17 @@ public class CustomMenu extends VBox {
             resourceDisplay.getChildren().addAll(logo, quantityLabel);
             resourceBox.getChildren().add(resourceDisplay);
         }
-        resourceBox.setSpacing(10);
+        resourceBox.setSpacing(15);
         resourceBox.setPadding(new Insets(10));
+        resourceBox.setStyle("-fx-alignment: center-left;");
+        resourceBox.setPrefHeight(menuBar.getPrefHeight());
 
         menu.getItems().addAll(newGameItem, loadGameItem, saveGameItem, exitItem);
-        container.getChildren().addAll(menuBar,resourceBox);
+        container = new HBox(menuBar,resourceBox);
+        container.setSpacing(10); // Space between menu and resources
+        container.setPadding(new Insets(5));
+        container.setStyle("-fx-alignment: center-left;");
+        this.setStyle("-fx-background-color: lightgray;");
         this.getChildren().addAll(container);
     }
 

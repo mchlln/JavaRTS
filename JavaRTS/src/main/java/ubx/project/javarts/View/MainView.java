@@ -21,7 +21,7 @@ public class MainView {
         root.setTop(topContainer);
         root.setCenter(map);
 
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 1280, 720);
         stage.setScene(scene);
         stage.show();
     }
