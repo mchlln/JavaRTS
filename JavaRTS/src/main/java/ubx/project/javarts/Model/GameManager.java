@@ -1,7 +1,9 @@
 package ubx.project.javarts.Model;
 
 import ubx.project.javarts.Model.Building.Building;
+import ubx.project.javarts.Model.Building.BuildingBuilder;
 import ubx.project.javarts.Model.Building.BuildingManager;
+import ubx.project.javarts.Model.Building.BuildingType;
 import ubx.project.javarts.Model.Resource.ResourceManager;
 import ubx.project.javarts.View.Observer;
 
@@ -30,7 +32,9 @@ public class GameManager implements Subject {
         return instance;
     }
 
-    public void addBuilding(Building building, Position position) {
+    public void addBuilding(BuildingType type, Position position) { // TODO: review + refactor
+        BuildingBuilder b = new BuildingBuilder(); // TODO: Don't index each times
+        Building building = b.build(type, position);
         if (map.isAreaFree(position, building.getSize())){
             buildings.addBuilding(building);
             // Add
@@ -41,7 +45,7 @@ public class GameManager implements Subject {
         if (!buildings.exists(building)){
             return;
         }
-        map.destruct(new Position(0,0), building.getSize()); //TODO: Replace Position(0,0) by building.getPosition() when implemented
+        map.destruct(building.getPostion(), building.getSize());
         buildings.removeBuilding(building);
     }
 
@@ -55,13 +59,18 @@ public class GameManager implements Subject {
         people.affectHouse(building);
     }
 
-    public void deleteInhabitantFrom(Building building) {
-        if (!buildings.exists(building)){
+    public void deleteInhabitantFrom(Building building, People people) {
+        if (!buildings.exists(building) || !worldInhabitants.contains(people)){
             return;
         }
-        //building.removeInhabitant();
+        building.removeInhabitant(people);
+        worldInhabitants.remove(people);
+    }
 
-
+    public void assignWorkerTo(Building building, People people) {
+        if (building.getMaxWorkers() < building.getWorkers().size()){
+            building.addWorker(people);
+        }
     }
 
     @Override
