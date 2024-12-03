@@ -57,8 +57,8 @@ public abstract class BuildingDecorator implements Building {
     }
 
     @Override
-    public void addFunction(BuildingFunction function){
-        decoratedBuilding.addFunction(function);
+    public void addFunction(ArrayList<BuildingFunction> functions){
+        decoratedBuilding.addFunction(functions);
     }
 
     @Override

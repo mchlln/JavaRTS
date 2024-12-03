@@ -15,7 +15,7 @@ public interface Building {
     BuildingType getType();
     Position getPostion();
     ArrayList<BuildingFunction> getFunctions();
-    void addFunction(BuildingFunction function);
+    void addFunction(ArrayList<BuildingFunction> functions);
     public Map<ResourceType, Integer> getDailyConsumption();
     public Set<People> getWorkers();
     public int getMaxWorkers();

@@ -57,8 +57,8 @@ public class BasicBuilding implements Building{
     }
 
     @Override
-    public void addFunction(BuildingFunction function){
-        functions.add(function);
+    public void addFunction(ArrayList<BuildingFunction> functions){
+        this.functions.addAll(functions);
     }
 
     @Override

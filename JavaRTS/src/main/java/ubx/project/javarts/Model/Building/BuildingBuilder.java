@@ -6,7 +6,6 @@ import ubx.project.javarts.Model.Resource.ResourceType;
 import ubx.project.javarts.Model.Size;
 
 import java.util.Hashtable;
-import java.util.Map;
 
 public class BuildingBuilder {
 

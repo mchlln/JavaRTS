@@ -4,9 +4,7 @@ import ubx.project.javarts.Exception.NotEnoughResources;
 import ubx.project.javarts.Exception.WrongBuildingType;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Resource.ResourceType;
-import ubx.project.javarts.Model.Size;
 import ubx.project.javarts.Model.Resource.ResourceManager;
-import ubx.project.javarts.Model.Resource.ResourceType;
 
 import java.util.*;
 

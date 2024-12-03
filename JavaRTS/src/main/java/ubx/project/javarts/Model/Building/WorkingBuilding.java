@@ -2,6 +2,7 @@ package ubx.project.javarts.Model.Building;
 
 import ubx.project.javarts.Model.People;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,7 +48,8 @@ public class WorkingBuilding extends BuildingDecorator{
     }
 
     @Override
-    public void addFunction(BuildingFunction function){
-        super.addFunction(BuildingFunction.WORKING);
+    public void addFunction(ArrayList<BuildingFunction> functions){
+        functions.add(BuildingFunction.WORKING);
+        super.addFunction(functions);
     }
 }

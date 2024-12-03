@@ -2,6 +2,7 @@ package ubx.project.javarts.Model.Building;
 
 import ubx.project.javarts.Model.Resource.ResourceType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,8 +20,9 @@ public class ConsumptionBuilding extends BuildingDecorator{
     }
 
     @Override
-    public void addFunction(BuildingFunction function){
-        super.addFunction(BuildingFunction.CONSUMING);
+    public void addFunction(ArrayList<BuildingFunction> functions){
+        functions.add(BuildingFunction.CONSUMING);
+        super.addFunction(functions);
     }
 
     @Override

@@ -2,6 +2,7 @@ package ubx.project.javarts.Model.Building;
 
 import ubx.project.javarts.Model.Resource.ResourceType;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,8 +19,9 @@ public class ProductionBuilding extends BuildingDecorator{
     }
 
     @Override
-    public void addFunction(BuildingFunction function){
-        super.addFunction(BuildingFunction.PRODUCING);
+    public void addFunction(ArrayList<BuildingFunction> functions){
+        functions.add(BuildingFunction.PRODUCING);
+        super.addFunction(functions);
     }
 
     @Override
