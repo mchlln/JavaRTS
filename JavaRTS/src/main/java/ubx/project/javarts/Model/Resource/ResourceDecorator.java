@@ -2,6 +2,8 @@ package ubx.project.javarts.Model.Resource;
 
 import ubx.project.javarts.Exception.NotEnoughResources;
 
+import java.util.HashMap;
+
 public abstract class ResourceDecorator implements Resource {
     private int quantity;
     public ResourceDecorator(int quantity) {
@@ -18,6 +20,10 @@ public abstract class ResourceDecorator implements Resource {
             throw new NotEnoughResources("Quantity must be less than or equal to quantity");
         }
         this.quantity -= quantity;
+    }
+
+    public HashMap<ResourceType,Integer> handle(){
+        return new HashMap<>();
     }
 
 }

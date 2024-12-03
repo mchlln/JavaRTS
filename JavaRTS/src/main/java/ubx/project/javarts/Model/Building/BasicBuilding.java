@@ -6,10 +6,7 @@ import ubx.project.javarts.Model.Resource.Resource;
 import ubx.project.javarts.Model.Resource.ResourceType;
 import ubx.project.javarts.Model.Size;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class BasicBuilding implements Building{
     private final UUID id;
@@ -134,7 +131,7 @@ public class BasicBuilding implements Building{
         throw new WrongThreadException("Building cannot have inhabitants");
     }
     @Override
-    public void handle(){
-
+    public HashMap<ResourceType,Integer> handle(){
+        return new HashMap<>();
     }
 }

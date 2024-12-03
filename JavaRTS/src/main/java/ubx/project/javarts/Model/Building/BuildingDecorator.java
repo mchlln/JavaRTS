@@ -6,10 +6,8 @@ import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Position;
 import ubx.project.javarts.Model.Resource.ResourceType;
 import ubx.project.javarts.Model.Size;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+
+import java.util.*;
 
 public abstract class BuildingDecorator implements Building {
    private final Building decoratedBuilding;
@@ -134,7 +132,8 @@ public abstract class BuildingDecorator implements Building {
     }
 
     @Override
-    public void handle(){
+    public HashMap<ResourceType, Integer> handle(){
 
+        return null;
     }
 }

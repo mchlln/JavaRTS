@@ -1,5 +1,7 @@
 package ubx.project.javarts.Model.Resource;
 
+import ubx.project.javarts.Exception.NotEnoughResources;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +21,7 @@ public class ResourceManager {
         resources.put(ResourceType.TOOLS, new Tools(0));
     }
 
-    public void addResource(ResourceType type, int quantity) {
+    public static void addResource(ResourceType type, int quantity) {
         if (resources.containsKey(type)) {
             resources.get(type).addResources(quantity);
         }
@@ -27,7 +29,12 @@ public class ResourceManager {
 
     public static void removeResource(ResourceType type, int quantity) {
         if (resources.containsKey(type)) {
-            resources.get(type).removeResources(quantity);
+            if(resources.get(type).getQuantity() >= quantity){
+                resources.get(type).removeResources(quantity);
+            }else{
+                throw new NotEnoughResources("Not enough "+ type +"to live another day");
+            }
+
         }
     }
 

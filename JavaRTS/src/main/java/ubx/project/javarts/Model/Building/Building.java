@@ -5,10 +5,7 @@ import ubx.project.javarts.Model.Position;
 import ubx.project.javarts.Model.Resource.ResourceType;
 import ubx.project.javarts.Model.Size;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public interface Building {
     Size getSize();
@@ -33,5 +30,5 @@ public interface Building {
     public int getNumberInhabitants();
     public void addInhabitant(People people);
     public void removeInhabitant(People people);
-    public void handle();
+    public HashMap<ResourceType,Integer> handle();
 }

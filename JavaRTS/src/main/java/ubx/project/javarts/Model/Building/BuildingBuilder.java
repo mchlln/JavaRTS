@@ -1,5 +1,6 @@
 package ubx.project.javarts.Model.Building;
 
+import ubx.project.javarts.Exception.WrongBuildingType;
 import ubx.project.javarts.Model.Position;
 import ubx.project.javarts.Model.Resource.ResourceType;
 import ubx.project.javarts.Model.Size;
@@ -43,6 +44,6 @@ public class BuildingBuilder {
                 return new ConsumptionBuilding(new ProductionBuilding(new WorkingBuilding(new BasicBuilding(position, new Size(4, 3)), 12,0), new Hashtable<ResourceType, Integer>(){{put(ResourceType.TOOLS, 4);}}), new Hashtable<ResourceType, Integer>(){{put(ResourceType.STEEL, 4); put(ResourceType.COAL, 4);}});
             }
         }
-        throw new RuntimeException("Can't find building type " + buildingType);
+        throw new WrongBuildingType("Can't find building type " + buildingType);
     }
 }

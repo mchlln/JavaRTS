@@ -1,5 +1,6 @@
 package ubx.project.javarts.Model.Building;
 
+import ubx.project.javarts.Exception.NotEnoughResources;
 import ubx.project.javarts.Exception.WrongBuildingType;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Resource.ResourceType;
@@ -10,7 +11,7 @@ import ubx.project.javarts.Model.Resource.ResourceType;
 import java.util.*;
 
 public class BuildingManager {
-    private Set<Building> buildings;
+    private final Set<Building> buildings;
 
     public BuildingManager() {
         buildings = new HashSet<>();
@@ -62,7 +63,7 @@ public class BuildingManager {
                 }
                 buildings.add(building);
             }else{
-                throw new NoSuchElementException("Not enough resources to create a " + building.getType());
+                throw new NotEnoughResources("Not enough resources to create a " + building.getType());
             }
         }
     }
@@ -95,11 +96,22 @@ public class BuildingManager {
         }
     }
 
-    public Hashtable<ResourceType, Integer> handle(){
-        Hashtable<ResourceType, Integer> global = new Hashtable<>();
+    public void handle(){
+        //get global consumption and production
+        HashMap<ResourceType, Integer> global = new HashMap<>();
         for (Building building : buildings) {
-            //building.handle();
+            HashMap<ResourceType, Integer> resources = building.handle();
+            for(ResourceType rt : resources.keySet()){
+                global.put(rt, global.getOrDefault(rt, 0) + resources.get(rt));
+            }
         }
-        return global;
+        // update the resources
+        for(ResourceType rt : global.keySet()){
+            if(global.get(rt) > 0){
+                ResourceManager.addResource(rt, global.get(rt));
+            }else{
+                ResourceManager.removeResource(rt, global.get(rt));
+            }
+        }
     }
 }

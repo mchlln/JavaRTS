@@ -2,6 +2,7 @@ package ubx.project.javarts.Model.Building;
 
 import ubx.project.javarts.Model.Resource.ResourceType;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ProductionBuilding extends BuildingDecorator{
@@ -21,4 +22,12 @@ public class ProductionBuilding extends BuildingDecorator{
         super.addFunction(BuildingFunction.PRODUCING);
     }
 
+    @Override
+    public HashMap<ResourceType, Integer> handle(){
+        HashMap<ResourceType,Integer> resources = super.handle();
+        for(ResourceType rt : dailyProduction.keySet()){
+            resources.put(rt, resources.getOrDefault(rt, 0) + dailyProduction.get(rt));
+        }
+        return resources;
+    }
 }
