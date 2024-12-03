@@ -1,10 +1,9 @@
 package ubx.project.javarts.Model.Building;
 
 import ubx.project.javarts.Model.People;
+import ubx.project.javarts.Model.Resource.ResourceType;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class WorkingBuilding extends BuildingDecorator{
     private Set<People> workers;
@@ -56,7 +55,47 @@ public class WorkingBuilding extends BuildingDecorator{
     }
 
     @Override
+    public Set<People> getInhabitants() {
+        return b.getInhabitants();
+    }
+
+    @Override
     public int getMaxInhabitants() {
         return b.getMaxInhabitants();
     }
+
+    @Override
+    public int getMinInhabitants() {
+        return b.getMinInhabitants();
+    }
+
+    @Override
+    public int getNumberInhabitants(){
+        return b.getNumberInhabitants();
+    }
+
+    @Override
+    public void addInhabitant(People people){
+        b.addInhabitant(people);
+    }
+    @Override
+    public void removeInhabitant(People people){
+        b.removeInhabitant(people);
+    }
+
+    @Override
+    public Map<ResourceType, Integer> getDailyConsumption() {
+        return b.getDailyConsumption();
+    }
+
+    @Override
+    public Map<ResourceType, Integer> getDailyProduction() {
+        return b.getDailyProduction();
+    }
+
+    @Override
+    public HashMap<ResourceType, Integer> handle(){
+        return b.handle();
+    }
+
 }
