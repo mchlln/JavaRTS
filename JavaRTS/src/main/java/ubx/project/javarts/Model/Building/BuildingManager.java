@@ -52,6 +52,11 @@ public class BuildingManager {
         return cost;
     }
 
+    public boolean isBuildable(BuildingType building) {
+        HashMap<ResourceType,Integer> cost = buildingCost(building);
+        return ResourceManager.areAvailable(cost);
+    }
+
     public void addBuilding(Building building) {
         if (!exists(building)) {
             HashMap<ResourceType,Integer> cost = buildingCost(building.getType());
