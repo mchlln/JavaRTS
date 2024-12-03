@@ -1,5 +1,7 @@
 package ubx.project.javarts.View;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
@@ -11,7 +13,7 @@ public class Footer extends ScrollPane {
 
     public Footer() {
         // Initialize container to hold the widgets
-        container = new HBox(15); // 10px spacing between widgets
+        container = new HBox(10); // 10px spacing between widgets
         container.setPadding(new Insets(10));
         container.setAlignment(Pos.CENTER_LEFT);
 
@@ -26,6 +28,21 @@ public class Footer extends ScrollPane {
 
     public void addWidget(javafx.scene.Node widget) {
         container.getChildren().add(widget);
+    }
+
+    public void setBuildingCardHeightFromFooter() {
+        // Get the height of the FooterWidget
+        this.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                // Set the maxHeight of all BuildingCard children to match the FooterWidget height
+                for (var child : getChildren()) {
+                    if (child instanceof BuildingCard) {
+                        ((BuildingCard) child).setMaxHeight(newValue.doubleValue());
+                    }
+                }
+            }
+        });
     }
 }
 

@@ -12,6 +12,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import ubx.project.javarts.Model.Building.Building;
+import ubx.project.javarts.Model.Building.BuildingBuilder;
+import ubx.project.javarts.Model.Building.BuildingFunction;
+import ubx.project.javarts.Model.Building.BuildingType;
+import ubx.project.javarts.Model.Position;
 
 public class BuildingCard extends VBox {
     private VBox container;
@@ -23,7 +28,8 @@ public class BuildingCard extends VBox {
     private MenuItem exitItem;
 
 
-    public BuildingCard() {
+    public BuildingCard(BuildingType buildingType) {
+
         VBox root = new VBox();
         root.setPadding(new Insets(10));
         root.setSpacing(10);
@@ -33,15 +39,6 @@ public class BuildingCard extends VBox {
         HBox topSection = new HBox(20);
         topSection.setAlignment(Pos.CENTER);
 
-        // Create person icon
-        VBox personBox = createSpriteWithLabel("/ubx/project/javarts/house.png", "3");
-
-        // Create lock icon
-        VBox lockBox = createSpriteWithLabel("/ubx/project/javarts/house.png", "4");
-
-        topSection.getChildren().addAll(personBox, lockBox);
-
-        // Center - House sprite
         ImageView houseView = new ImageView(new Image(getClass().getResource("/ubx/project/javarts/house.png").toExternalForm()));
         houseView.setFitWidth(100);
         houseView.setFitHeight(100);
@@ -55,12 +52,31 @@ public class BuildingCard extends VBox {
         HBox bottomSection = new HBox(50);
         bottomSection.setAlignment(Pos.CENTER);
 
-        HBox leftBox = createSpriteWithTextRight("/ubx/project/javarts/house.png", "50");
-        HBox rightBox = createSpriteWithTextRight("/ubx/project/javarts/house.png", "60");
 
-        bottomSection.getChildren().addAll(leftBox, rightBox);
+        Building b = new BuildingBuilder().build(buildingType, new Position(0,0));
+        for (BuildingFunction buildingFunction : BuildingFunction.values()) {
+            switch (buildingFunction) {
+                case LIVING :
+                    VBox personBox = createSpriteWithLabel("/ubx/project/javarts/icons/pawn.png", "LIV");
+                    topSection.getChildren().add(personBox);
+                    break;
+                case WORKING :
+                    VBox workerBox = createSpriteWithLabel("/ubx/project/javarts/house.png", "WOR");
+                    topSection.getChildren().add(workerBox);
+                    break;
+                case CONSUMING :
+                    HBox consumingBox = createSpriteWithTextRight("/ubx/project/javarts/house.png", "CON");
+                    bottomSection.getChildren().add(consumingBox);
+                    break;
+                case PRODUCING :
+                    HBox producingBox = createSpriteWithTextRight("/ubx/project/javarts/house.png", "PRO");
+                    bottomSection.getChildren().add(producingBox);
+                    break;
+            }
+        }
 
         root.getChildren().addAll(topSection, houseView, farmLabel, bottomSection);
+        root.setStyle("-fx-background-color: #242b8b;");
         this.getChildren().addAll(root);
     }
 
