@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class BagOfCommands {
-    Queue<Command> commands;
-    BagOfCommands instance = null;
+    private Queue<Command> commands;
+    static BagOfCommands instance = null;
 
     BagOfCommands() {
         commands = new LinkedList<>();
@@ -25,7 +25,7 @@ public class BagOfCommands {
         }
     }
 
-    public BagOfCommands getInstance() {
+    public static BagOfCommands getInstance() {
         if (instance == null) {
             instance = new BagOfCommands();
         }
