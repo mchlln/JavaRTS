@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ResourceManager {
-    private Map<ResourceType,ResourceDecorator> resources;
+    private static Map<ResourceType,ResourceDecorator> resources;
     private static ResourceManager instance = null;
 
     private ResourceManager() {
@@ -25,7 +25,7 @@ public class ResourceManager {
         }
     }
 
-    public void removeResource(ResourceType type, int quantity) {
+    public static void removeResource(ResourceType type, int quantity) {
         if (resources.containsKey(type)) {
             resources.get(type).removeResources(quantity);
         }
@@ -36,5 +36,14 @@ public class ResourceManager {
             instance = new ResourceManager();
         }
         return instance;
+    }
+
+    public static boolean areAvailable(HashMap<ResourceType, Integer> neededResources) {
+        for (ResourceType type : neededResources.keySet()) {
+            if (resources.get(type).getQuantity() < neededResources.get(type)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

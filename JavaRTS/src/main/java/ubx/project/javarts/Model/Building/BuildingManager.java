@@ -1,11 +1,13 @@
 package ubx.project.javarts.Model.Building;
 
+import ubx.project.javarts.Exception.WrongBuildingType;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Resource.ResourceType;
+import ubx.project.javarts.Model.Size;
+import ubx.project.javarts.Model.Resource.ResourceManager;
+import ubx.project.javarts.Model.Resource.ResourceType;
 
-import java.util.HashSet;
-import java.util.Hashtable;
-import java.util.Set;
+import java.util.*;
 
 public class BuildingManager {
     private Set<Building> buildings;
@@ -14,9 +16,54 @@ public class BuildingManager {
         buildings = new HashSet<>();
     }
 
+    public HashMap<ResourceType, Integer> buildingCost(BuildingType buildingType) {
+        HashMap<ResourceType, Integer> cost;
+        switch (buildingType) {
+            case WOODENCABIN -> {
+                cost = new HashMap<>(){{put(ResourceType.WOOD, 1);}};
+            }
+            case HOUSE -> {
+                cost = new HashMap<>(){{put(ResourceType.WOOD, 2);put(ResourceType.STONE,2);}};
+            }
+            case APPARTMENTBUILDING -> {
+                cost = new HashMap<>(){{put(ResourceType.WOOD, 50);put(ResourceType.STONE,50);}};
+            }
+            case FARM -> {
+                cost = new HashMap<>(){{put(ResourceType.WOOD, 5);put(ResourceType.STONE,5);}};
+            }
+            case QUARRY -> {
+                cost = new HashMap<>(){{put(ResourceType.WOOD, 50);}};
+            }
+            case LUMBERMILL -> {
+                cost = new HashMap<>(){{put(ResourceType.WOOD, 50);put(ResourceType.STONE,50);}};
+            }
+            case CEMENTPLANT -> {
+                cost = new HashMap<>(){{put(ResourceType.WOOD, 50);put(ResourceType.STONE,50);}};
+            }
+            case STEELMILL -> {
+                cost = new HashMap<>(){{put(ResourceType.WOOD, 100);put(ResourceType.STONE,50);}};
+            }
+            case TOOLFACTORY -> {
+                cost = new HashMap<>(){{put(ResourceType.WOOD, 50);put(ResourceType.STONE,50);}};
+            }
+            default -> {
+                throw new WrongBuildingType("Can't find building type " + buildingType);
+            }
+        }
+        return cost;
+    }
+
     public void addBuilding(Building building) {
         if (!exists(building)) {
-            buildings.add(building);
+            HashMap<ResourceType,Integer> cost = buildingCost(building.getType());
+            if(ResourceManager.areAvailable(cost)){
+                for(ResourceType type : cost.keySet()){
+                    ResourceManager.removeResource(type, cost.get(type));
+                }
+                buildings.add(building);
+            }else{
+                throw new NoSuchElementException("Not enough resources to create a " + building.getType());
+            }
         }
     }
 
