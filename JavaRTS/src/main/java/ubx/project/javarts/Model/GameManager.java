@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class GameManager implements Subject {
     private static GameManager instance;
-    private BuildingManager buildings;
+    private BuildingManager buildings = new BuildingManager();
     private Set<People> worldInhabitants;
     private Map map;
     private ResourceManager resources;
@@ -35,10 +35,14 @@ public class GameManager implements Subject {
     public void addBuilding(BuildingType type, Position position) { // TODO: review + refactor
         BuildingBuilder b = new BuildingBuilder(); // TODO: Don't index each times
         Building building = b.build(type, position);
+        System.out.println(building.getType());
         if (map.isAreaFree(position, building.getSize())){
+            System.out.println("Adding building " + type + " to position " + position);
             buildings.addBuilding(building);
+            map.construct(building.getPostion(), building.getSize());
             // Add
         }
+        notifyObservers();
     }
 
     public void removeBuilding(Building building) {

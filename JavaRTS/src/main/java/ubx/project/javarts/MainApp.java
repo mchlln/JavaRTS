@@ -15,6 +15,10 @@ public class MainApp extends Application {
         GameManager model = GameManager.getInstance();
         MainView view = new MainView(stage, model);
         Controller controller = new Controller(model, view, BagOfCommands.getInstance());
+        view.setController(controller);
+        BagOfCommands.getInstance().setModel(model);
+        BagOfCommands.getInstance().setController(controller);
+        model.addObserver(view);
     }
 
 }

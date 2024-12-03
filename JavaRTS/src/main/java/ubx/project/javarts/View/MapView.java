@@ -5,7 +5,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
+import ubx.project.javarts.Controller.AddBuildingCommand;
+import ubx.project.javarts.Controller.BagOfCommands;
+import ubx.project.javarts.Controller.Controller;
 import ubx.project.javarts.Model.Map;
+import ubx.project.javarts.Model.Position;
 import ubx.project.javarts.Model.Size;
 
 public class MapView extends GridPane {
@@ -19,7 +23,11 @@ public class MapView extends GridPane {
             for (int row = 0; row < height; row++) {
                 ImageView tileImageView = new ImageView(getClass()
                         .getResource("/ubx/project/javarts/mapTiles/tile_0001.png").toExternalForm());
-
+                int finalCol = col;
+                int finalRow = row;
+                tileImageView.setOnMouseClicked(event -> {
+                    BagOfCommands.getInstance().addCommand(new AddBuildingCommand(new Position(finalCol, finalRow)));
+                    System.out.println("X=" + finalCol + ", Y=" + finalRow);});
                 // Bind the tile size to the MapView's width and height
                 tileImageView.fitWidthProperty().bind(Bindings.divide(this.widthProperty(), width));
                 tileImageView.fitHeightProperty().bind(Bindings.divide(this.heightProperty(), height));

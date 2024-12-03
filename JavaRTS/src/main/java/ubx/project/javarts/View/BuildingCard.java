@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import ubx.project.javarts.Controller.BagOfCommands;
 import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.Building.BuildingBuilder;
 import ubx.project.javarts.Model.Building.BuildingFunction;
@@ -26,12 +27,15 @@ public class BuildingCard extends VBox {
     private MenuItem loadGameItem;
     private MenuItem saveGameItem;
     private MenuItem exitItem;
+    private BuildingType currentlySelected;
+    private final VBox root = new VBox();
+    private final BuildingType buildingType;
 
 
     public BuildingCard(BuildingType buildingType) {
         Building b = new BuildingBuilder().build(buildingType, new Position(0,0));
+        this.buildingType = buildingType;
 
-        VBox root = new VBox();
         root.setPadding(new Insets(10));
         root.setSpacing(10);
         root.setAlignment(Pos.CENTER);
@@ -61,7 +65,7 @@ public class BuildingCard extends VBox {
                     topSection.getChildren().add(personBox);
                     break;
                 case WORKING :
-                    VBox workerBox = createSpriteWithLabel("/ubx/project/javarts/icons/character.png", "WOR");
+                    VBox workerBox = createSpriteWithLabel("/ubx/project/javarts/icons/character.png", String.valueOf(b.getMaxWorkers()));
                     topSection.getChildren().add(workerBox);
                     break;
                 case CONSUMING :
@@ -75,8 +79,14 @@ public class BuildingCard extends VBox {
             }
         }
 
+        /*root.setOnMouseClicked(event -> {
+            System.out.println(b.getName() + " clicked!");
+
+        });*/
+
         root.getChildren().addAll(topSection, houseView, farmLabel, bottomSection);
-        root.setStyle("-fx-background-color: #242b8b;");
+        isSelected(currentlySelected);
+
         this.getChildren().addAll(root);
     }
 
@@ -108,6 +118,19 @@ public class BuildingCard extends VBox {
         hbox.setAlignment(Pos.CENTER_LEFT);
         hbox.getChildren().addAll(imageView, label);
         return hbox;
+    }
+
+    public void isSelected(BuildingType buildingType) {
+        if (buildingType == this.buildingType) {
+            root.setStyle("-fx-background-color: #971c1c;");
+        } else {
+            root.setStyle("-fx-background-color: #242b8b;");
+        }
+    }
+
+    public void setSelected(BuildingType buildingType){
+        currentlySelected = buildingType;
+        isSelected(buildingType);
     }
 
 

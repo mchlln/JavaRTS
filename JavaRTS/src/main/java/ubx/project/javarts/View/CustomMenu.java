@@ -19,6 +19,7 @@ import java.util.Map;
 
 public class CustomMenu extends VBox {
     private HBox container;
+    private HashMap<ResourceType, Label> resourcesLabels = new HashMap<>();
 
 
     public CustomMenu() {
@@ -44,7 +45,7 @@ public class CustomMenu extends VBox {
 
 
             Label quantityLabel = new Label(String.valueOf(resources.get(resource).getQuantity()));
-
+            resourcesLabels.put(resource, quantityLabel);
             resourceDisplay.getChildren().addAll(logo, quantityLabel);
             resourceBox.getChildren().add(resourceDisplay);
         }
@@ -60,6 +61,13 @@ public class CustomMenu extends VBox {
         container.setStyle("-fx-alignment: center-left;");
         this.setStyle("-fx-background-color: lightgray;");
         this.getChildren().addAll(container);
+    }
+
+    public void actualiseResources() {
+        Map<ResourceType, ResourceDecorator> resources = ResourceManager.getResources();
+        for (ResourceType resource : resources.keySet()) {
+            resourcesLabels.get(resource).setText(String.valueOf(resources.get(resource).getQuantity()));
+        }
     }
 
     public String getLogoPath(ResourceType resource) {
