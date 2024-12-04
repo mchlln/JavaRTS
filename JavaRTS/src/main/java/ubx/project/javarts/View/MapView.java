@@ -32,7 +32,7 @@ public class MapView extends VBox {
         for (int col = 0; col < width; col++) {
             for (int row = 0; row < height; row++) {
                 ImageView tileImageView = new ImageView(getClass()
-                        .getResource("/ubx/project/javarts/mapTiles/tile_0001.png").toExternalForm());
+                        .getResource("/ubx/project/javarts/mapTiles/tile_0002.png").toExternalForm());
                 int finalCol = col;
                 int finalRow = row;
                 tileImageView.setOnMouseClicked(event -> {
