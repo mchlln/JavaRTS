@@ -87,6 +87,7 @@ public class BuildingManager {
         if (buildings.contains(building)) {
             if (building.getFunctions().contains(BuildingFunction.LIVING)){
                 building.addInhabitant(people);
+                people.affectHouse(building);
             }
 
         }

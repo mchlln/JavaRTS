@@ -74,9 +74,7 @@ public class GameManager implements Subject {
         }try{
             People people = new People();
             worldInhabitants.add(people);
-            //TODO: add world inhabitant to the given building
-            people.affectHouse(building);
-            building.addInhabitant(people);
+            buildings.addInhabitantInto(building,people);
         }catch (TooManyInhabitants e){
             errorNotif(e);
         }
@@ -94,8 +92,9 @@ public class GameManager implements Subject {
     public void assignWorkerTo(Building building) {
         try{
             People worker = findUnemployed();
-            if (building.getMaxWorkers() < building.getWorkers().size()){
+            if (building.getMaxWorkers() > building.getWorkers().size()){
                 building.addWorker(worker);
+                worker.affectJobPlace(building);
             }
         }catch (TooManyWorkers | NotEnoughInhabitants e){
             errorNotif(e);
