@@ -4,7 +4,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.geometry.Insets;
 import javafx.scene.transform.Scale;
 
@@ -17,6 +18,7 @@ public class BuildingFooter extends ScrollPane {
         container = new HBox(10); // 10px spacing between widgets
         container.setPadding(new Insets(10));
         container.setAlignment(Pos.CENTER_LEFT);
+        container.setBackground(new Background(new BackgroundImage(new Image(getClass().getResource("/ubx/project/javarts/panel_blue.png").toExternalForm()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
 
         this.setContent(container);
         this.setFitToHeight(true);  // Ensure ScrollPane fits to the full height of its content

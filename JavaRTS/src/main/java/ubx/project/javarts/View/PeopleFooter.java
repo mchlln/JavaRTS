@@ -3,11 +3,13 @@ package ubx.project.javarts.View;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.transform.Scale;
 import ubx.project.javarts.Model.Building.Building;
+import ubx.project.javarts.Model.Building.BuildingFunction;
 
 import java.util.HashMap;
 import java.util.Set;
@@ -40,19 +42,35 @@ public class PeopleFooter extends ScrollPane {
         container.getChildren().addAll(buttons);
     }
 
-    public void addWidget(javafx.scene.Node widget) {
-        Scale scale = new Scale(0.8, 0.8); // Scale factor 0.5 to reduce to 50%
-        widget.getTransforms().add(scale);
-        container.getChildren().add(widget);
-    }
-
     public void updateBuildings(Set<Building> buildings) {
+        int inhabitants = 0;
+        int workers = 0;
+        int maxInhabitants = 0;
+        int maxWorkers = 0;
         container.getChildren().clear();
+        VBox container2 = new VBox();
+        container2.setAlignment(Pos.CENTER);
+        Label label = new Label("Building List");
+        label.setAlignment(Pos.CENTER);
+        container2.getChildren().add(label);
+        HBox container3 = new HBox();
+        container2.getChildren().add(container3);
         generateButtons();
         for (Building building : buildings) {
+            if (building.getFunctions().contains(BuildingFunction.LIVING)){
+                inhabitants += building.getInhabitants().size();
+                maxInhabitants += building.getMaxInhabitants();
+            }
+            if (building.getFunctions().contains(BuildingFunction.WORKING)){
+                workers += building.getWorkers().size();
+                maxWorkers += building.getMaxWorkers();
+            }
+
             BuildingInfoCard bc = new BuildingInfoCard(building);
-            container.getChildren().add(bc);
+            container3.getChildren().add(bc);
         }
+        label.setText("Inhabitants: " + inhabitants + "/" + maxInhabitants + "Workers:" + workers + "/" + maxWorkers);
+        container.getChildren().addAll(container2);
 
     }
 }

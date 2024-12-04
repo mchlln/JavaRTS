@@ -24,10 +24,6 @@ public class BuildingInfoCard extends VBox{
         root.setSpacing(10);
         root.setAlignment(Pos.CENTER);
 
-        // Top section - Sprites with labels
-        HBox topSection = new HBox(20);
-        topSection.setAlignment(Pos.CENTER);
-
         ImageView houseView = new ImageView(new Image(getClass().getResource(BuildingSprites.WOODENCABIN.getPath()).toExternalForm()));
         houseView.setFitWidth(100);
         houseView.setFitHeight(100);
@@ -47,16 +43,16 @@ public class BuildingInfoCard extends VBox{
             switch (buildingFunction) {
                 case LIVING:
                     HBox personBox = createSpriteWithTextRight("/ubx/project/javarts/icons/structure_house.png", String.valueOf(building.getInhabitants().size()), String.valueOf(building.getMaxInhabitants()));
-                    topSection.getChildren().add(personBox);
+                    bottomSection.getChildren().add(personBox);
                     break;
                 case WORKING:
                     HBox workerBox = createSpriteWithTextRight("/ubx/project/javarts/icons/character.png", String.valueOf(building.getWorkers().size()), String.valueOf(building.getMaxWorkers()));
-                    topSection.getChildren().add(workerBox);
+                    bottomSection.getChildren().add(workerBox);
                     break;
             }
         }
 
-        root.getChildren().addAll(topSection, houseView, farmLabel, bottomSection);
+        root.getChildren().addAll(houseView, farmLabel, bottomSection);
         root.setPrefSize(250,400);
 
         this.getChildren().addAll(root);

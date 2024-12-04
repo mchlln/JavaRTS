@@ -7,8 +7,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import ubx.project.javarts.Model.Resource.ResourceDecorator;
 import ubx.project.javarts.Model.Resource.ResourceManager;
 import ubx.project.javarts.Model.Resource.ResourceType;
@@ -31,7 +30,6 @@ public class CustomMenu extends VBox {
         MenuItem saveGameItem = new MenuItem("Save Game");
         MenuItem exitItem = new MenuItem("Exit");
         menuBar.setPrefHeight(40);
-
 
         HBox resourceBox = new HBox();
         Map<ResourceType, ResourceDecorator> resources = ResourceManager.getResources();
@@ -58,7 +56,7 @@ public class CustomMenu extends VBox {
         container.setSpacing(10); // Space between menu and resources
         container.setPadding(new Insets(5));
         container.setStyle("-fx-alignment: center-left;");
-        this.setStyle("-fx-background-color: lightgray;");
+        container.setBackground(new Background(new BackgroundImage(new Image(getClass().getResource("/ubx/project/javarts/menu_background.png").toExternalForm()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
         this.getChildren().addAll(container);
     }
 
