@@ -1,5 +1,6 @@
 package ubx.project.javarts.Model.Building;
 
+import ubx.project.javarts.Exception.TooManyInhabitants;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Resource.ResourceType;
 
@@ -39,6 +40,8 @@ public class LivingBuilding extends BuildingDecorator{
     public void addInhabitant(People people){
         if(getNumberInhabitants()<getMaxInhabitants()){
             inhabitants.add(people);
+        }else{
+            throw new TooManyInhabitants("Too many inhabitants in the building");
         }
     }
     @Override
