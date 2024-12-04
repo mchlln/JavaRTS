@@ -1,6 +1,9 @@
 package ubx.project.javarts.View;
 
 import javafx.beans.binding.Bindings;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -8,10 +11,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
-import ubx.project.javarts.Controller.AddBuildingCommand;
-import ubx.project.javarts.Controller.BagOfCommands;
-import ubx.project.javarts.Controller.Controller;
-import ubx.project.javarts.Controller.RemoveBuildingCommand;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import ubx.project.javarts.Controller.*;
 import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.Building.BuildingType;
 import ubx.project.javarts.Model.Map;
@@ -76,8 +78,7 @@ public class MapView extends VBox {
             tileImageView.fitHeightProperty().bind(Bindings.divide(this.heightProperty(), height));
             tileImageView.setPreserveRatio(true);
             tileImageView.setOnMouseClicked(event -> {
-                BagOfCommands.getInstance().addCommand(new RemoveBuildingCommand(building));
-                System.out.println("Removed: " + building);});
+                showBuildingStats(building);});
             grid.add(tileImageView, building.getPostion().getX(), building.getPostion().getY());
             newBuildings.put(building, tileImageView);
         }
@@ -91,4 +92,44 @@ public class MapView extends VBox {
         buildingSprites = newBuildings;
 
     }
+
+
+    public void showBuildingStats(Building building) {
+        Stage popup = new Stage();
+        popup.initModality(Modality.APPLICATION_MODAL);
+        popup.setTitle("Building Stats");
+
+        Label nameLabel = new Label("Name: " + building.getName());
+        Label inhabitantsLabel = new Label("Inhabitants: " + building.getNumberInhabitants() + "/" + building.getMaxInhabitants());
+        Label workersLabel = new Label("Workers: " + building.getNumberWorkers() + "/" + building.getMaxWorkers());
+
+        Button removeButton = new Button("Remove Building");
+        removeButton.setOnAction(event -> {
+            BagOfCommands.getInstance().addCommand(new RemoveBuildingCommand(building));
+            System.out.println("Building removed: " + building);
+            popup.close();
+        });
+
+        Button addInhabitantsButton = new Button("Add Inhabitants");
+        addInhabitantsButton.setOnAction(event -> {
+            BagOfCommands.getInstance().addCommand(new AddInhabitantsInto(building));
+            System.out.println("Inhabitant added to  " + building);
+            popup.close();
+        });
+
+        Button addWorkersButton = new Button("Add Workers");
+        addWorkersButton.setOnAction(event -> {
+            BagOfCommands.getInstance().addCommand(new AddWorkerInto(building));
+            System.out.println("Worker added to " + building);
+            popup.close();
+        });
+
+        VBox layout = new VBox(10);
+        layout.getChildren().addAll(nameLabel, inhabitantsLabel, workersLabel, removeButton, addInhabitantsButton,addWorkersButton);
+
+        Scene scene = new Scene(layout, 300, 200);
+        popup.setScene(scene);
+        popup.showAndWait();
+    }
+
 }

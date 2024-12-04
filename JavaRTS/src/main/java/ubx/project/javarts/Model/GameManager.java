@@ -1,6 +1,9 @@
 package ubx.project.javarts.Model;
 
+import ubx.project.javarts.Exception.NotEnoughInhabitants;
 import ubx.project.javarts.Exception.NotEnoughResources;
+import ubx.project.javarts.Exception.TooManyInhabitants;
+import ubx.project.javarts.Exception.TooManyWorkers;
 import ubx.project.javarts.Exception.WrongBuildingType;
 import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.Building.BuildingBuilder;
@@ -68,11 +71,16 @@ public class GameManager implements Subject {
     public void createInhabitantInto(Building building) {
         if (!buildings.exists(building)){
             return;
+        }try{
+            People people = new People();
+            worldInhabitants.add(people);
+            //TODO: add world inhabitant to the given building
+            people.affectHouse(building);
+            building.addInhabitant(people);
+        }catch (TooManyInhabitants e){
+            errorNotif(e);
         }
-        People people = new People();
-        worldInhabitants.add(people);
-        //TODO: add world inhabitant to the given building
-        people.affectHouse(building);
+
     }
 
     public void deleteInhabitantFrom(Building building, People people) {
@@ -83,11 +91,27 @@ public class GameManager implements Subject {
         worldInhabitants.remove(people);
     }
 
-    public void assignWorkerTo(Building building, People people) {
-        if (building.getMaxWorkers() < building.getWorkers().size()){
-            building.addWorker(people);
+    public void assignWorkerTo(Building building) {
+        try{
+            People worker = findUnemployed();
+            if (building.getMaxWorkers() < building.getWorkers().size()){
+                building.addWorker(worker);
+            }
+        }catch (TooManyWorkers | NotEnoughInhabitants e){
+            errorNotif(e);
         }
+
     }
+
+    public People findUnemployed(){
+        for(People people : worldInhabitants){
+            if(people.getJobPlace() == null){
+                return people;
+            }
+        }
+        throw new NotEnoughInhabitants("No unemployed person in town.");
+    }
+
 
     public Set<Building> getBuildings() {
         return buildings.getBuildings();

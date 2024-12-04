@@ -8,8 +8,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import ubx.project.javarts.Model.Building.Building;
@@ -148,9 +147,33 @@ public class BuildingCard extends VBox {
 
     public void isSelected(BuildingType buildingType) {
         if (buildingType == this.buildingType) {
-            root.setStyle("-fx-background-color: #dea6f1;");
+            BackgroundImage backgroundImage = new BackgroundImage(
+                    new Image(getClass().getResource("/ubx/project/javarts/buildingCards/selected_background.png").toExternalForm()),
+                    BackgroundRepeat.NO_REPEAT,    // Repeat horizontally
+                    BackgroundRepeat.NO_REPEAT,    // Repeat vertically
+                    BackgroundPosition.CENTER,     // Position
+                    new BackgroundSize(
+                            BackgroundSize.DEFAULT.getWidth(),
+                            BackgroundSize.DEFAULT.getHeight(),
+                            true, true, true, false // Scale to container size
+                    )
+            );
+
+            root.setBackground(new Background(backgroundImage));
         } else {
-            root.setStyle("-fx-background-color: #5bf1f1;");
+            BackgroundImage backgroundImage = new BackgroundImage(
+                    new Image(getClass().getResource("/ubx/project/javarts/buildingCards/not_selected_background.png").toExternalForm()),
+                    BackgroundRepeat.NO_REPEAT,    // Repeat horizontally
+                    BackgroundRepeat.NO_REPEAT,    // Repeat vertically
+                    BackgroundPosition.CENTER,     // Position
+                    new BackgroundSize(
+                            BackgroundSize.DEFAULT.getWidth(),
+                            BackgroundSize.DEFAULT.getHeight(),
+                            true, true, true, false // Scale to container size
+                    )
+            );
+
+            root.setBackground(new Background(backgroundImage));
         }
     }
 
