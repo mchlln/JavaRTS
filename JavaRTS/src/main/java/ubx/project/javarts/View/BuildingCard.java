@@ -46,7 +46,7 @@ public class BuildingCard extends VBox {
         HBox topSection = new HBox(20);
         topSection.setAlignment(Pos.CENTER);
 
-        ImageView houseView = new ImageView(new Image(getClass().getResource("/ubx/project/javarts/house.png").toExternalForm()));
+        ImageView houseView = new ImageView(new Image(getClass().getResource(BuildingSprites.WOODENCABIN.getPath()).toExternalForm()));
         houseView.setFitWidth(100);
         houseView.setFitHeight(100);
 

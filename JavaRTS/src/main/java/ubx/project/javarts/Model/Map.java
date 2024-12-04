@@ -8,7 +8,8 @@ public class Map {
     private MapTileStatus[][] tiles;
 
     private Map(){
-        this.size = new Size(80,25);
+        // WITH LITTLE TILES this.size = new Size(80,25);
+        this.size = new Size(40,12);
         this.tiles = new MapTileStatus[size.getWidth()][size.getHeight()];
     }
 

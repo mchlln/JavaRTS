@@ -76,6 +76,7 @@ public class BuildingManager {
             return;
         }
         buildings.remove(building);
+        System.out.println(buildings);
     }
 
     public boolean exists(Building building) {

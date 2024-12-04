@@ -31,6 +31,9 @@ public class MainView implements Observer {
         root.setTop(topContainer);
         root.setCenter(map);
         root.setBottom(footer);
+        footer.prefViewportHeightProperty().bind(stage.heightProperty().multiply(0.30));
+        footer.setMinHeight(50); // Optional: Minimum height for the footer
+        footer.setMaxHeight(Double.MAX_VALUE); // Maximum height allows resizing
         for (BuildingType buildingType : BuildingType.values()) {
             BuildingCard b = new BuildingCard(buildingType);
             cards.add(b);

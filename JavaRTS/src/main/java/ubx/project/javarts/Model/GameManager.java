@@ -58,10 +58,11 @@ public class GameManager implements Subject {
 
     public void removeBuilding(Building building) {
         if (!buildings.exists(building)){
-            return;
+            throw new RuntimeException("cannot remove building " + building);
         }
         map.destruct(building.getPostion(), building.getSize());
         buildings.removeBuilding(building);
+        notifyObservers();
     }
 
     public void createInhabitantInto(Building building) {
