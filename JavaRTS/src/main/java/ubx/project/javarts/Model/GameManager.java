@@ -33,6 +33,9 @@ public class GameManager implements Subject {
     }
 
     public void addBuilding(BuildingType type, Position position) { // TODO: review + refactor
+        if (type == null){
+            return;
+        }
         BuildingBuilder b = new BuildingBuilder(); // TODO: Don't index each times
         Building building = b.build(type, position);
         System.out.println(building.getType());
@@ -75,6 +78,10 @@ public class GameManager implements Subject {
         if (building.getMaxWorkers() < building.getWorkers().size()){
             building.addWorker(people);
         }
+    }
+
+    public Set<Building> getBuildings() {
+        return buildings.getBuildings();
     }
 
     @Override

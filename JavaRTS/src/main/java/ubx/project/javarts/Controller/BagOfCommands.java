@@ -31,6 +31,7 @@ public class BagOfCommands {
     public void executeAll(){
         for (Command command : commands) {
             command.execute(model, controller);
+            commands.remove(command);
         }
     }
 
