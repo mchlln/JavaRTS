@@ -9,18 +9,14 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import ubx.project.javarts.Controller.BagOfCommands;
-import ubx.project.javarts.Exception.WrongBuildingType;
 import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.Building.BuildingBuilder;
 import ubx.project.javarts.Model.Building.BuildingFunction;
 import ubx.project.javarts.Model.Building.BuildingType;
 import ubx.project.javarts.Model.Position;
-import ubx.project.javarts.Model.Resource.ResourceManager;
 import ubx.project.javarts.Model.Resource.ResourceType;
 
 import java.util.Map;
@@ -81,7 +77,7 @@ public class BuildingCard extends VBox {
                     consumingBox.getChildren().add(new Label("CONS"));
                     for(ResourceType resourceType : resCons.keySet()) {
 
-                        HBox resBox = createSpriteWithTextRight(getLogoPath(resourceType), String.valueOf(resCons.get(resourceType)));
+                        HBox resBox = createSpriteWithTextRight(ImagePath.getLogoPath(resourceType), String.valueOf(resCons.get(resourceType)));
 
                         consumingBox.getChildren().addAll(resBox);
                     }
@@ -94,7 +90,7 @@ public class BuildingCard extends VBox {
                     producingBox.getChildren().add(new Label("PROD"));
                     for(ResourceType resourceType : resProd.keySet()) {
 
-                        HBox resBox = createSpriteWithTextRight(getLogoPath(resourceType), String.valueOf(resProd.get(resourceType)));
+                        HBox resBox = createSpriteWithTextRight(ImagePath.getLogoPath(resourceType), String.valueOf(resProd.get(resourceType)));
 
                         producingBox.getChildren().addAll(resBox);
                     }
@@ -114,6 +110,10 @@ public class BuildingCard extends VBox {
         isSelected(currentlySelected);
 
         this.getChildren().addAll(root);
+    }
+
+    public BuildingType getBuildingType() {
+        return buildingType;
     }
 
     private VBox createSpriteWithLabel(String imagePath, String labelText){
@@ -158,40 +158,5 @@ public class BuildingCard extends VBox {
         currentlySelected = buildingType;
         isSelected(buildingType);
     }
-
-    public String getLogoPath(ResourceType resource) {
-        switch (resource) {
-            case COAL -> {
-                return "/ubx/project/javarts/resourcesIcons/resource_apple.png";
-            }
-            case FOOD -> {
-                return "/ubx/project/javarts/resourcesIcons/resource_wheat.png";
-            }
-            case IRON -> {
-                return "/ubx/project/javarts/resourcesIcons/resource_iron.png";
-            }
-            case WOOD -> {
-                return "/ubx/project/javarts/resourcesIcons/resource_wood.png";
-            }
-            case STEEL -> {
-                return "/ubx/project/javarts/resourcesIcons/resource_apple.png";
-            }
-            case STONE -> {
-                return "/ubx/project/javarts/resourcesIcons/resource_apple.png";
-            }
-            case TOOLS -> {
-                return "/ubx/project/javarts/resourcesIcons/resource_apple.png";
-            }
-            case CEMENT -> {
-                return "/ubx/project/javarts/resourcesIcons/resource_apple.png";
-            }
-            case LUMBER -> {
-                return "/ubx/project/javarts/resourcesIcons/resource_lumber.png";
-            }
-            default -> {throw new WrongBuildingType("Wrong resource type"); //TODO: add exception
-            }
-        }
-    }
-
 
 }

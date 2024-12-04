@@ -1,5 +1,7 @@
 package ubx.project.javarts.Model;
 
+import ubx.project.javarts.Exception.NotEnoughResources;
+import ubx.project.javarts.Exception.WrongBuildingType;
 import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.Building.BuildingBuilder;
 import ubx.project.javarts.Model.Building.BuildingManager;
@@ -34,15 +36,21 @@ public class GameManager implements Subject {
 
     public void addBuilding(BuildingType type, Position position) { // TODO: review + refactor
         if (type == null){
+            errorNotif(new WrongBuildingType("No building type selected."));
             return;
         }
         BuildingBuilder b = new BuildingBuilder(); // TODO: Don't index each times
         Building building = b.build(type, position);
         System.out.println(building.getType());
         if (map.isAreaFree(position, building.getSize())){
-            System.out.println("Adding building " + type + " to position " + position);
-            buildings.addBuilding(building);
-            map.construct(building.getPostion(), building.getSize());
+            try{
+                System.out.println("Adding building " + type + " to position " + position);
+                buildings.addBuilding(building);
+                map.construct(building.getPostion(), building.getSize());
+            }catch (NotEnoughResources e){
+                errorNotif(e);
+            }
+
             // Add
         }
         notifyObservers();
@@ -98,6 +106,12 @@ public class GameManager implements Subject {
     public void notifyObservers() {
         for (Observer o : observers) {
             o.update();
+        }
+    }
+
+    public void errorNotif(Exception e) {
+        for(Observer o : observers){
+            o.updateError(e);
         }
     }
 }

@@ -14,7 +14,7 @@ public class Map {
 
     public MapTileStatus getTileStatus(Position position){
         if (tiles == null){
-            throw new IllegalStateException("Map has not been initialized yet");
+            throw new MapTileStateException("Map has not been initialized yet");
         }
         return tiles[position.getX()][position.getY()]; //Need to protect more
     }

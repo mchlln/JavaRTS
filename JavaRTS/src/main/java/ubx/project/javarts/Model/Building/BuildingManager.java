@@ -15,7 +15,7 @@ public class BuildingManager {
         buildings = new HashSet<>();
     }
 
-    public HashMap<ResourceType, Integer> buildingCost(BuildingType buildingType) {
+    public static HashMap<ResourceType, Integer> buildingCost(BuildingType buildingType) {
         HashMap<ResourceType, Integer> cost;
         switch (buildingType) {
             case WOODENCABIN -> {
@@ -52,7 +52,7 @@ public class BuildingManager {
         return cost;
     }
 
-    public boolean isBuildable(BuildingType building) {
+    public static boolean isBuildable(BuildingType building) {
         HashMap<ResourceType,Integer> cost = buildingCost(building);
         return ResourceManager.areAvailable(cost);
     }

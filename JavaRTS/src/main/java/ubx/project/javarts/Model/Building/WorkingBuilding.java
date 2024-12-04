@@ -1,5 +1,6 @@
 package ubx.project.javarts.Model.Building;
 
+import ubx.project.javarts.Exception.TooManyWorkers;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Resource.ResourceType;
 
@@ -39,6 +40,8 @@ public class WorkingBuilding extends BuildingDecorator{
     public void addWorker(People people){
         if(getNumberWorkers()<maxWorkers){
             workers.add(people);
+        }else{
+            throw new TooManyWorkers("Too many workers in building.");
         }
     }
     @Override

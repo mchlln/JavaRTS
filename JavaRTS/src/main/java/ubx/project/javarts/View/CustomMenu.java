@@ -39,7 +39,7 @@ public class CustomMenu extends VBox {
         for (ResourceType resource : resources.keySet()) {
             HBox resourceDisplay = new HBox();
 
-            ImageView logo = new ImageView(new Image(getClass().getResource(getLogoPath(resource)).toExternalForm()));
+            ImageView logo = new ImageView(new Image(getClass().getResource(ImagePath.getLogoPath(resource)).toExternalForm()));
             logo.setFitWidth(24); // Set logo width
             logo.setFitHeight(24); // Set logo height
 
@@ -70,37 +70,4 @@ public class CustomMenu extends VBox {
         }
     }
 
-    public String getLogoPath(ResourceType resource) {
-        switch (resource) {
-            case COAL -> {
-                return "/ubx/project/javarts/resourcesIcons/resource_apple.png";
-            }
-            case FOOD -> {
-                return "/ubx/project/javarts/resourcesIcons/resource_wheat.png";
-            }
-            case IRON -> {
-                return "/ubx/project/javarts/resourcesIcons/resource_iron.png";
-            }
-            case WOOD -> {
-                return "/ubx/project/javarts/resourcesIcons/resource_wood.png";
-            }
-            case STEEL -> {
-                return "/ubx/project/javarts/resourcesIcons/resource_apple.png";
-            }
-            case STONE -> {
-                return "/ubx/project/javarts/resourcesIcons/resource_apple.png";
-            }
-            case TOOLS -> {
-                return "/ubx/project/javarts/resourcesIcons/resource_apple.png";
-            }
-            case CEMENT -> {
-                return "/ubx/project/javarts/resourcesIcons/resource_apple.png";
-            }
-            case LUMBER -> {
-                return "/ubx/project/javarts/resourcesIcons/resource_lumber.png";
-            }
-            default -> {throw new WrongBuildingType("Wrong resource type"); //TODO: add exception
-            }
-        }
-    }
 }
