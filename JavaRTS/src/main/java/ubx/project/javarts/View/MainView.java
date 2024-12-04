@@ -20,12 +20,14 @@ public class MainView implements Observer {
     private Controller controller;
     private ArrayList<BuildingCard> cards = new ArrayList<>();
     private CustomMenu topContainer;
+    private MapView map;
+    private GameManager model;
 
     public MainView(Stage stage, GameManager model) {
         stage.setTitle("JAVA RTS");
-
+        this.model = model;
         topContainer = new CustomMenu();
-        MapView map = new MapView();
+        map = new MapView();
         BorderPane root = new BorderPane();
         Footer footer = new Footer();
         root.setTop(topContainer);
@@ -57,6 +59,9 @@ public class MainView implements Observer {
 
     @Override
     public void update() {
+
         topContainer.actualiseResources();
+        map.drawBuildings(model.getBuildings());
+
     }
 }

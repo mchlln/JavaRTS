@@ -99,6 +99,10 @@ public class BuildingManager {
         }
     }
 
+    public Set<Building> getBuildings() {
+        return buildings;
+    }
+
     public void handle(){
         //get global consumption and production
         HashMap<ResourceType, Integer> global = new HashMap<>();
