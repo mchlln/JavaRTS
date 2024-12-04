@@ -8,11 +8,11 @@ import javafx.scene.layout.HBox;
 import javafx.geometry.Insets;
 import javafx.scene.transform.Scale;
 
-public class Footer extends ScrollPane {
+public class BuildingFooter extends ScrollPane {
 
     private HBox container;
 
-    public Footer() {
+    public BuildingFooter() {
         // Initialize container to hold the widgets
         container = new HBox(10); // 10px spacing between widgets
         container.setPadding(new Insets(10));

@@ -2,7 +2,10 @@ package ubx.project.javarts.View;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import ubx.project.javarts.Controller.BagOfCommands;
 import ubx.project.javarts.Controller.Controller;
@@ -12,6 +15,7 @@ import ubx.project.javarts.Model.Building.BuildingType;
 import ubx.project.javarts.Model.GameManager;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainView implements Observer {
 
@@ -20,27 +24,44 @@ public class MainView implements Observer {
     private CustomMenu topContainer;
     private MapView map;
     private GameManager model;
+    private VBox footer;
+    private BuildingFooter buildingFooter;
+    private PeopleFooter peopleFooter;
+    private BorderPane root;
 
     public MainView(Stage stage, GameManager model) {
         stage.setTitle("JAVA RTS");
         this.model = model;
         topContainer = new CustomMenu();
+        footer = new VBox();
         map = new MapView();
-        BorderPane root = new BorderPane();
-        Footer footer = new Footer();
+        root = new BorderPane();
+        buildingFooter = new BuildingFooter();
+        peopleFooter = new PeopleFooter();
         root.setTop(topContainer);
         root.setCenter(map);
         root.setBottom(footer);
-        footer.prefViewportHeightProperty().bind(stage.heightProperty().multiply(0.30));
-        footer.setMinHeight(50); // Optional: Minimum height for the footer
-        footer.setMaxHeight(Double.MAX_VALUE); // Maximum height allows resizing
+        HBox modeSelection = new HBox();
+        Button buildingModeButton = new Button("Building");
+        buildingModeButton.onMouseClickedProperty().setValue(event -> {switchEditionMode("building");});
+        Button peopleModeButton = new Button("People");
+        peopleModeButton.onMouseClickedProperty().setValue(event -> {switchEditionMode("people");});
+        modeSelection.getChildren().addAll(buildingModeButton, peopleModeButton);
+        footer.getChildren().add(modeSelection);
+        footer.getChildren().add(buildingFooter);
+        peopleFooter.prefViewportHeightProperty().bind(stage.heightProperty().multiply(0.30));
+        peopleFooter.setMinHeight(50); // Optional: Minimum height for the footer
+        peopleFooter.setMaxHeight(Double.MAX_VALUE); // Maximum height allows resizing
+        buildingFooter.prefViewportHeightProperty().bind(stage.heightProperty().multiply(0.30));
+        buildingFooter.setMinHeight(50); // Optional: Minimum height for the footer
+        buildingFooter.setMaxHeight(Double.MAX_VALUE); // Maximum height allows resizing
         for (BuildingType buildingType : BuildingType.values()) {
             BuildingCard b = new BuildingCard(buildingType);
             cards.add(b);
             b.setOnMouseClicked(event -> {
                 BagOfCommands.getInstance().addCommand(new SetSelectedBuilding(buildingType));
             });
-            footer.addWidget(b);
+            buildingFooter.addWidget(b);
         }
         setAvailability();
         Scene scene = new Scene(root, 1280, 720);
@@ -68,10 +89,21 @@ public class MainView implements Observer {
         }
     }
 
+    public void switchEditionMode(String mode){
+        if (Objects.equals(mode, "building")) {
+            footer.getChildren().remove(peopleFooter);
+            footer.getChildren().add(buildingFooter);
+        } else { // Because there are only two states
+            footer.getChildren().remove(buildingFooter);
+            footer.getChildren().add(peopleFooter);
+        }
+    }
+
     @Override
     public void update() {
         topContainer.actualiseResources();
         map.drawBuildings(model.getBuildings());
+        peopleFooter.updateBuildings(model.getBuildings());
         setAvailability();
 
     }

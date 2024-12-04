@@ -75,6 +75,7 @@ public class GameManager implements Subject {
             People people = new People();
             worldInhabitants.add(people);
             buildings.addInhabitantInto(building,people);
+            notifyObservers();
         }catch (TooManyInhabitants e){
             errorNotif(e);
         }
@@ -95,6 +96,7 @@ public class GameManager implements Subject {
             if (building.getMaxWorkers() > building.getWorkers().size()){
                 building.addWorker(worker);
                 worker.affectJobPlace(building);
+                notifyObservers();
             }
         }catch (TooManyWorkers | NotEnoughInhabitants e){
             errorNotif(e);
