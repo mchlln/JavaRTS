@@ -63,11 +63,11 @@ public class BuildingCard extends VBox {
             System.out.println(buildingFunction);
             switch (buildingFunction) {
                 case LIVING :
-                    VBox personBox = createSpriteWithLabel("/ubx/project/javarts/icons/structure_house.png", String.valueOf(b.getMaxInhabitants()));
+                    VBox personBox = createSpriteWithLabel("/ubx/project/javarts/icons/house.png", String.valueOf(b.getMaxInhabitants()));
                     topSection.getChildren().add(personBox);
                     break;
                 case WORKING :
-                    VBox workerBox = createSpriteWithLabel("/ubx/project/javarts/icons/character.png", String.valueOf(b.getMaxWorkers()));
+                    VBox workerBox = createSpriteWithLabel("/ubx/project/javarts/icons/worker.png", String.valueOf(b.getMaxWorkers()));
                     topSection.getChildren().add(workerBox);
                     break;
                 case CONSUMING :
@@ -76,7 +76,7 @@ public class BuildingCard extends VBox {
                     consumingBox.getChildren().add(new Label("CONS"));
                     for(ResourceType resourceType : resCons.keySet()) {
 
-                        HBox resBox = createSpriteWithTextRight(ImagePath.getLogoPath(resourceType), String.valueOf(resCons.get(resourceType)));
+                        HBox resBox = createSpriteWithTextRight(ImagePath.getResourceLogoPath(resourceType), String.valueOf(resCons.get(resourceType)));
 
                         consumingBox.getChildren().addAll(resBox);
                     }
@@ -89,7 +89,7 @@ public class BuildingCard extends VBox {
                     producingBox.getChildren().add(new Label("PROD"));
                     for(ResourceType resourceType : resProd.keySet()) {
 
-                        HBox resBox = createSpriteWithTextRight(ImagePath.getLogoPath(resourceType), String.valueOf(resProd.get(resourceType)));
+                        HBox resBox = createSpriteWithTextRight(ImagePath.getResourceLogoPath(resourceType), String.valueOf(resProd.get(resourceType)));
 
                         producingBox.getChildren().addAll(resBox);
                     }

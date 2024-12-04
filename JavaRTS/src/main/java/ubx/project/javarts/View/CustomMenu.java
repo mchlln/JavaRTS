@@ -9,7 +9,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import ubx.project.javarts.Exception.WrongBuildingType;
 import ubx.project.javarts.Model.Resource.ResourceDecorator;
 import ubx.project.javarts.Model.Resource.ResourceManager;
 import ubx.project.javarts.Model.Resource.ResourceType;
@@ -39,7 +38,7 @@ public class CustomMenu extends VBox {
         for (ResourceType resource : resources.keySet()) {
             HBox resourceDisplay = new HBox();
 
-            ImageView logo = new ImageView(new Image(getClass().getResource(ImagePath.getLogoPath(resource)).toExternalForm()));
+            ImageView logo = new ImageView(new Image(getClass().getResource(ImagePath.getResourceLogoPath(resource)).toExternalForm()));
             logo.setFitWidth(24); // Set logo width
             logo.setFitHeight(24); // Set logo height
 

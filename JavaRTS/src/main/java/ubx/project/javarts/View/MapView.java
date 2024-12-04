@@ -114,14 +114,12 @@ public class MapView extends VBox {
         addInhabitantsButton.setOnAction(event -> {
             BagOfCommands.getInstance().addCommand(new AddInhabitantsInto(building));
             System.out.println("Inhabitant added to  " + building);
-            popup.close();
         });
 
         Button addWorkersButton = new Button("Add Workers");
         addWorkersButton.setOnAction(event -> {
             BagOfCommands.getInstance().addCommand(new AddWorkerInto(building));
             System.out.println("Worker added to " + building);
-            popup.close();
         });
 
         VBox layout = new VBox(10);
