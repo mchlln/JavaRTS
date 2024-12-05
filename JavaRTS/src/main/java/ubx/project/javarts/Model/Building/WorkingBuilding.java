@@ -1,5 +1,6 @@
 package ubx.project.javarts.Model.Building;
 
+import ubx.project.javarts.Exception.NotEnoughWorkers;
 import ubx.project.javarts.Exception.TooManyWorkers;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Resource.ResourceType;
@@ -7,31 +8,26 @@ import ubx.project.javarts.Model.Resource.ResourceType;
 import java.util.*;
 
 public class WorkingBuilding extends BuildingDecorator{
-    private Set<People> workers;
+    private final List<People> workers;
     private final int maxWorkers;
-    private final int minWorkers;
     Building b;
 
-    public WorkingBuilding(Building b, int maxWorkers, int minWorkers) {
+    public WorkingBuilding(Building b, int maxWorkers) {
         super(b);
-        workers = new HashSet<>();
+        workers = new ArrayList<>();
         this.maxWorkers = maxWorkers;
-        this.minWorkers = minWorkers;
         this.b = b;
     }
 
     @Override
-    public Set<People> getWorkers() {
+    public List<People> getWorkers() {
         return workers;
     }
     @Override
     public int getMaxWorkers() {
         return maxWorkers;
     }
-    @Override
-    public int getMinWorkers() {
-        return minWorkers;
-    }
+
     @Override
     public int getNumberWorkers(){
         return workers.size();
@@ -46,8 +42,10 @@ public class WorkingBuilding extends BuildingDecorator{
     }
     @Override
     public void removeWorker(People people){
-        if(getNumberWorkers()>getMinWorkers()){
+        if(getNumberWorkers()>0){
             workers.remove(people);
+        }else{
+            throw new NotEnoughWorkers("Not enough in building.");
         }
     }
 
@@ -58,18 +56,13 @@ public class WorkingBuilding extends BuildingDecorator{
     }
 
     @Override
-    public Set<People> getInhabitants() {
+    public List<People> getInhabitants() {
         return b.getInhabitants();
     }
 
     @Override
     public int getMaxInhabitants() {
         return b.getMaxInhabitants();
-    }
-
-    @Override
-    public int getMinInhabitants() {
-        return b.getMinInhabitants();
     }
 
     @Override

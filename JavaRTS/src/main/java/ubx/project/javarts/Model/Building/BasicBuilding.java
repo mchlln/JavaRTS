@@ -51,7 +51,7 @@ public class BasicBuilding implements Building{
     }
 
     @Override
-    public Position getPostion() {
+    public Position getPosition() {
         return position;
     }
 
@@ -71,17 +71,12 @@ public class BasicBuilding implements Building{
     }
 
     @Override
-    public Set<People> getWorkers() {
+    public List<People> getWorkers() {
         throw new WrongThreadException("Building cannot have workers");
     }
 
     @Override
     public int getMaxWorkers() {
-        throw new WrongThreadException("Building cannot have workers");
-    }
-
-    @Override
-    public int getMinWorkers() {
         throw new WrongThreadException("Building cannot have workers");
     }
 
@@ -106,17 +101,12 @@ public class BasicBuilding implements Building{
     }
 
     @Override
-    public Set<People> getInhabitants() {
+    public List<People> getInhabitants() {
         throw new WrongThreadException("Building cannot have inhabitants");
     }
 
     @Override
     public int getMaxInhabitants() {
-        throw new WrongThreadException("Building cannot have inhabitants");
-    }
-
-    @Override
-    public int getMinInhabitants() {
         throw new WrongThreadException("Building cannot have inhabitants");
     }
 

@@ -1,5 +1,6 @@
 package ubx.project.javarts.View;
 
+import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -8,6 +9,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.util.Duration;
 import ubx.project.javarts.Model.Resource.ResourceDecorator;
 import ubx.project.javarts.Model.Resource.ResourceManager;
 import ubx.project.javarts.Model.Resource.ResourceType;
@@ -18,6 +20,8 @@ import java.util.Map;
 public class CustomMenu extends VBox {
     private HBox container;
     private HashMap<ResourceType, Label> resourcesLabels = new HashMap<>();
+    private HBox errorBox;
+    private Label errorLabel;
 
 
     public CustomMenu() {
@@ -50,8 +54,12 @@ public class CustomMenu extends VBox {
         resourceBox.setStyle("-fx-alignment: center-left;");
         resourceBox.setPrefHeight(menuBar.getPrefHeight());
 
+        errorBox = new HBox();
+        errorBox.setStyle("-fx-alignment: center-right;");
+        errorLabel = new Label();
+
         menu.getItems().addAll(newGameItem, loadGameItem, saveGameItem, exitItem);
-        container = new HBox(menuBar,resourceBox);
+        container = new HBox(menuBar,resourceBox, errorBox);
         container.setSpacing(10); // Space between menu and resources
         container.setPadding(new Insets(5));
         container.setStyle("-fx-alignment: center-left;");
@@ -64,6 +72,23 @@ public class CustomMenu extends VBox {
         for (ResourceType resource : resources.keySet()) {
             resourcesLabels.get(resource).setText(String.valueOf(resources.get(resource).getQuantity()));
         }
+    }
+
+    public void showError(String message) {
+        errorBox.getChildren().clear();
+        errorLabel.setText(message);
+        errorLabel.setStyle(
+                "-fx-background-color: rgba(255, 0, 0, 0.7); " + "-fx-text-fill: white; " +
+                        "-fx-font-size: 18px; " +"-fx-font-weight: bold; " + "-fx-font-family: Arial;");
+
+        errorBox.getChildren().add(errorLabel);
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+        pause.setOnFinished(event -> {
+            errorBox.getChildren().remove(errorLabel);
+        });
+
+        pause.play();
     }
 
 }

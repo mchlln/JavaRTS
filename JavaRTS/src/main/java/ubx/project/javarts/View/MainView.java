@@ -1,5 +1,6 @@
 package ubx.project.javarts.View;
 
+import javafx.animation.PauseTransition;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -7,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import ubx.project.javarts.Controller.BagOfCommands;
 import ubx.project.javarts.Controller.Controller;
 import ubx.project.javarts.Controller.SetSelectedBuilding;
@@ -20,13 +22,13 @@ import java.util.Objects;
 public class MainView implements Observer {
 
     private Controller controller;
-    private ArrayList<BuildingCard> cards = new ArrayList<>();
-    private CustomMenu topContainer;
-    private MapView map;
-    private GameManager model;
-    private VBox footer;
-    private BuildingFooter buildingFooter;
-    private PeopleFooter peopleFooter;
+    private final ArrayList<BuildingCard> cards = new ArrayList<>();
+    private final CustomMenu topContainer;
+    private final MapView map;
+    private final GameManager model;
+    private final VBox footer;
+    private final BuildingFooter buildingFooter;
+    private final PeopleFooter peopleFooter;
     private BorderPane root;
 
     public MainView(Stage stage, GameManager model) {
@@ -112,22 +114,10 @@ public class MainView implements Observer {
 
     }
 
-    @Override
-    public void updateError(Exception e) {
-
-    }
 
     public void updateError() {
-        showErrorPopup(model.currentException.getMessage());
+        topContainer.showError(model.currentException.getMessage());
     }
 
-    private void showErrorPopup(String message) {
-        /*Label errorLabel = new Label(message);
-        root.getChildren().add(errorLabel);*/
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setHeaderText("An error occurred");
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+
 }

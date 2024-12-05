@@ -83,7 +83,7 @@ public class MapView extends ScrollPane {
                     tileImageView.setPreserveRatio(true);
                     tileImageView.setOnMouseClicked(event -> {
                         showBuildingStats(building);});
-                    grid.add(tileImageView, building.getPostion().getX()+col, building.getPostion().getY()+row);
+                    grid.add(tileImageView, building.getPosition().getX()+col, building.getPosition().getY()+row);
                 }
                 buildingView.add(tileImageViews);
             }
@@ -113,8 +113,10 @@ public class MapView extends ScrollPane {
 
     public void showBuildingStats(Building building) {
         Stage popup = new Stage();
+        popup.setMinHeight(300);
+        popup.setMinWidth(200);
         popup.initModality(Modality.APPLICATION_MODAL);
-        popup.setTitle("Building Stats");
+        popup.setTitle("Stats");
 
         Label nameLabel = new Label("Name: " + building.getName());
         VBox layout = new VBox(10);
@@ -124,10 +126,15 @@ public class MapView extends ScrollPane {
             Label inhabitantsLabel = new Label("Inhabitants: " + building.getNumberInhabitants() + "/" + building.getMaxInhabitants());
             Button addInhabitantsButton = new Button("Add Inhabitants");
             addInhabitantsButton.setOnAction(event -> {
-                BagOfCommands.getInstance().addCommand(new AddInhabitantsInto(building));
+                BagOfCommands.getInstance().addCommand(new AddInhabitantInto(building));
                 System.out.println("Inhabitant added to  " + building);
             });
-            layout.getChildren().addAll(inhabitantsLabel, addInhabitantsButton);
+            Button removeInhabitantsButton = new Button("Remove Inhabitants");
+            removeInhabitantsButton.setOnAction(event -> {
+                BagOfCommands.getInstance().addCommand(new RemoveInhabitantFrom(building));
+                System.out.println("Inhabitant removed from  " + building);
+            });
+            layout.getChildren().addAll(inhabitantsLabel, addInhabitantsButton,removeInhabitantsButton);
         }
         if (building.getFunctions().contains(BuildingFunction.WORKING)) {
             Label workersLabel = new Label("Workers: " + building.getNumberWorkers() + "/" + building.getMaxWorkers());
@@ -136,7 +143,12 @@ public class MapView extends ScrollPane {
                 BagOfCommands.getInstance().addCommand(new AddWorkerInto(building));
                 System.out.println("Worker added to " + building);
             });
-            layout.getChildren().addAll(workersLabel, addWorkersButton);
+            Button removeWorkersButton = new Button("Remove Workers");
+            removeWorkersButton.setOnAction(event -> {
+                BagOfCommands.getInstance().addCommand(new RemoveWorkerFrom(building));
+                System.out.println("Worker removed from " + building);
+            });
+            layout.getChildren().addAll(workersLabel, addWorkersButton, removeWorkersButton);
         }
 
         Button removeButton = new Button("Remove Building");
@@ -147,7 +159,7 @@ public class MapView extends ScrollPane {
         });
 
         layout.getChildren().add(removeButton);
-        Scene scene = new Scene(layout, 300, 200);
+        Scene scene = new Scene(layout);
         popup.setScene(scene);
         popup.showAndWait();
     }

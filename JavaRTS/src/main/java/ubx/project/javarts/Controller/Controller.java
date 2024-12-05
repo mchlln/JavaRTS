@@ -23,11 +23,4 @@ public class Controller {
         view.setSelectedBuilding(buildingType);
     }
 
-    public void addBuilding(Position position) {
-        if (selectedBuilding == null) {
-            return;
-        }
-        model.addBuilding(selectedBuilding, position);
-    }
-
 }

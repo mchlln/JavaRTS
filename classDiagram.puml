@@ -2,48 +2,52 @@
 
 package "Model" <<Frame>> {
 
-    package "Building"{
+package "Building"{
     interface Building {
+        + getName() : String
         + getSize() : Size
         + getCost() : HashMap<Resource, Integer>
         + getId() : UUID
         + getConstructionTime() : ??
         + getType() : BuildingType
         + getPosition() : Position
-        + getFunctions() : ArrayList<BuildingFunctions>   
-        + getWorkers() : Set<People>
+        + getFunctions() : ArrayList<BuildingFunctions>
+        + addFunction(ArrayList<BuildingFunction>)
+        + getWorkers() : List<People>
         + getMaxWorkers() : Integer
         + getNumberWorkers() : Integer
         + addWorker(People) : boolean
-        + removeWorker(People) : void 
-        + getInhabitants() : Set<People>
+        + removeWorker(People) : void
+        + getInhabitants() : List<People>
         + getMaxInhabitants() : Integer
         + getNumberInhabitants() : Integer
         + addInhabitant(People) : boolean
-        + removeInhabitant(People) : void    
+        + removeInhabitant(People) : void
         + getDailyProduction() : Map<ResourceType, Integer> 
         + getDailyConsumption() : Map<ResourceType, Integer>
-        + handle() : void
+        + handle() : HashMap<ResourceType,Integer>
     }
 
     class BasicBuilding implements Building{}
+
     class ConsumptionBuilding extends BuildingDecorator{
+        - building : Building
+        - dailyConsumption : Map<ResourceType, Integer>
     }
     class ProductionBuilding extends BuildingDecorator{
-        
+        - building : Building
+        - dailyProduction : Map<ResourceType, Integer>
     }
     class LivingBuilding extends BuildingDecorator{
-        - inhabitants : Set<People>
+        - inhabitants : List<People>
         
     }
     class WorkingBuilding extends BuildingDecorator{
-        - workers : Set<People>
+        - workers : List<People>
     }
 
     abstract class BuildingDecorator implements Building{
-        - Id : UUID 
-        + functions : ArrayList<BuildingFunctions>       
-        + equals(Object) : Boolean
+        - decoratedBuilding : Building
     }
     note left of BuildingDecorator
         Design Pattern Decorator
@@ -57,7 +61,7 @@ package "Model" <<Frame>> {
     }
 
     class BuildingBuilder{
-        + createBuilding(BuildingType) : Building
+        + build(BuildingType, Position) : Building
     }
 
     enum BuildingFunction{
@@ -78,8 +82,7 @@ package "Model" <<Frame>> {
         STEELMILL
         TOOLFACTORY
     }
-    }
-    
+}
 
     class People{
         - id : UUID
@@ -105,8 +108,57 @@ package "Model" <<Frame>> {
         FREE
         OCCUPIED
     }
+    class GameManager <<(S,#FF7700)Singleton>> implements Subject{
+        - instance : GameManager
+        - worldInhabitants : List<People>
+        - map : Map
+        - resources : ResourceManager
+        - buildings : BuildingManager
+        - observers : Set<Runnable>
+        - currentException : Exception
+        - timeline : Timeline
+        - b : BuildingBuilder
+        + loop() : void
+        + getInstance() : GameManager
+        + addBuilding(BuildingType, Position) : void
+        + removeBuilding(Building) : void
+        + createInhabitantInto(Building) : void
+        + deleteInhabitantFrom(Building) : void
+        + assignWorkerTo(Building) : void
+        + findUnemployed() : People
+        + deleteWorkerFrom(Building) : void
+        + getBuildings() : Set<Building>
+    }
+    note left of GameManager
+        Design Pattern Singleton
+        Design Pattern Composite
+        Design Pattern Observer (Subject)
+    end note
 
-    package "Resource"{
+    class Size{
+        - width : Integer
+        - height : Integer
+        + getSize() : [Integer, Integer]
+        + getWidth() : Integer
+        + getHeight() : Integer
+    }
+
+    interface Subject{
+        + addObserver(Runnable) : void
+        + addErrorListener(Runnable) : void
+        + removeObserver(Runnable) : void
+        + notifyObservers() : void
+        + notifyErrorListener(Exception) : void
+    }
+    class Position{
+        - x : Integer
+        - y : Integer
+        + getX() : Integer
+        + getY() : Integer
+    }
+
+
+package "Resource"{
     interface Resource {
         + getType() : RessourceType
         + getQuantity() : Integer
@@ -117,6 +169,7 @@ package "Model" <<Frame>> {
     abstract class ResourceDecorator implements Resource{
         - Type : RessourceType
         - Quantity : Integer
+        + handle() : HashMap<ResourceType,Integer>
     }
     note right of ResourceDecorator
         Design Pattern Decorator
@@ -164,48 +217,20 @@ package "Model" <<Frame>> {
         TOOLS
     }
 
-    class ResourceManager{
+    class ResourceManager <<(S,#FF7700)Singleton>>{
         - resources : HashMap<ResourceType,ResourceDecorator>
+        - instance : ResourceManager
         + addResources(ResourceType type, Integer quantity)
         + removeResources(ResourceType type, Integer quantity)
+        + getInstance() : ResourceManager
+        + areAvailable(HashMap<ResourceType, Integer>) : boolean
+        + getResources() : HashMap<ResourceType, Integer>
     }
+    note left of ResourceManager
+        Design Pattern Singleton
+    end note
 }
 
-    class GameManager <<(S,#FF7700)Singleton>> implements Subject{
-        - worldInhabitants : Set<People>
-        - map : Map
-        - resources : ResourceManager
-        - buildings : BuildingManager
-        - observers : Set<Observer>
-        + addBuilding(Building, Position) : void
-        + removeBuilding(Building) : void
-        + createInhabitantInto(Building) : void
-        + deleteInhabitantFrom(Buildings) : void
-        + update() : void
-    }
-    note left of GameManager
-        Design Pattern Singleton
-        Design Pattern Composite
-        Design Pattern Observer (Subject)
-    end note
-
-    class Size{
-        - width : Integer
-        - length : Integer
-        + getSize() : [Integer, Integer]
-        + getWidth() : Integer
-        + getLength() : Integer
-    }
-
-    interface Subject{
-        + addObserver(Observer) : void
-        + removeObserver(Observer) : void
-        + notifyObservers() : void
-    }
-    class Position{
-        - x : Integer
-        - y : Integer
-    }
 
 
 }
@@ -215,6 +240,11 @@ package "Exception" <<Frame>>{
     exception TooManyInhabitants{}
     exception NotEnoughResources{}
     exception MapTileStateException{}
+    exception NotEnoughInhabitants{}
+    exception NotEnoughWorkers{}
+    exception TooManyWorkers{}
+    exception WrongBuildingType{}
+    exception WrongResourceType{}
 }
 
 package "View" {
@@ -228,29 +258,55 @@ package "View" {
 }
 
 package "Controller" {
+    class Controller{
+        - model GameManager
+        - view MainView
+        - bagOfCommands : BagOfCommands
+        - selectedBuilding : BuildingType
+        + changeSelectedBuilding(BuildingType)
+    }
     interface Command{
-        + execute()
+        + execute(GameManager, Controller)
     }
     note left of Command
         Design Pattern Command
     end note
 
-    class AddBuilding implements Command{}
-    class RemoveBuilding implements Command{}
-    class AddInhabitants implements Command{}
-    class RemoveInhabitants implements Command{}
-    class AddWorkers implements Command{}
-    class RemoveWorkers implements Command{}
-
-    class GameController{
-        - model : GameManager
-        - view : View
-        - commands : BagOfCommands
+    class AddBuildingCommand implements Command{
+        - position : Position
     }
+    class RemoveBuildingCommand implements Command{
+        - building : Building
+    }
+    class AddInhabitantInto implements Command{
+         - building : Building
+    }
+    class RemoveInhabitantFrom implements Command{
+         - building : Building
+    }
+    class AddWorkerInto implements Command{
+         - building : Building
+    }
+    class RemoveWorkers implements Command{
+         - building : Building
+    }
+    class SetSelectedBuilding implements Command{
+         - type : BuildingType
+    }
+
     class BagOfCommands  <<(S,#FF7700)Singleton>>{
-        - commands : Queue<Command>
-        + executeFirst()
-        + executeAll()
+        - instance : BagOfCommands
+        - commands : ConcurrentLinkedQueue<Command>
+        - model : GameManager
+        - controller : Controller
+        - is_running : boolean
+        - processCommands() : void
+        + getInstance() : BagOfCommands
+        + executeFirst() : void
+        + executeAll() : void
+        + addCommand(Command) : void
+        + setModel(GameManager) : void
+        + setController(Controller) : void
     }
     note bottom of BagOfCommands
         Design Pattern Singleton
@@ -270,8 +326,8 @@ package "Controller" {
     MapTileStatus --> Map::tiles
     ResourceDecorator --> ResourceManager::resources
     BuildingFunction --> BuildingDecorator::functions
-    BagOfCommands --> GameController::commands
-    GameManager --> GameController::model
+    BagOfCommands --> Controller::commands
+    GameManager --> Controller::model
     Position --> Map::getTileStatus
     Command --> BagOfCommands::commands
 @enduml
