@@ -14,8 +14,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import ubx.project.javarts.Controller.*;
+import ubx.project.javarts.Exception.WrongBuildingType;
 import ubx.project.javarts.Model.Building.Building;
+import ubx.project.javarts.Model.Building.BuildingFunction;
 import ubx.project.javarts.Model.Building.BuildingType;
+import ubx.project.javarts.Model.Building.WorkingBuilding;
 import ubx.project.javarts.Model.Map;
 import ubx.project.javarts.Model.Position;
 import ubx.project.javarts.Model.Size;
@@ -27,7 +30,8 @@ import java.util.Set;
 
 public class MapView extends VBox {
     private GridPane grid;
-    private HashMap<Building, ImageView> buildingSprites = new HashMap<>();
+    private HashMap<Building, ArrayList<ArrayList<ImageView>>> buildingSprites = new HashMap<>();
+    private final String imagePath = "/ubx/project/javarts/buildingSprites/";
 
     public MapView() {
         ScrollPane root = new ScrollPane();
@@ -63,7 +67,7 @@ public class MapView extends VBox {
     }
 
     public void drawBuildings(Set<Building> buildings) {
-        HashMap<Building, ImageView> newBuildings = new HashMap<>();
+        HashMap<Building, ArrayList<ArrayList<ImageView>>> newBuildings = new HashMap<>();
         for (Building building : buildings) {
             if (buildingSprites.containsKey(building)) {
                 newBuildings.put(building, buildingSprites.get(building));
@@ -72,20 +76,33 @@ public class MapView extends VBox {
             Size mapSize = Map.getInstance().getSize();
             int width = mapSize.getWidth();
             int height = mapSize.getHeight();
-            ImageView tileImageView = new ImageView(getClass()
-                    .getResource(BuildingSprites.WOODENCABIN.getPath()).toExternalForm());
-            tileImageView.fitWidthProperty().bind(Bindings.divide(this.widthProperty(), width));
-            tileImageView.fitHeightProperty().bind(Bindings.divide(this.heightProperty(), height));
-            tileImageView.setPreserveRatio(true);
-            tileImageView.setOnMouseClicked(event -> {
-                showBuildingStats(building);});
-            grid.add(tileImageView, building.getPostion().getX(), building.getPostion().getY());
-            newBuildings.put(building, tileImageView);
+            int buildingHeight = building.getSize().getHeight();
+            int buildingWidth = building.getSize().getWidth();
+            System.out.println("height=" + buildingHeight + ", width=" + buildingWidth);
+            ArrayList<ArrayList<ImageView>> buildingView = new ArrayList<>();
+            for (int col = 0; col < buildingWidth; col++) {
+                ArrayList<ImageView> tileImageViews = new ArrayList<>();
+                for (int row = 0; row < buildingHeight; row++) {
+                    System.out.println(imagePath+building.getType().toString().toLowerCase()+"/"+col+"_"+row+".png");
+                    ImageView tileImageView = new ImageView(getClass()
+                            .getResource(imagePath+building.getType().toString().toLowerCase()+"/"+row+"_"+col+".png").toExternalForm());
+                    tileImageViews.add(tileImageView);
+                    tileImageView.fitWidthProperty().bind(Bindings.divide(this.widthProperty(), width));
+                    tileImageView.fitHeightProperty().bind(Bindings.divide(this.heightProperty(), height));
+                    tileImageView.setPreserveRatio(true);
+                    tileImageView.setOnMouseClicked(event -> {
+                        showBuildingStats(building);});
+                    grid.add(tileImageView, building.getPostion().getX()+col, building.getPostion().getY()+row);
+                }
+                buildingView.add(tileImageViews);
+            }
+
+            newBuildings.put(building, buildingView);
         }
 
         for (Building building : buildingSprites.keySet()) {
             if (!newBuildings.containsKey(building)) {
-                grid.getChildren().remove(buildingSprites.get(building));
+                eraseBuilding(building);
             }
         }
 
@@ -93,6 +110,15 @@ public class MapView extends VBox {
 
     }
 
+    public void eraseBuilding(Building building){
+        int buildingHeight = building.getSize().getHeight();
+        int buildingWidth = building.getSize().getWidth();
+        for (int col = 0; col < buildingWidth; col++) {
+            for (int row = 0; row < buildingHeight; row++) {
+               grid.getChildren().remove(buildingSprites.get(building).get(col).get(row));
+            }
+        }
+    }
 
     public void showBuildingStats(Building building) {
         Stage popup = new Stage();
@@ -100,8 +126,27 @@ public class MapView extends VBox {
         popup.setTitle("Building Stats");
 
         Label nameLabel = new Label("Name: " + building.getName());
-        Label inhabitantsLabel = new Label("Inhabitants: " + building.getNumberInhabitants() + "/" + building.getMaxInhabitants());
-        Label workersLabel = new Label("Workers: " + building.getNumberWorkers() + "/" + building.getMaxWorkers());
+        VBox layout = new VBox(10);
+        layout.getChildren().add(nameLabel);
+
+        if(building.getFunctions().contains(BuildingFunction.LIVING)){
+            Label inhabitantsLabel = new Label("Inhabitants: " + building.getNumberInhabitants() + "/" + building.getMaxInhabitants());
+            Button addInhabitantsButton = new Button("Add Inhabitants");
+            addInhabitantsButton.setOnAction(event -> {
+                BagOfCommands.getInstance().addCommand(new AddInhabitantsInto(building));
+                System.out.println("Inhabitant added to  " + building);
+            });
+            layout.getChildren().addAll(inhabitantsLabel, addInhabitantsButton);
+        }
+        if (building.getFunctions().contains(BuildingFunction.WORKING)) {
+            Label workersLabel = new Label("Workers: " + building.getNumberWorkers() + "/" + building.getMaxWorkers());
+            Button addWorkersButton = new Button("Add Workers");
+            addWorkersButton.setOnAction(event -> {
+                BagOfCommands.getInstance().addCommand(new AddWorkerInto(building));
+                System.out.println("Worker added to " + building);
+            });
+            layout.getChildren().addAll(workersLabel, addWorkersButton);
+        }
 
         Button removeButton = new Button("Remove Building");
         removeButton.setOnAction(event -> {
@@ -110,21 +155,7 @@ public class MapView extends VBox {
             popup.close();
         });
 
-        Button addInhabitantsButton = new Button("Add Inhabitants");
-        addInhabitantsButton.setOnAction(event -> {
-            BagOfCommands.getInstance().addCommand(new AddInhabitantsInto(building));
-            System.out.println("Inhabitant added to  " + building);
-        });
-
-        Button addWorkersButton = new Button("Add Workers");
-        addWorkersButton.setOnAction(event -> {
-            BagOfCommands.getInstance().addCommand(new AddWorkerInto(building));
-            System.out.println("Worker added to " + building);
-        });
-
-        VBox layout = new VBox(10);
-        layout.getChildren().addAll(nameLabel, inhabitantsLabel, workersLabel, removeButton, addInhabitantsButton,addWorkersButton);
-
+        layout.getChildren().add(removeButton);
         Scene scene = new Scene(layout, 300, 200);
         popup.setScene(scene);
         popup.showAndWait();

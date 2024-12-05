@@ -11,9 +11,9 @@ public class ResourceManager {
 
     private ResourceManager() {
         resources = new HashMap<>();
-        resources.put(ResourceType.WOOD, new Wood(10));
+        resources.put(ResourceType.WOOD, new Wood(60));
         resources.put(ResourceType.IRON, new Iron(0));
-        resources.put(ResourceType.STONE, new Stone(0));
+        resources.put(ResourceType.STONE, new Stone(50));
         resources.put(ResourceType.COAL, new Coal(0));
         resources.put(ResourceType.STEEL, new Steel(0));
         resources.put(ResourceType.CEMENT, new Cement(0));

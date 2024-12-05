@@ -1,6 +1,8 @@
 package ubx.project.javarts.View;
 
+import ubx.project.javarts.Exception.WrongBuildingType;
 import ubx.project.javarts.Exception.WrongResourceType;
+import ubx.project.javarts.Model.Building.BuildingType;
 import ubx.project.javarts.Model.Resource.ResourceType;
 
 public class ImagePath {
@@ -45,4 +47,38 @@ public class ImagePath {
             }
     }
 
+    public static String getBuildingSpritePath(BuildingType buildingType) {
+            switch (buildingType) {
+                case WOODENCABIN -> {
+                    return "/ubx/project/javarts/buildingSprites/woodenCabin.png";
+                }
+                case HOUSE -> {
+                    return "/ubx/project/javarts/buildingSprites/woodenCabin.png";
+                }
+                case APPARTMENTBUILDING -> {
+                    return "/ubx/project/javarts/buildingSprites/woodenCabin.png";
+                }
+                case FARM -> {
+                    return "/ubx/project/javarts/buildingSprites/woodenCabin.png";
+                }
+                case QUARRY -> {
+                    return "/ubx/project/javarts/buildingSprites/woodenCabin.png";
+                }
+                case LUMBERMILL -> {
+                    return "/ubx/project/javarts/buildingSprites/woodenCabin.png";
+                }
+                case CEMENTPLANT -> {
+                    return "/ubx/project/javarts/buildingSprites/woodenCabin.png";
+                }
+                case STEELMILL -> {
+                    return "/ubx/project/javarts/buildingSprites/woodenCabin.png";
+                }
+                case TOOLFACTORY -> {
+                    return "/ubx/project/javarts/buildingSprites/factory.png";
+                }
+                default -> throw new WrongBuildingType("Wrong building type");
+
+            }
+
+    }
 }
