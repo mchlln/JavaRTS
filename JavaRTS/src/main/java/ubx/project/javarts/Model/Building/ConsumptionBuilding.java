@@ -32,7 +32,7 @@ public class ConsumptionBuilding extends BuildingDecorator{
 
     @Override
     public HashMap<ResourceType, Integer> handle(){
-        HashMap<ResourceType,Integer> resources = super.handle();
+        HashMap<ResourceType,Integer> resources = b.handle();
         for(ResourceType rt : dailyConsumption.keySet()){
             resources.put(rt, resources.getOrDefault(rt, 0) - dailyConsumption.get(rt));
         }

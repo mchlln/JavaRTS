@@ -18,7 +18,7 @@ public class MainApp extends Application {
         view.setController(controller);
         BagOfCommands.getInstance().setModel(model);
         BagOfCommands.getInstance().setController(controller);
-        model.addObserver(view);
+        //model.addObserver(view);
     }
 
 }

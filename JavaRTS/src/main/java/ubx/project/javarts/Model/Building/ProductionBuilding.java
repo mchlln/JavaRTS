@@ -30,7 +30,7 @@ public class ProductionBuilding extends BuildingDecorator{
 
     @Override
     public HashMap<ResourceType, Integer> handle(){
-        HashMap<ResourceType,Integer> resources = super.handle();
+        HashMap<ResourceType,Integer> resources = b.handle();
         for(ResourceType rt : dailyProduction.keySet()){
             resources.put(rt, resources.getOrDefault(rt, 0) + dailyProduction.get(rt));
         }

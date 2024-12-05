@@ -17,7 +17,7 @@ public class ImagePath {
         public static String getResourceLogoPath(ResourceType resource) {
             switch (resource) {
                 case COAL -> {
-                    return "/ubx/project/javarts/resourcesIcons/resource_apple.png";
+                    return "/ubx/project/javarts/resourcesIcons/coal.png";
                 }
                 case FOOD -> {
                     return "/ubx/project/javarts/resourcesIcons/food.png";
@@ -29,7 +29,7 @@ public class ImagePath {
                     return "/ubx/project/javarts/resourcesIcons/wood.png";
                 }
                 case STEEL -> {
-                    return "/ubx/project/javarts/resourcesIcons/resource_apple.png";
+                    return "/ubx/project/javarts/resourcesIcons/steel.png";
                 }
                 case STONE -> {
                     return "/ubx/project/javarts/resourcesIcons/stone.png";

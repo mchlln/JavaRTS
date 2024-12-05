@@ -3,6 +3,7 @@ package ubx.project.javarts.View;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -62,6 +63,10 @@ public class MainView implements Observer {
             });
             buildingFooter.addWidget(b);
         }
+
+        model.addObserver(this::update);
+        model.addErrorListener(this::updateError);
+
         setAvailability();
         Scene scene = new Scene(root, 1280, 720);
         stage.setScene(scene);
@@ -107,11 +112,18 @@ public class MainView implements Observer {
 
     }
 
+    @Override
     public void updateError(Exception e) {
-        showErrorPopup(e.getMessage());
+
+    }
+
+    public void updateError() {
+        showErrorPopup(model.currentException.getMessage());
     }
 
     private void showErrorPopup(String message) {
+        /*Label errorLabel = new Label(message);
+        root.getChildren().add(errorLabel);*/
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText("An error occurred");

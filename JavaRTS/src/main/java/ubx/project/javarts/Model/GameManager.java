@@ -1,5 +1,9 @@
 package ubx.project.javarts.Model;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.util.Duration;
 import ubx.project.javarts.Exception.NotEnoughInhabitants;
 import ubx.project.javarts.Exception.NotEnoughResources;
 import ubx.project.javarts.Exception.TooManyInhabitants;
@@ -21,13 +25,23 @@ public class GameManager implements Subject {
     private Set<People> worldInhabitants;
     private Map map;
     private ResourceManager resources;
-    private Set<Observer> observers;
+    private Set<Runnable> observers;
+    public Exception currentException;
+    private Runnable errorListener;
+    private Timeline timeline;
 
     private GameManager() {
         resources = ResourceManager.getInstance();
         worldInhabitants = new HashSet<>();
         observers = new HashSet<>();
         map = Map.getInstance();
+        loop();
+    }
+
+    private void loop(){
+        timeline = new Timeline(new KeyFrame(Duration.millis(1000), e -> {buildings.handle(); notifyObservers();}));
+        timeline.setCycleCount(Timeline.INDEFINITE); // Repeat indefinitely
+        timeline.play(); // Start the timeline
     }
 
     public static GameManager getInstance() {
@@ -39,7 +53,7 @@ public class GameManager implements Subject {
 
     public void addBuilding(BuildingType type, Position position) { // TODO: review + refactor
         if (type == null){
-            errorNotif(new WrongBuildingType("No building type selected."));
+            notifyErrorListener(new WrongBuildingType("No building type selected."));
             return;
         }
         BuildingBuilder b = new BuildingBuilder(); // TODO: Don't index each times
@@ -51,7 +65,7 @@ public class GameManager implements Subject {
                 buildings.addBuilding(building);
                 map.construct(building.getPostion(), building.getSize());
             }catch (NotEnoughResources e){
-                errorNotif(e);
+                notifyErrorListener(e);
             }
 
             // Add
@@ -77,7 +91,7 @@ public class GameManager implements Subject {
             buildings.addInhabitantInto(building,people);
             notifyObservers();
         }catch (TooManyInhabitants e){
-            errorNotif(e);
+            notifyErrorListener(e);
         }
 
     }
@@ -99,7 +113,7 @@ public class GameManager implements Subject {
                 notifyObservers();
             }
         }catch (TooManyWorkers | NotEnoughInhabitants e){
-            errorNotif(e);
+            notifyErrorListener(e);
         }
 
     }
@@ -119,25 +133,32 @@ public class GameManager implements Subject {
     }
 
     @Override
-    public void addObserver(Observer o) {
+    public void addObserver(Runnable o) {
         observers.add(o);
     }
 
     @Override
-    public void removeObserver(Observer o) {
+    public void addErrorListener(Runnable o) {
+        errorListener = o;
+    }
+
+    @Override
+    public void removeObserver(Runnable o) {
         observers.remove(o);
     }
 
     @Override
     public void notifyObservers() {
-        for (Observer o : observers) {
-            o.update();
+        for (Runnable o : observers) {
+            Platform.runLater(o);
         }
     }
 
-    public void errorNotif(Exception e) {
-        for(Observer o : observers){
-            o.updateError(e);
+    @Override
+    public void notifyErrorListener(Exception e) {
+        currentException = e;
+        if (errorListener != null) {
+            Platform.runLater(errorListener);
         }
     }
 }
