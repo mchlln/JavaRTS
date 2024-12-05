@@ -114,16 +114,10 @@ public class BuildingManager {
                 global.put(rt, global.getOrDefault(rt, 0) + resources.get(rt));
             }
         }
-        System.out.println(global);
+        System.out.println("[Game cycle] Daily resources: " + global);
         // update the resources
         for(ResourceType rt : global.keySet()){
-            if(global.get(rt) > 0){
-                ResourceManager.addResource(rt, global.get(rt));
-                System.out.println("Adding " + rt + " to " + global.get(rt));
-            }else{
-                ResourceManager.removeResource(rt, global.get(rt));
-                System.out.println("Removing " + rt + " from " + global.get(rt));
-            }
+            ResourceManager.addResource(rt, global.get(rt));
         }
     }
 }

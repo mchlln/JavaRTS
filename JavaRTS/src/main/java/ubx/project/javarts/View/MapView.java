@@ -83,7 +83,6 @@ public class MapView extends VBox {
             for (int col = 0; col < buildingWidth; col++) {
                 ArrayList<ImageView> tileImageViews = new ArrayList<>();
                 for (int row = 0; row < buildingHeight; row++) {
-                    System.out.println(imagePath+building.getType().toString().toLowerCase()+"/"+col+"_"+row+".png");
                     ImageView tileImageView = new ImageView(getClass()
                             .getResource(imagePath+building.getType().toString().toLowerCase()+"/"+row+"_"+col+".png").toExternalForm());
                     tileImageViews.add(tileImageView);

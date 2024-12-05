@@ -60,7 +60,6 @@ public class BuildingCard extends VBox {
         bottomSection.setAlignment(Pos.CENTER);
 
         for (BuildingFunction buildingFunction : b.getFunctions()) {
-            System.out.println(buildingFunction);
             switch (buildingFunction) {
                 case LIVING :
                     VBox personBox = createSpriteWithLabel("/ubx/project/javarts/icons/house.png", String.valueOf(b.getMaxInhabitants()));

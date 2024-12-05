@@ -39,14 +39,13 @@ public class BuildingInfoCard extends VBox{
         bottomSection.setAlignment(Pos.CENTER);
 
         for (BuildingFunction buildingFunction : building.getFunctions()) {
-            System.out.println(buildingFunction);
             switch (buildingFunction) {
                 case LIVING:
-                    HBox personBox = createSpriteWithTextRight("/ubx/project/javarts/icons/structure_house.png", String.valueOf(building.getInhabitants().size()), String.valueOf(building.getMaxInhabitants()));
+                    HBox personBox = createSpriteWithTextRight("/ubx/project/javarts/icons/house.png", String.valueOf(building.getInhabitants().size()), String.valueOf(building.getMaxInhabitants()));
                     bottomSection.getChildren().add(personBox);
                     break;
                 case WORKING:
-                    HBox workerBox = createSpriteWithTextRight("/ubx/project/javarts/icons/character.png", String.valueOf(building.getWorkers().size()), String.valueOf(building.getMaxWorkers()));
+                    HBox workerBox = createSpriteWithTextRight("/ubx/project/javarts/icons/worker.png", String.valueOf(building.getWorkers().size()), String.valueOf(building.getMaxWorkers()));
                     bottomSection.getChildren().add(workerBox);
                     break;
             }
