@@ -107,6 +107,7 @@ public class GameManager implements Subject {
         building.removeInhabitant(people);
         people.affectHouse(null);
         worldInhabitants.remove(people);
+        notifyObservers();
     }
 
     public void assignWorkerTo(Building building) {
@@ -143,6 +144,7 @@ public class GameManager implements Subject {
         people.getJobPlace().removeWorker(people);
         people.affectJobPlace(null);
         building.removeWorker(people);
+        notifyObservers();
     }
 
 
