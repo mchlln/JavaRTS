@@ -22,7 +22,6 @@ public class CustomMenu extends VBox {
 
     public CustomMenu() {
         Menu menu = new Menu("Game");
-        Label label = new Label("label");
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(menu);
         MenuItem newGameItem = new MenuItem("New Game");

@@ -29,6 +29,7 @@ public class GameManager implements Subject {
     public Exception currentException;
     private Runnable errorListener;
     private Timeline timeline;
+    private final BuildingBuilder b = new BuildingBuilder();
 
     private GameManager() {
         resources = ResourceManager.getInstance();
@@ -56,7 +57,6 @@ public class GameManager implements Subject {
             notifyErrorListener(new WrongBuildingType("No building type selected."));
             return;
         }
-        BuildingBuilder b = new BuildingBuilder(); // TODO: Don't index each times
         Building building = b.build(type, position);
         System.out.println(building.getType());
         if (map.isAreaFree(position, building.getSize())){
@@ -67,8 +67,6 @@ public class GameManager implements Subject {
             }catch (NotEnoughResources e){
                 notifyErrorListener(e);
             }
-
-            // Add
         }
         notifyObservers();
     }
