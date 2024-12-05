@@ -49,7 +49,7 @@ public class MainView implements Observer {
         modeSelection.getChildren().addAll(buildingModeButton, peopleModeButton);
         footer.getChildren().add(modeSelection);
         footer.getChildren().add(buildingFooter);
-        peopleFooter.prefViewportHeightProperty().bind(stage.heightProperty().multiply(0.30));
+        peopleFooter.prefHeightProperty().bind(stage.heightProperty().multiply(0.30));
         peopleFooter.setMinHeight(50); // Optional: Minimum height for the footer
         peopleFooter.setMaxHeight(Double.MAX_VALUE); // Maximum height allows resizing
         buildingFooter.prefViewportHeightProperty().bind(stage.heightProperty().multiply(0.30));

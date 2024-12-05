@@ -22,13 +22,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-public class MapView extends VBox {
+public class MapView extends ScrollPane {
     private GridPane grid;
     private HashMap<Building, ArrayList<ArrayList<ImageView>>> buildingSprites = new HashMap<>();
     private final String imagePath = "/ubx/project/javarts/buildingSprites/";
 
     public MapView() {
-        ScrollPane root = new ScrollPane();
         grid = new GridPane();
         Size mapSize = Map.getInstance().getSize();
         int width = mapSize.getWidth();
@@ -55,9 +54,8 @@ public class MapView extends VBox {
 
         // Ensure the GridPane resizes with the tiles
         grid.setPrefSize(width * 50, height * 50); // Default preferred size (can be adjusted)
-        root.setContent(grid);
-        root.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        this.getChildren().add(root);
+        this.setContent(grid);
+        this.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     }
 
     public void drawBuildings(Set<Building> buildings) {

@@ -5,8 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import ubx.project.javarts.Model.Building.Building;
@@ -18,12 +17,13 @@ import ubx.project.javarts.Model.Resource.ResourceType;
 import java.util.Map;
 
 public class BuildingInfoCard extends VBox{
-    private final VBox root = new VBox();
+    private final HBox root = new HBox();
     public BuildingInfoCard(Building building) {
         root.setPadding(new Insets(10));
-        root.setSpacing(10);
+        root.setSpacing(15);
         root.setAlignment(Pos.CENTER);
 
+        VBox house = new VBox();
         ImageView houseView = new ImageView(new Image(getClass().getResource(ImagePath.getBuildingSpritePath(building.getType())).toExternalForm()));
         houseView.setFitWidth(100);
         houseView.setFitHeight(100);
@@ -34,7 +34,7 @@ public class BuildingInfoCard extends VBox{
         farmLabel.setTextFill(Color.DARKCYAN);
 
         // Bottom section - Left and right icons with text
-        HBox bottomSection = new HBox(50);
+        VBox bottomSection = new VBox(50);
         bottomSection.setPrefHeight(100);
         bottomSection.setAlignment(Pos.CENTER);
 
@@ -50,11 +50,22 @@ public class BuildingInfoCard extends VBox{
                     break;
             }
         }
-
-        root.getChildren().addAll(houseView, farmLabel, bottomSection);
-        root.setPrefSize(250,400);
+        house.getChildren().addAll(houseView, farmLabel);
+        root.getChildren().addAll(house, bottomSection);
+        //root.setPrefSize(250,400);
 
         this.getChildren().addAll(root);
+        this.setBackground(new Background(new BackgroundImage(
+                new Image(getClass().getResource("/ubx/project/javarts/buildingCards/not_selected_info_background.png").toExternalForm()),
+                BackgroundRepeat.NO_REPEAT,    // Repeat horizontally
+                BackgroundRepeat.NO_REPEAT,    // Repeat vertically
+                BackgroundPosition.CENTER,     // Position
+                new BackgroundSize(
+                        BackgroundSize.DEFAULT.getWidth(),
+                        BackgroundSize.DEFAULT.getHeight(),
+                        true, true, true, false // Scale to container size
+                )
+        )));
     }
 
     private HBox createSpriteWithTextRight(String imagePath, String current, String max) {

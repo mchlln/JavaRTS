@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.transform.Scale;
 import ubx.project.javarts.Model.Building.Building;
@@ -14,32 +15,57 @@ import ubx.project.javarts.Model.Building.BuildingFunction;
 import java.util.HashMap;
 import java.util.Set;
 
-public class PeopleFooter extends ScrollPane {
-    private HBox container;
+public class PeopleFooter extends VBox {
+    private Label inhabitantsLabel = new Label("test");
+    private Label workerLabel = new Label("test");
+    private HBox cardContainer;
+    private ScrollPane cardRoot;
 
     public PeopleFooter() {
+        cardRoot = new ScrollPane();
         // Initialize container to hold the widgets
-        container = new HBox(10); // 10px spacing between widgets
-        container.setPadding(new Insets(10));
-        container.setAlignment(Pos.CENTER_LEFT);
+        cardContainer = new HBox(10);
+        this.setPadding(new Insets(5));
+        this.setAlignment(Pos.CENTER_LEFT);
+
 
         generateButtons();
 
-        this.setContent(container);
+
+
+
+        /*this.setContent(container);
         this.setFitToHeight(true);  // Ensure ScrollPane fits to the full height of its content
-        this.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Enable horizontal scrolling if the content overflows
+        this.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); // Enable horizontal scrolling if the content overflows
         this.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); // Disable vertical scrolling
 
         // Set width to be dynamic, we want it to scale with the window size
         this.setPrefWidth(Double.MAX_VALUE);
+           */
+        cardRoot.setContent(cardContainer);
+        cardRoot.setFitToHeight(true);
+        cardRoot.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS); // Enable horizontal scrolling if content overflows
+        cardRoot.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); // Disable vertical scrolling
+       // cardRoot.setPrefWidth(300); // Set a preferred width to give it some initial space
+        //cardRoot.setMaxWidth(Double.MAX_VALUE); // Optional: max width (adjust as needed)
+
+        // Allow cardRoot to take as much space as possible in the container without overflowing
+        HBox.setHgrow(cardRoot, Priority.ALWAYS);
+        this.getChildren().add(cardRoot);
+
+        this.getChildren().addAll( );
     }
 
     public void generateButtons() {
-        VBox buttons = new VBox();
+        HBox buttons = new HBox();
+        buttons.setStyle("-fx-background-color: lightblue;");
+        buttons.setFillHeight(true);
+        //buttons.setPrefWidth(Double.MAX_VALUE);
         buttons.setPadding(new Insets(10));
-
         buttons.getChildren().addAll(new Button("Add Inhabitant"), new Button("Remove Inhabitant"), new Button("Assign Worker"), new Button("Fire Worker"));
-        container.getChildren().addAll(buttons);
+        buttons.getChildren().addAll(inhabitantsLabel, workerLabel);
+        buttons.setAlignment(Pos.CENTER);
+        this.getChildren().addAll(buttons);
     }
 
     public void updateBuildings(Set<Building> buildings) {
@@ -47,15 +73,13 @@ public class PeopleFooter extends ScrollPane {
         int workers = 0;
         int maxInhabitants = 0;
         int maxWorkers = 0;
-        container.getChildren().clear();
+        this.getChildren().clear();
+        generateButtons();
+        cardContainer.getChildren().clear();
         VBox container2 = new VBox();
         container2.setAlignment(Pos.CENTER);
-        Label label = new Label("Building List");
-        label.setAlignment(Pos.CENTER);
-        container2.getChildren().add(label);
         HBox container3 = new HBox();
         container2.getChildren().add(container3);
-        generateButtons();
         for (Building building : buildings) {
             if (building.getFunctions().contains(BuildingFunction.LIVING)){
                 inhabitants += building.getInhabitants().size();
@@ -69,8 +93,8 @@ public class PeopleFooter extends ScrollPane {
             BuildingInfoCard bc = new BuildingInfoCard(building);
             container3.getChildren().add(bc);
         }
-        label.setText("Inhabitants: " + inhabitants + "/" + maxInhabitants + "Workers:" + workers + "/" + maxWorkers);
-        container.getChildren().addAll(container2);
+        cardContainer.getChildren().addAll(container2);
+        this.getChildren().add(cardRoot);
 
     }
 }
