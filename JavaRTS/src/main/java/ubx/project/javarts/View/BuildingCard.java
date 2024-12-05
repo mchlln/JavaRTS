@@ -2,10 +2,7 @@ package ubx.project.javarts.View;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -99,16 +96,12 @@ public class BuildingCard extends VBox {
             }
         }
 
-        /*root.setOnMouseClicked(event -> {
-            System.out.println(b.getName() + " clicked!");
-
-        });*/
-
         root.getChildren().addAll(topSection, houseView, farmLabel, bottomSection);
         root.setPrefSize(250,400);
         isSelected(currentlySelected);
 
         this.getChildren().addAll(root);
+        createAndLinkToolTip(b);
     }
 
     public BuildingType getBuildingType() {
@@ -181,5 +174,31 @@ public class BuildingCard extends VBox {
         currentlySelected = buildingType;
         isSelected(buildingType);
     }
+
+ public void createAndLinkToolTip(Building building) {
+     VBox tooltipContent = new VBox(5);
+     Label lbl = new Label("Building cost");
+     lbl.setFont(Font.font("Arial", 18));
+     tooltipContent.getChildren().add(lbl);
+     Map<ResourceType,Integer> cost = building.getCost();
+     for(ResourceType resourceType : cost.keySet()) {
+         HBox resourceDisplay = new HBox();
+
+         ImageView logo = new ImageView(new Image(getClass().getResource(ImagePath.getResourceLogoPath(resourceType)).toExternalForm()));
+         logo.setFitWidth(30); // Set logo width
+         logo.setFitHeight(30); // Set logo height
+
+
+         Label quantityLabel = new Label(String.valueOf(cost.get(resourceType)));
+         quantityLabel.setFont(Font.font("Arial", 18));
+         resourceDisplay.getChildren().addAll(logo, quantityLabel);
+         tooltipContent.getChildren().add(resourceDisplay);
+     }
+
+     Tooltip tooltip = new Tooltip();
+     tooltip.setGraphic(tooltipContent);
+
+     Tooltip.install(root, tooltip);
+ }
 
 }

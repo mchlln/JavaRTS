@@ -17,12 +17,13 @@ public class BasicBuilding implements Building{
     private final ArrayList<BuildingFunction> functions = new ArrayList<BuildingFunction>();
     private String name;
 
-    public BasicBuilding(Position pos, Size s, String name, BuildingType type){
+    public BasicBuilding(Position pos, Size s, String name, BuildingType type, Map<ResourceType, Integer> cost){
         this.id = UUID.randomUUID();
         this.position = pos;
         this.size = s;
         this.name = name;
         this.type = type;
+        this.cost = cost;
     }
     @Override
     public Size getSize() {

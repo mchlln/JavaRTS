@@ -5,27 +5,21 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import ubx.project.javarts.Controller.*;
-import ubx.project.javarts.Exception.WrongBuildingType;
 import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.Building.BuildingFunction;
-import ubx.project.javarts.Model.Building.BuildingType;
-import ubx.project.javarts.Model.Building.WorkingBuilding;
 import ubx.project.javarts.Model.Map;
 import ubx.project.javarts.Model.Position;
 import ubx.project.javarts.Model.Size;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Set;
 
 public class MapView extends VBox {
@@ -83,7 +77,6 @@ public class MapView extends VBox {
             for (int col = 0; col < buildingWidth; col++) {
                 ArrayList<ImageView> tileImageViews = new ArrayList<>();
                 for (int row = 0; row < buildingHeight; row++) {
-                    System.out.println(imagePath+building.getType().toString().toLowerCase()+"/"+col+"_"+row+".png");
                     ImageView tileImageView = new ImageView(getClass()
                             .getResource(imagePath+building.getType().toString().toLowerCase()+"/"+row+"_"+col+".png").toExternalForm());
                     tileImageViews.add(tileImageView);
