@@ -4,10 +4,7 @@ import ubx.project.javarts.Exception.WrongBuildingType;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Resource.ResourceType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ConsumptionBuilding extends BuildingDecorator{
     private Map<ResourceType, Integer> dailyConsumption;
@@ -40,17 +37,12 @@ public class ConsumptionBuilding extends BuildingDecorator{
     }
 
     @Override
-    public Set<People> getInhabitants() {
+    public List<People> getInhabitants() {
         return b.getInhabitants();
     }
     @Override
     public int getMaxInhabitants() {
         return b.getMaxInhabitants();
-    }
-
-    @Override
-    public int getMinInhabitants() {
-        return b.getMinInhabitants();
     }
 
     @Override
@@ -73,17 +65,14 @@ public class ConsumptionBuilding extends BuildingDecorator{
     }
 
     @Override
-    public Set<People> getWorkers() {
+    public List<People> getWorkers() {
         return b.getWorkers();
     }
     @Override
     public int getMaxWorkers() {
         return b.getMaxWorkers();
     }
-    @Override
-    public int getMinWorkers() {
-        return b.getMinWorkers();
-    }
+
     @Override
     public int getNumberWorkers(){
         return b.getNumberWorkers();

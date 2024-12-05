@@ -42,8 +42,8 @@ public abstract class BuildingDecorator implements Building {
     }
 
     @Override
-    public Position getPostion() {
-        return decoratedBuilding.getPostion();
+    public Position getPosition() {
+        return decoratedBuilding.getPosition();
     }
     @Override
     public boolean equals(Object obj) {
@@ -67,17 +67,12 @@ public abstract class BuildingDecorator implements Building {
     }
 
     @Override
-    public Set<People> getWorkers() {
+    public List<People> getWorkers() {
         throw new WrongBuildingType("Building cannot have workers");
     }
 
     @Override
     public int getMaxWorkers() {
-        throw new WrongBuildingType("Building cannot have workers");
-    }
-
-    @Override
-    public int getMinWorkers() {
         throw new WrongBuildingType("Building cannot have workers");
     }
 
@@ -102,17 +97,12 @@ public abstract class BuildingDecorator implements Building {
     }
 
     @Override
-    public Set<People> getInhabitants() {
+    public List<People> getInhabitants() {
         throw new WrongBuildingType("Building cannot have inhabitants");
     }
 
     @Override
     public int getMaxInhabitants() {
-        throw new WrongBuildingType("Building cannot have inhabitants");
-    }
-
-    @Override
-    public int getMinInhabitants() {
         throw new WrongBuildingType("Building cannot have inhabitants");
     }
 

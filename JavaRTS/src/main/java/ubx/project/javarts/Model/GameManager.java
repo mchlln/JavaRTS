@@ -4,25 +4,22 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.util.Duration;
-import ubx.project.javarts.Exception.NotEnoughInhabitants;
-import ubx.project.javarts.Exception.NotEnoughResources;
-import ubx.project.javarts.Exception.TooManyInhabitants;
-import ubx.project.javarts.Exception.TooManyWorkers;
-import ubx.project.javarts.Exception.WrongBuildingType;
+import ubx.project.javarts.Exception.*;
 import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.Building.BuildingBuilder;
 import ubx.project.javarts.Model.Building.BuildingManager;
 import ubx.project.javarts.Model.Building.BuildingType;
 import ubx.project.javarts.Model.Resource.ResourceManager;
-import ubx.project.javarts.View.Observer;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class GameManager implements Subject {
     private static GameManager instance;
     private BuildingManager buildings = new BuildingManager();
-    private Set<People> worldInhabitants;
+    private List<People> worldInhabitants;
     private Map map;
     private ResourceManager resources;
     private Set<Runnable> observers;
@@ -33,7 +30,7 @@ public class GameManager implements Subject {
 
     private GameManager() {
         resources = ResourceManager.getInstance();
-        worldInhabitants = new HashSet<>();
+        worldInhabitants = new ArrayList<>();
         observers = new HashSet<>();
         map = Map.getInstance();
         loop();
@@ -63,7 +60,7 @@ public class GameManager implements Subject {
             try{
                 System.out.println("Adding building " + type + " to position " + position);
                 buildings.addBuilding(building);
-                map.construct(building.getPostion(), building.getSize());
+                map.construct(building.getPosition(), building.getSize());
             }catch (NotEnoughResources e){
                 notifyErrorListener(e);
             }
@@ -75,7 +72,7 @@ public class GameManager implements Subject {
         if (!buildings.exists(building)){
             throw new RuntimeException("cannot remove building " + building);
         }
-        map.destruct(building.getPostion(), building.getSize());
+        map.destruct(building.getPosition(), building.getSize());
         buildings.removeBuilding(building);
         notifyObservers();
     }
@@ -94,11 +91,21 @@ public class GameManager implements Subject {
 
     }
 
-    public void deleteInhabitantFrom(Building building, People people) {
-        if (!buildings.exists(building) || !worldInhabitants.contains(people)){
-            return;
+    public void deleteInhabitantFrom(Building building) {
+        if (!buildings.exists(building)){
+            notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
+        }
+        if(building.getNumberInhabitants() == 0){
+            notifyErrorListener( new NotEnoughInhabitants("No inhabitant to be deleted."));
+        }
+        People people = building.getInhabitants().getFirst();
+        if(people.getJobPlace() != null){
+            people.getJobPlace().removeWorker(people);
+            people.affectJobPlace(null);
+            building.removeWorker(people);
         }
         building.removeInhabitant(people);
+        people.affectHouse(null);
         worldInhabitants.remove(people);
     }
 
@@ -123,6 +130,19 @@ public class GameManager implements Subject {
             }
         }
         throw new NotEnoughInhabitants("No unemployed person in town.");
+    }
+
+    public void deleteWorkerFrom(Building building) {
+        if (!buildings.exists(building)){
+            notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
+        }
+        if(building.getNumberWorkers() == 0){
+            notifyErrorListener( new NotEnoughWorkers("No worker to be deleted."));
+        }
+        People people = building.getWorkers().getFirst();
+        people.getJobPlace().removeWorker(people);
+        people.affectJobPlace(null);
+        building.removeWorker(people);
     }
 
 

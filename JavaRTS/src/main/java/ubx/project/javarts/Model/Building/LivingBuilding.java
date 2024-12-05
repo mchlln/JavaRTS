@@ -7,30 +7,24 @@ import ubx.project.javarts.Model.Resource.ResourceType;
 import java.util.*;
 
 public class LivingBuilding extends BuildingDecorator{
-    private Set<People> inhabitants = new HashSet<>();
+    private final List<People> inhabitants = new ArrayList<>();
     private int maxInhabitants;
-    private int minInhabitants;
     Building b;
 
-    public LivingBuilding(Building b, int maxInhabitants, int minInhabitants) {
+    public LivingBuilding(Building b, int maxInhabitants) {
         super(b);
         this.maxInhabitants = maxInhabitants;
-        this.minInhabitants = minInhabitants;
         this.b = b;
     }
 
     @Override
-    public Set<People> getInhabitants() {
+    public List<People> getInhabitants() {
         return inhabitants;
     }
 
     @Override
     public int getMaxInhabitants() {
         return maxInhabitants;
-    }
-    @Override
-    public int getMinInhabitants() {
-        return minInhabitants;
     }
     @Override
     public int getNumberInhabitants(){
@@ -46,7 +40,7 @@ public class LivingBuilding extends BuildingDecorator{
     }
     @Override
     public void removeInhabitant(People people){
-        if(getNumberInhabitants()>getMinInhabitants()){
+        if(getNumberInhabitants()>0){
             inhabitants.remove(people);
         }
     }
@@ -67,16 +61,12 @@ public class LivingBuilding extends BuildingDecorator{
     }
 
     @Override
-    public Set<People> getWorkers() {
+    public List<People> getWorkers() {
         return b.getWorkers();
     }
     @Override
     public int getMaxWorkers() {
         return b.getMaxWorkers();
-    }
-    @Override
-    public int getMinWorkers() {
-        return b.getMinWorkers();
     }
     @Override
     public int getNumberWorkers(){

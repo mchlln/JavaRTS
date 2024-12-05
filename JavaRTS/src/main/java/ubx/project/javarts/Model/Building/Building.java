@@ -13,20 +13,18 @@ public interface Building {
     UUID getId();
     void getConstructionTime(); //TODO: find return type
     BuildingType getType();
-    Position getPostion();
+    Position getPosition();
     ArrayList<BuildingFunction> getFunctions();
     void addFunction(ArrayList<BuildingFunction> functions);
     public Map<ResourceType, Integer> getDailyConsumption();
-    public Set<People> getWorkers();
+    public List<People> getWorkers();
     public int getMaxWorkers();
-    public int getMinWorkers();
     public int getNumberWorkers();
     public void addWorker(People people);
     public void removeWorker(People people);
     public Map<ResourceType, Integer> getDailyProduction();
-    public Set<People> getInhabitants();
+    public List<People> getInhabitants();
     public int getMaxInhabitants();
-    public int getMinInhabitants();
     public int getNumberInhabitants();
     public void addInhabitant(People people);
     public void removeInhabitant(People people);

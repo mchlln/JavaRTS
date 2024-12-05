@@ -3,10 +3,7 @@ package ubx.project.javarts.Model.Building;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Resource.ResourceType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ProductionBuilding extends BuildingDecorator{
     private final Map<ResourceType, Integer> dailyProduction;
@@ -37,18 +34,13 @@ public class ProductionBuilding extends BuildingDecorator{
         return resources;
     }
     @Override
-    public Set<People> getInhabitants() {
+    public List<People> getInhabitants() {
         return b.getInhabitants();
     }
 
     @Override
     public int getMaxInhabitants() {
         return b.getMaxInhabitants();
-    }
-
-    @Override
-    public int getMinInhabitants() {
-        return b.getMinInhabitants();
     }
 
     @Override
@@ -64,23 +56,17 @@ public class ProductionBuilding extends BuildingDecorator{
     public void removeInhabitant(People people){
         b.removeInhabitant(people);
     }
-
     @Override
     public Map<ResourceType, Integer> getDailyConsumption() {
         return b.getDailyConsumption();
     }
-
     @Override
-    public Set<People> getWorkers() {
+    public List<People> getWorkers() {
         return b.getWorkers();
     }
     @Override
     public int getMaxWorkers() {
         return b.getMaxWorkers();
-    }
-    @Override
-    public int getMinWorkers() {
-        return b.getMinWorkers();
     }
     @Override
     public int getNumberWorkers(){
