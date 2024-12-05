@@ -3,10 +3,10 @@ package ubx.project.javarts.Controller;
 import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.GameManager;
 
-public class AddInhabitantsInto implements Command {
+public class AddInhabitantInto implements Command {
     private final Building building;
 
-    public AddInhabitantsInto(Building b) {
+    public AddInhabitantInto(Building b) {
         this.building = b;
     }
 

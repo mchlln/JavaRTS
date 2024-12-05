@@ -3,8 +3,6 @@ package ubx.project.javarts.Controller;
 import javafx.concurrent.Task;
 import ubx.project.javarts.Model.GameManager;
 
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class BagOfCommands {
@@ -15,7 +13,7 @@ public class BagOfCommands {
     Controller controller;
     boolean isRunning = false;
 
-    BagOfCommands() {
+    private BagOfCommands() {
         /*commands = new LinkedList<>();*/
     }
 

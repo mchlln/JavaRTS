@@ -128,7 +128,7 @@ public class MapView extends VBox {
             Label inhabitantsLabel = new Label("Inhabitants: " + building.getNumberInhabitants() + "/" + building.getMaxInhabitants());
             Button addInhabitantsButton = new Button("Add Inhabitants");
             addInhabitantsButton.setOnAction(event -> {
-                BagOfCommands.getInstance().addCommand(new AddInhabitantsInto(building));
+                BagOfCommands.getInstance().addCommand(new AddInhabitantInto(building));
                 System.out.println("Inhabitant added to  " + building);
             });
             Button removeInhabitantsButton = new Button("Remove Inhabitants");

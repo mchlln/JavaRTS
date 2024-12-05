@@ -114,10 +114,6 @@ public class MainView implements Observer {
 
     }
 
-    @Override
-    public void updateError(Exception e) {
-
-    }
 
     public void updateError() {
         topContainer.showError(model.currentException.getMessage());
