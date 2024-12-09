@@ -1,5 +1,7 @@
 package ubx.project.javarts.View;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -11,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javafx.util.Duration;
 import ubx.project.javarts.Controller.*;
 import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.Building.BuildingFunction;
@@ -122,11 +125,15 @@ public class MapView extends ScrollPane {
         VBox layout = new VBox(10);
         layout.getChildren().add(nameLabel);
 
+        Label inhabitantsLabel = new Label();
+        Label workersLabel = new Label();
+
         if(building.getFunctions().contains(BuildingFunction.LIVING)){
-            Label inhabitantsLabel = new Label("Inhabitants: " + building.getNumberInhabitants() + "/" + building.getMaxInhabitants());
+            inhabitantsLabel.setText("Inhabitants: " + building.getNumberInhabitants() + "/" + building.getMaxInhabitants());
             Button addInhabitantsButton = new Button("Add Inhabitants");
             addInhabitantsButton.setOnAction(event -> {
                 BagOfCommands.getInstance().addCommand(new AddInhabitantInto(building));
+                updateLabel(building,inhabitantsLabel,BuildingFunction.LIVING);
                 System.out.println("Inhabitant added to  " + building);
             });
             Button removeInhabitantsButton = new Button("Remove Inhabitants");
@@ -137,7 +144,7 @@ public class MapView extends ScrollPane {
             layout.getChildren().addAll(inhabitantsLabel, addInhabitantsButton,removeInhabitantsButton);
         }
         if (building.getFunctions().contains(BuildingFunction.WORKING)) {
-            Label workersLabel = new Label("Workers: " + building.getNumberWorkers() + "/" + building.getMaxWorkers());
+            workersLabel.setText("Workers: " + building.getNumberWorkers() + "/" + building.getMaxWorkers());
             Button addWorkersButton = new Button("Add Workers");
             addWorkersButton.setOnAction(event -> {
                 BagOfCommands.getInstance().addCommand(new AddWorkerInto(building));
@@ -161,7 +168,34 @@ public class MapView extends ScrollPane {
         layout.getChildren().add(removeButton);
         Scene scene = new Scene(layout);
         popup.setScene(scene);
+
+        // Create a Timeline to update the labels periodically
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(1), event -> {
+                    if (building.getFunctions().contains(BuildingFunction.LIVING)) {
+                        inhabitantsLabel.setText("Inhabitants: " + building.getNumberInhabitants() + "/" + building.getMaxInhabitants());
+                    }
+                    if (building.getFunctions().contains(BuildingFunction.WORKING)) {
+                        workersLabel.setText("Workers: " + building.getNumberWorkers() + "/" + building.getMaxWorkers());
+                    }
+                })
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE); // Repeat indefinitely
+        timeline.play();
+
+        // Stop the timeline when the popup is closed
+        popup.setOnCloseRequest(event -> timeline.stop());
         popup.showAndWait();
+    }
+
+    public void updateLabel(Building building, Label label, BuildingFunction function) {
+        if(function.equals(BuildingFunction.LIVING)){
+            label.setText("Inhabitants: " + building.getNumberInhabitants() + "/" + building.getMaxInhabitants());
+        }
+        else if (function.equals(BuildingFunction.WORKING)){
+            label.setText("Workers: " + building.getNumberWorkers() + "/" + building.getMaxWorkers());
+        }
+
     }
 
 }
