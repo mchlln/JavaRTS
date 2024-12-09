@@ -93,7 +93,7 @@ public class BuildingInfoCard extends VBox{
     public void isSelected(Building b) {
         if (b == this.selectedBuilding) {
             BackgroundImage backgroundImage = new BackgroundImage(
-                    new Image(getClass().getResource("/ubx/project/javarts/buildingCards/selected_background.png").toExternalForm()),
+                    new Image(getClass().getResource("/ubx/project/javarts/buildingCards/selected_info_background.png").toExternalForm()),
                     BackgroundRepeat.NO_REPEAT,    // Repeat horizontally
                     BackgroundRepeat.NO_REPEAT,    // Repeat vertically
                     BackgroundPosition.CENTER,     // Position

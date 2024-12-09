@@ -5,6 +5,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -60,10 +62,11 @@ public class PeopleFooter extends VBox {
 
     public void generateButtons() {
         HBox buttons = new HBox();
-        buttons.setStyle("-fx-background-color: lightblue;");
+        //buttons.setStyle("-fx-background-color: lightblue;");
         buttons.setFillHeight(true);
         //buttons.setPrefWidth(Double.MAX_VALUE);
         buttons.setPadding(new Insets(10));
+        buttons.setSpacing(15);
         Button addInhabitantButton = new Button("Add Inhabitant");
         addInhabitantButton.setOnAction(event -> {
             BagOfCommands.getInstance().addCommand(new AddInhabitantInto(selectedBuilding));
@@ -85,6 +88,10 @@ public class PeopleFooter extends VBox {
             System.out.println("Worker removed from " + selectedBuilding);
         });
         buttons.getChildren().addAll( addInhabitantButton, removeInhabitantButton, assignWorkerButton, fireWorkerButton);
+        ImageView inhabitants =  new ImageView(new Image(getClass().getResource("/ubx/project/javarts/icons/house.png").toExternalForm()));
+        inhabitants.fitHeightProperty().bind(inhabitantsLabel.heightProperty());
+        inhabitants.setPreserveRatio(true);
+        buttons.getChildren().add(inhabitants);
         buttons.getChildren().addAll(inhabitantsLabel, workerLabel);
         buttons.setAlignment(Pos.CENTER);
         this.getChildren().addAll(buttons);

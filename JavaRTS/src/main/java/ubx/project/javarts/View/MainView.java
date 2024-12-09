@@ -31,6 +31,7 @@ public class MainView implements Observer {
     private final BuildingFooter buildingFooter;
     private final PeopleFooter peopleFooter;
     private BorderPane root;
+    private String footerState = "building";
 
     public MainView(Stage stage, GameManager model) {
         stage.setTitle("JAVA RTS");
@@ -102,11 +103,20 @@ public class MainView implements Observer {
 
     public void switchEditionMode(String mode){
         if (Objects.equals(mode, "building")) {
-            footer.getChildren().remove(peopleFooter);
-            footer.getChildren().add(buildingFooter);
+            if (!footerState.equals("building")) {
+                footer.getChildren().remove(peopleFooter);
+                footer.getChildren().add(buildingFooter);
+                footerState = "building";
+            }
+
         } else { // Because there are only two states
-            footer.getChildren().remove(buildingFooter);
-            footer.getChildren().add(peopleFooter);
+            if (!footerState.equals("people")) {
+                footer.getChildren().remove(buildingFooter);
+                footer.getChildren().add(peopleFooter);
+                footerState = "people";
+            }
+
+
         }
     }
 
