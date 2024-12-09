@@ -9,6 +9,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.transform.Scale;
+import ubx.project.javarts.Controller.*;
 import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.Building.BuildingFunction;
 
@@ -16,10 +17,11 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class PeopleFooter extends VBox {
-    private Label inhabitantsLabel = new Label("test");
-    private Label workerLabel = new Label("test");
+    private Label inhabitantsLabel = new Label();
+    private Label workerLabel = new Label();
     private HBox cardContainer;
     private ScrollPane cardRoot;
+    private Building selectedBuilding;
 
     public PeopleFooter() {
         cardRoot = new ScrollPane();
@@ -62,7 +64,27 @@ public class PeopleFooter extends VBox {
         buttons.setFillHeight(true);
         //buttons.setPrefWidth(Double.MAX_VALUE);
         buttons.setPadding(new Insets(10));
-        buttons.getChildren().addAll(new Button("Add Inhabitant"), new Button("Remove Inhabitant"), new Button("Assign Worker"), new Button("Fire Worker"));
+        Button addInhabitantButton = new Button("Add Inhabitant");
+        addInhabitantButton.setOnAction(event -> {
+            BagOfCommands.getInstance().addCommand(new AddInhabitantInto(selectedBuilding));
+            System.out.println("Inhabitant added to  " + selectedBuilding);
+        });
+        Button removeInhabitantButton = new Button("Remove Inhabitant");
+        removeInhabitantButton.setOnAction(event -> {
+            BagOfCommands.getInstance().addCommand(new RemoveInhabitantFrom(selectedBuilding));
+            System.out.println("Inhabitant removed from  " + selectedBuilding);
+        });
+        Button assignWorkerButton = new Button("Assign Worker");
+        assignWorkerButton.setOnAction(event -> {
+            BagOfCommands.getInstance().addCommand(new AddWorkerInto(selectedBuilding));
+            System.out.println("Worker added to " + selectedBuilding);
+        });
+        Button fireWorkerButton = new Button("Fire Worker");
+        fireWorkerButton.setOnAction(event -> {
+            BagOfCommands.getInstance().addCommand(new RemoveWorkerFrom(selectedBuilding));
+            System.out.println("Worker removed from " + selectedBuilding);
+        });
+        buttons.getChildren().addAll( addInhabitantButton, removeInhabitantButton, assignWorkerButton, fireWorkerButton);
         buttons.getChildren().addAll(inhabitantsLabel, workerLabel);
         buttons.setAlignment(Pos.CENTER);
         this.getChildren().addAll(buttons);
@@ -90,11 +112,20 @@ public class PeopleFooter extends VBox {
                 maxWorkers += building.getMaxWorkers();
             }
 
-            BuildingInfoCard bc = new BuildingInfoCard(building);
+            BuildingInfoCard bc = new BuildingInfoCard(building, selectedBuilding);
+            bc.setOnMouseClicked(event -> {
+                BagOfCommands.getInstance().addCommand(new SetSelectedBuildingInfo(building));
+            });
             container3.getChildren().add(bc);
         }
+        inhabitantsLabel.setText("Inhabitants: " + inhabitants+ "/" + maxInhabitants);
+        workerLabel.setText("Workers: " + workers + "/" + maxWorkers);
         cardContainer.getChildren().addAll(container2);
         this.getChildren().add(cardRoot);
 
+    }
+
+    public void setSelectedBuildingInfo(Building building) {
+        this.selectedBuilding = building;
     }
 }

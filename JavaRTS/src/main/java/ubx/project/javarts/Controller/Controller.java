@@ -1,5 +1,6 @@
 package ubx.project.javarts.Controller;
 
+import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.Building.BuildingType;
 import ubx.project.javarts.Model.GameManager;
 import ubx.project.javarts.Model.Position;
@@ -10,6 +11,7 @@ public class Controller {
     private MainView view;
     private BagOfCommands bagOfCommands;
     public BuildingType selectedBuilding;
+    public Building selectedBuildingInfo;
 
     public Controller(GameManager model, MainView view, BagOfCommands bagOfCommands) {
         this.model = model;
@@ -21,6 +23,11 @@ public class Controller {
     public void ChangeSelectedBuilding(BuildingType buildingType) {
         selectedBuilding = buildingType;
         view.setSelectedBuilding(buildingType);
+    }
+
+    public void ChangeSelectedBuildingInfo(Building building) {
+        selectedBuildingInfo= building;
+        view.setSelectedBuildingInfo(building);
     }
 
 }

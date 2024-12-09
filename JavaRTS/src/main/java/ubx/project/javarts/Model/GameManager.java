@@ -37,7 +37,15 @@ public class GameManager implements Subject {
     }
 
     private void loop(){
-        timeline = new Timeline(new KeyFrame(Duration.millis(1000), e -> {buildings.handle(); notifyObservers();}));
+        timeline = new Timeline(new KeyFrame(Duration.millis(1000), e -> {
+            try{
+                buildings.handle();
+                notifyObservers();
+            } catch (NotEnoughResources ex) {
+                notifyErrorListener(ex);
+            }
+
+        }));
         timeline.setCycleCount(Timeline.INDEFINITE); // Repeat indefinitely
         timeline.play(); // Start the timeline
     }

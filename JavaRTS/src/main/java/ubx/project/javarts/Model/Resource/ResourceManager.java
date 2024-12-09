@@ -11,20 +11,23 @@ public class ResourceManager {
 
     private ResourceManager() {
         resources = new HashMap<>();
-        resources.put(ResourceType.WOOD, new Wood(60));
+        resources.put(ResourceType.WOOD, new Wood(30));
         resources.put(ResourceType.IRON, new Iron(0));
-        resources.put(ResourceType.STONE, new Stone(50));
+        resources.put(ResourceType.STONE, new Stone(30));
         resources.put(ResourceType.COAL, new Coal(0));
         resources.put(ResourceType.STEEL, new Steel(0));
         resources.put(ResourceType.CEMENT, new Cement(0));
         resources.put(ResourceType.LUMBER, new Lumber(0));
-        resources.put(ResourceType.FOOD, new Food(5));
+        resources.put(ResourceType.FOOD, new Food(25));
         resources.put(ResourceType.TOOLS, new Tools(0));
     }
 
     public static void addResource(ResourceType type, int quantity) {
         if (resources.containsKey(type)) {
             resources.get(type).addResources(quantity);
+            if(resources.get(type).getQuantity() <0){
+                throw new NotEnoughResources("Not enough "+ type +" to live another day");
+            }
         }
     }
 
@@ -33,7 +36,8 @@ public class ResourceManager {
             if(resources.get(type).getQuantity() >= quantity){
                 resources.get(type).removeResources(quantity);
             }else{
-                throw new NotEnoughResources("Not enough "+ type +"to live another day");
+                throw new NotEnoughResources("Not enough "+ type +" to live another day");
+
             }
 
         }

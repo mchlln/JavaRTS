@@ -12,6 +12,7 @@ import javafx.util.Duration;
 import ubx.project.javarts.Controller.BagOfCommands;
 import ubx.project.javarts.Controller.Controller;
 import ubx.project.javarts.Controller.SetSelectedBuilding;
+import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.Building.BuildingManager;
 import ubx.project.javarts.Model.Building.BuildingType;
 import ubx.project.javarts.Model.GameManager;
@@ -83,6 +84,10 @@ public class MainView implements Observer {
         for (BuildingCard b : cards) {
             b.setSelected(buildingType);
         }
+    }
+
+    public void setSelectedBuildingInfo(Building building) {
+        peopleFooter.setSelectedBuildingInfo(building);
     }
 
     public void setAvailability(){

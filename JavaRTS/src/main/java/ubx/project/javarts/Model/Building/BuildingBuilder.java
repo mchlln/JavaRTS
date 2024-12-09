@@ -33,7 +33,7 @@ public class BuildingBuilder {
                 return apartment;
             }
             case FARM -> {
-                Building farm = new WorkingBuilding(new ProductionBuilding(new LivingBuilding(new BasicBuilding(position, new Size(3, 3), "Farm",buildingType, new HashMap<ResourceType, Integer>(){{put(ResourceType.WOOD, 5);put(ResourceType.STONE,5);}}), 5), new Hashtable<ResourceType, Integer>(){{put(ResourceType.FOOD, 2);}}), 3);
+                Building farm = new WorkingBuilding(new ProductionBuilding(new LivingBuilding(new BasicBuilding(position, new Size(3, 3), "Farm",buildingType, new HashMap<ResourceType, Integer>(){{put(ResourceType.WOOD, 5);put(ResourceType.STONE,5);}}), 5), new Hashtable<ResourceType, Integer>(){{put(ResourceType.FOOD, 10);}}), 3);
                 farm.addFunction(new ArrayList<BuildingFunction>());
                 return farm;
             }

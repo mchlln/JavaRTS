@@ -109,15 +109,24 @@ public class BuildingManager {
         //get global consumption and production
         HashMap<ResourceType, Integer> global = new HashMap<>();
         for (Building building : buildings) {
-            HashMap<ResourceType, Integer> resources = building.handle();
-            for(ResourceType rt : resources.keySet()){
-                global.put(rt, global.getOrDefault(rt, 0) + resources.get(rt));
+            if (building.getFunctions().contains(BuildingFunction.WORKING)){
+                HashMap<ResourceType, Integer> resources = building.handle();
+                double percentage = ((double) building.getNumberWorkers() / building.getMaxWorkers());
+                System.out.println("percentage : " + percentage);
+                for(ResourceType rt : resources.keySet()){
+                    global.put(rt, (int) (global.getOrDefault(rt, 0) + resources.get(rt)*percentage)); //update the resources according to the number of workers in the building
+                }
             }
+            if(building.getFunctions().contains(BuildingFunction.LIVING)){
+                global.put(ResourceType.FOOD, global.getOrDefault(ResourceType.FOOD, 0) -  building.getNumberInhabitants());
+            }
+
         }
         System.out.println("[Game cycle] Daily resources: " + global);
         // update the resources
         for(ResourceType rt : global.keySet()){
             ResourceManager.addResource(rt, global.get(rt));
         }
+
     }
 }
