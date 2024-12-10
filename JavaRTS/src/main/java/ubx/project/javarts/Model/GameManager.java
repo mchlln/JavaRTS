@@ -17,6 +17,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Model from the Design pattern Model View Controller (MVC).
+ * Implemented following the Design pattern Singleton
+ */
 public class GameManager implements Subject {
     private static GameManager instance;
     private BuildingManager buildings = new BuildingManager();
@@ -29,6 +33,9 @@ public class GameManager implements Subject {
     private Timeline timeline;
     private final BuildingBuilder b = new BuildingBuilder();
 
+    /**
+     * private constructor (design pattern singleton)
+     */
     private GameManager() {
         resources = ResourceManager.getInstance();
         worldInhabitants = new ArrayList<>();
@@ -37,6 +44,14 @@ public class GameManager implements Subject {
         loop();
     }
 
+    /**
+     * GameLoop
+     * Creates a {@link Timeline} that calls the method Handle from the building manager to execute all
+     * actions from each building of the map.
+     * We notify the observers to update the view.
+     * If we don't have enough resources, we notify the error listener to be able to show an error on the map.
+     *
+     */
     private void loop(){
         timeline = new Timeline(new KeyFrame(Duration.millis(1000), e -> {
             try{
@@ -52,12 +67,32 @@ public class GameManager implements Subject {
         timeline.play(); // Start the timeline
     }
 
+    /**
+     * Following the design pattern singleton, creates an instance if there are none or return the existing one if it has been created previously.
+     *
+     * @return instance of {@link GameManager} needed to do operations on the model
+     */
     public static GameManager getInstance() {
         if (instance == null) {
             instance = new GameManager();
         }
         return instance;
     }
+
+    /**
+     * Adds a new building of the specified type to the map at the given position.
+     *
+     * This method performs the following:
+     * - Validates the building type. If the type is `null`, it notifies an error listener with a {@link WrongBuildingType} exception.
+     * - Creates a new building instance using the specified type and position.
+     * - Checks if the specified area on the map is free to place the building.
+     *   - If the area is free, attempts to add the building to the list of buildings and marks the area as occupied on the map.
+     *   - If there are insufficient resources to construct the building, notifies an error listener with a {@link NotEnoughResources} exception.
+     * - Notifies all observers after attempting to add the building, regardless of the outcome.
+     *
+     * @param type the {@link BuildingType} of the building to add
+     * @param position the {@link Position} where the building should be placed
+     */
 
     public void addBuilding(BuildingType type, Position position) { // TODO: review + refactor
         if (type == null){
@@ -78,6 +113,18 @@ public class GameManager implements Subject {
         notifyObservers();
     }
 
+    /**
+     * Remove a building of the specified type to the map at the given position.
+     *
+     * The method performs the following :
+     * - If the building doesn't exist it throws a {@link RuntimeException}
+     * - If it exists :
+     *  - Removes it from the map
+     *  - Removes it from the {@link BuildingManager}
+     *  - Notifies the observers
+     *
+     * @param building the {@link Building} to remove
+     */
     public void removeBuilding(Building building) {
         if (!buildings.exists(building)){
             throw new RuntimeException("cannot remove building " + building);
@@ -150,6 +197,17 @@ public class GameManager implements Subject {
         }
     }
 
+    /**
+     * Create an inhabitant and adds it to the building.
+     *
+     * If the building doesn't exist : it returns.
+     * It tries to create a {@link People} and calls the {@link BuildingManager} to add him in the building.
+     * It gets added to the list of WorldInhabitants and then notify the observers.
+     *
+     * If too many inhabitants are in the building or the building is in a wrong state, it notifies the error listeners.
+     *
+     * @param building the {@link Building} to add an inhabitant into
+     */
     public void createInhabitantInto(Building building) {
         if (!buildings.exists(building)){
             notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
