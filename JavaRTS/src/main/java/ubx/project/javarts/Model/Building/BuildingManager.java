@@ -104,13 +104,6 @@ public class BuildingManager {
         }
     }
 
-    public void removeInhabitantFrom(Building building, People people) {
-        if (buildings.contains(building)) {
-            if (building.getFunctions().contains(BuildingFunction.LIVING)){
-                building.removeInhabitant(people);
-            }
-        }
-    }
 
     public Set<Building> getBuildings() {
         return buildings;
@@ -120,8 +113,8 @@ public class BuildingManager {
         //get global consumption and production
         HashMap<ResourceType, Integer> global = new HashMap<>();
         for (Building building : buildings) {
+            HashMap<ResourceType, Integer> resources = building.handle();
             if (building.getFunctions().contains(BuildingFunction.WORKING)){
-                HashMap<ResourceType, Integer> resources = building.handle();
                 double percentage = ((double) building.getNumberWorkers() / building.getMaxWorkers());
                 //System.out.println("percentage : " + percentage);
                 for(ResourceType rt : resources.keySet()){
