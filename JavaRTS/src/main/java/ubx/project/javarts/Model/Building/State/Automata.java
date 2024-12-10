@@ -7,7 +7,11 @@ public class Automata {
         this.currentState = currentState;
     }
 
-    public States getCurrentState() {
+    public AbstractState getCurrentState() {
+        return currentState;
+    }
+
+    public States getCurrentStateName() {
         return currentState.getState();
     }
 

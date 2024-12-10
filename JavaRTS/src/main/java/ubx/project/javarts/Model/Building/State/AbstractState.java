@@ -23,6 +23,10 @@ public class AbstractState implements State {
         throw new IllegalStateException("Unexpected boost state");
     }
 
+    public void blocked(){
+        throw new IllegalStateException("Unexpected blocked state");
+    }
+
     public States getState() {
         return currentState;
     }

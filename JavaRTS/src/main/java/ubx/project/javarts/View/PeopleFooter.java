@@ -7,9 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.transform.Scale;
 import ubx.project.javarts.Controller.*;
 import ubx.project.javarts.Model.Building.Building;
@@ -29,6 +27,7 @@ public class PeopleFooter extends VBox {
         cardRoot = new ScrollPane();
         // Initialize container to hold the widgets
         cardContainer = new HBox(10);
+        this.setBackground(new Background(new BackgroundImage(new Image(getClass().getResource("/ubx/project/javarts/panel_blue.png").toExternalForm()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
         this.setPadding(new Insets(5));
         this.setAlignment(Pos.CENTER_LEFT);
 
@@ -89,10 +88,13 @@ public class PeopleFooter extends VBox {
         });
         buttons.getChildren().addAll( addInhabitantButton, removeInhabitantButton, assignWorkerButton, fireWorkerButton);
         ImageView inhabitants =  new ImageView(new Image(getClass().getResource("/ubx/project/javarts/icons/house.png").toExternalForm()));
+        ImageView workers =  new ImageView(new Image(getClass().getResource("/ubx/project/javarts/icons/worker.png").toExternalForm()));
+        workers.fitHeightProperty().bind(workerLabel.heightProperty());
+        workers.setPreserveRatio(true);
         inhabitants.fitHeightProperty().bind(inhabitantsLabel.heightProperty());
         inhabitants.setPreserveRatio(true);
         buttons.getChildren().add(inhabitants);
-        buttons.getChildren().addAll(inhabitantsLabel, workerLabel);
+        buttons.getChildren().addAll(inhabitantsLabel, workers, workerLabel);
         buttons.setAlignment(Pos.CENTER);
         this.getChildren().addAll(buttons);
     }

@@ -146,7 +146,7 @@ public class BasicBuilding implements Building{
     }
 
     private void handleState(){
-        switch (buildingState.getCurrentState()){
+        switch (buildingState.getCurrentStateName()){
             case CONSTRUCTION: // CREATION --> RUNNING
                 if (stateCycleRemaining == 0){
                     buildingState.setCurrentState(new RunningState(buildingState));
@@ -159,8 +159,8 @@ public class BasicBuilding implements Building{
                 }
                 break;
             case RUNNING: // RUNNING --> BROKEN
-                if (rand.nextInt(1000) == 0){// 1/100 chance to break
-                    buildingState.setCurrentState(new BrokenState(buildingState));
+                if (rand.nextInt(1000) == 0){// 1/1000 chance to break
+                    buildingState.getCurrentState().broken();
                     stateChanged = true;
                     stateCycleRemaining = -1;
                 } else {
@@ -170,9 +170,9 @@ public class BasicBuilding implements Building{
             case BOOSTED: // BOOSTED --> BROKEN
                 if (stateCycleRemaining == 0){
                     if (rand.nextInt(4) == 0){
-                        buildingState.setCurrentState(new BrokenState(buildingState));
+                        buildingState.getCurrentState().broken();
                     }else{
-                        buildingState.setCurrentState(new RunningState(buildingState));
+                        buildingState.getCurrentState().running();
                     }
                     stateChanged = true;
                     stateCycleRemaining = -1;
@@ -190,20 +190,24 @@ public class BasicBuilding implements Building{
     public void switchState(States state, int numberOfCycles){
         switch (state){
             case RUNNING:
-                buildingState.setCurrentState(new RunningState(buildingState));
+                buildingState.getCurrentState().running();
                 stateChanged = true;
                 stateCycleRemaining = -1;
                 break;
             case BOOSTED:
-                buildingState.setCurrentState(new BoostState(buildingState));
+                buildingState.getCurrentState().boost();
                 stateChanged = true;
                 stateCycleRemaining = numberOfCycles;
                 break;
             case BROKEN:
-                buildingState.setCurrentState(new BrokenState(buildingState));
+                buildingState.getCurrentState().broken();
                 stateChanged = true;
                 stateCycleRemaining = -1;
                 break;
+            case BLOCKED:
+                buildingState.getCurrentState().blocked();
+                stateChanged = true;
+                stateCycleRemaining = -1;
             default:
                 break;
         }
@@ -215,7 +219,7 @@ public class BasicBuilding implements Building{
     }
 
     public States getState(){
-        return buildingState.getCurrentState();
+        return buildingState.getCurrentStateName();
     }
 
     @Override

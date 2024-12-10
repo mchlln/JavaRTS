@@ -123,6 +123,33 @@ public class GameManager implements Subject {
         }
     }
 
+    public void blockBuilding(Building building) {
+        if (!buildings.exists(building)){
+            notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
+        }
+        if(building.getState() != States.RUNNING && building.getState() != States.BLOCKED){
+            notifyErrorListener( new WrongState("Cannot block a building in state"+ building.getState()));
+        }
+        try{
+            buildings.blockBuilding(building);
+            notifyObservers();
+        }catch (NotEnoughResources e){
+            notifyErrorListener(e);
+        }
+    }
+
+    public void runBuilding(Building building) {
+        if (!buildings.exists(building)){
+            notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
+        }
+        try{
+            buildings.runBuilding(building);
+            notifyObservers();
+        }catch (NotEnoughResources e){
+            notifyErrorListener(e);
+        }
+    }
+
     public void createInhabitantInto(Building building) {
         if (!buildings.exists(building)){
             notifyErrorListener( new WrongBuildingType("The building doesn't exist"));

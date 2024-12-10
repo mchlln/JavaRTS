@@ -4,5 +4,6 @@ public enum States {
     CONSTRUCTION,
     RUNNING,
     BROKEN,
-    BOOSTED
+    BOOSTED,
+    BLOCKED
 }

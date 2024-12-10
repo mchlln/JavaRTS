@@ -82,6 +82,14 @@ public class BuildingManager {
         building.switchState(States.BOOSTED,5);
     }
 
+    public void blockBuilding(Building building) {
+        building.switchState(States.BLOCKED,-1);
+    }
+
+    public void runBuilding(Building building) {
+        building.switchState(States.RUNNING,-1);
+    }
+
     public void removeBuilding(Building building) {
         if (!exists(building)) {
             return;
@@ -129,7 +137,21 @@ public class BuildingManager {
         System.out.println("[Game cycle] Daily resources: " + global);
         // update the resources
         for(ResourceType rt : global.keySet()){
-            ResourceManager.addResource(rt, global.get(rt));
+            try {
+                ResourceManager.addResource(rt, global.get(rt));
+            } catch (NotEnoughResources e) {
+                System.out.println("[Game cycle] Not enough resources: " + global.get(rt));
+                for (Building b : buildings) {
+                    if(b.getFunctions().contains(BuildingFunction.CONSUMING)){
+                        if (b.getDailyConsumption().containsKey(rt)){
+                            if (b.getState() != States.BLOCKED || b.getState() != States.BROKEN){
+                                b.switchState(States.BLOCKED,-1);
+                            }
+                        }
+                    }
+                }
+            }
+
         }
 
     }

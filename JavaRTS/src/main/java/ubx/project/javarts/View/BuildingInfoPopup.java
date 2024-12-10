@@ -85,6 +85,25 @@ public class BuildingInfoPopup {
                 });
                 peopleManagement.getChildren().addAll(workersLabel, addWorkersButton, removeWorkersButton, boostBuildingButton);
             }
+            if (building.getFunctions().contains(BuildingFunction.PRODUCING) || building.getFunctions().contains(BuildingFunction.CONSUMING)) {
+                if (building.getState() == States.BLOCKED){
+                    Button running = new Button("Run building");
+                    running.setOnAction(event -> {
+                        BagOfCommands.getInstance().addCommand(new RunBuildingCommand(building));
+                        System.out.println("Building " + building.getName()+ " now run");
+                    });
+                    peopleManagement.getChildren().add(running);
+                } else if (building.getState() == States.RUNNING || building.getState() == States.BOOSTED) {
+                    Button blockBuildingButton = new Button("Stop Building");
+                    blockBuildingButton.setOnAction(event -> {
+                        BagOfCommands.getInstance().addCommand(new BlockBuildingCommand(building));
+                        System.out.println("Building " + building.getName()+ " blocked");
+                    });
+                    peopleManagement.getChildren().add(blockBuildingButton);
+                }
+
+
+            }
 
             Button removeButton = new Button("Remove Building");
             removeButton.setOnAction(event -> {

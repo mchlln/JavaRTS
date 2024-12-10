@@ -17,4 +17,9 @@ public class RunningState extends AbstractState {
     public void broken() {
         automata.setCurrentState(new BrokenState(automata));
     }
+
+    @Override
+    public void blocked() {
+        automata.setCurrentState(new BlockedState(automata));
+    }
 }

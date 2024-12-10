@@ -17,4 +17,9 @@ public class BoostState extends AbstractState{
     public void running() {
         automata.setCurrentState(new RunningState(automata));
     }
+
+    @Override
+    public void blocked() {
+        automata.setCurrentState(new BlockedState(automata));
+    }
 }
