@@ -18,6 +18,20 @@ import ubx.project.javarts.Model.Building.State.States;
 
 public class BuildingInfoPopup {
 
+    /**
+     * Displays a popup window showing the statistics and management options for a specified building.
+     * The popup includes dynamic information such as the building's state, number of inhabitants,
+     * number of workers, and buttons to add or remove inhabitants and workers.
+     *
+     * If the building has a "LIVING" function, options for managing inhabitants are displayed.
+     * If the building has a "WORKING" function, options for managing workers are displayed.
+     *
+     * The popup also includes a "Remove Building" button to issue a command for removing the building.
+     * While the popup is open, the displayed statistics are updated every second to reflect real-time changes.
+     *
+     * @param building the {@link Building} instance for which the stats and management options are displayed
+     */
+
     public BuildingInfoPopup(Building building) {
             Stage popup = new Stage();
             popup.setMinHeight(400);
@@ -52,6 +66,7 @@ public class BuildingInfoPopup {
             Label inhabitantsLabel = new Label();
             Label workersLabel = new Label();
 
+        //features availaible only for buildings having the living function
             if(building.getFunctions().contains(BuildingFunction.LIVING)){
                 inhabitantsLabel.setText("Inhabitants: " + building.getNumberInhabitants() + "/" + building.getMaxInhabitants());
                 Button addInhabitantsButton = new Button("Add Inhabitants");
@@ -66,6 +81,8 @@ public class BuildingInfoPopup {
                 });
                 peopleManagement.getChildren().addAll(inhabitantsLabel, addInhabitantsButton,removeInhabitantsButton);
             }
+
+            //features availaible only for buildings having the working function
             if (building.getFunctions().contains(BuildingFunction.WORKING)) {
                 workersLabel.setText("Workers: " + building.getNumberWorkers() + "/" + building.getMaxWorkers());
                 Button addWorkersButton = new Button("Add Workers");

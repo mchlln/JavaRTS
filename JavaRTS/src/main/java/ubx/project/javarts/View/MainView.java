@@ -20,6 +20,9 @@ import ubx.project.javarts.Model.GameManager;
 import java.util.ArrayList;
 import java.util.Objects;
 
+/**
+ * View of the application, delegates the differents features to other classes.
+ */
 public class MainView implements Observer {
 
     private Controller controller;
@@ -33,6 +36,12 @@ public class MainView implements Observer {
     private BorderPane root;
     private String footerState = "building";
 
+    /**
+     * Creates the main window of the application
+     *
+     * @param stage {@link Stage} window if the application
+     * @param model {@link GameManager} to save because the view know the model for simplicity
+     */
     public MainView(Stage stage, GameManager model) {
         stage.setTitle("JAVA RTS");
         this.model = model;

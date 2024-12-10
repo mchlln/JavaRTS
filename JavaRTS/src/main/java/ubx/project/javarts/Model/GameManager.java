@@ -140,6 +140,15 @@ public class GameManager implements Subject {
         notifyObservers();
     }
 
+    /**
+     * Checks whether the building exists, if not notifies the error Listener
+     * If the building is not in the right state, it will notify the error listener that
+     * we are in the wrong state.
+     * If the conditions are right, it tries to repair the building by calling the {@link BuildingManager}
+     * Notifies the error listener if we don't have enough resources.
+     *
+     * @param building the {@link Building} to repair
+     */
     public void repairBuilding(Building building) {
         if (!buildings.exists(building)){
             notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
@@ -155,6 +164,15 @@ public class GameManager implements Subject {
         }
     }
 
+    /**
+     * Checks whether the building exists, if not notifies the error Listener
+     * If the building is not in the right state, it will notify the error listener that
+     * we are in the wrong state.
+     * If the conditions are right, it tries to boost the building by calling the {@link BuildingManager}
+     * Notifies the error listener if we don't have enough resources.
+     *
+     * @param building the {@link Building} to boost
+     */
     public void boostBuilding(Building building) {
         if (!buildings.exists(building)){
             notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
@@ -170,6 +188,15 @@ public class GameManager implements Subject {
         }
     }
 
+    /**
+     * Checks whether the building exists, if not notifies the error Listener
+     * If the building is not in the right state, it will notify the error listener that
+     * we are in the wrong state.
+     * If the conditions are right, it tries to block the building by calling the {@link BuildingManager}
+     * Notifies the error listener if we don't have enough resources.
+     *
+     * @param building the {@link Building} to block
+     */
     public void blockBuilding(Building building) {
         if (!buildings.exists(building)){
             notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
@@ -185,6 +212,15 @@ public class GameManager implements Subject {
         }
     }
 
+    /**
+     * Checks whether the building exists, if not notifies the error Listener
+     * If the building is not in the right state, it will notify the error listener that
+     * we are in the wrong state.
+     * If the conditions are right, it tries to repair the building by calling the {@link BuildingManager}
+     * Notifies the error listener if we don't have enough resources.
+     *
+     * @param building the {@link Building} to put in running {@link State}
+     */
     public void runBuilding(Building building) {
         if (!buildings.exists(building)){
             notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
@@ -223,7 +259,16 @@ public class GameManager implements Subject {
         }
 
     }
-
+    /**
+     * Finds the first inhabitant of the building and delete him.
+     *
+     * If the building doesn't exist or doesn't have inhabitants, it notifies the error listener.
+     *
+     * It finds the first inhabitant in the list of the building, removes him from its job and his house.
+     * It notifies the observers
+     *
+     * @param building the {@link Building} to remove an inhabitant from
+     */
     public void deleteInhabitantFrom(Building building) {
         if (!buildings.exists(building)){
             notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
@@ -243,6 +288,14 @@ public class GameManager implements Subject {
         notifyObservers();
     }
 
+    /**
+     * Tries to find an unemplyed person in towns, add it to the list of workers of
+     * the building, and assign the job place to the worker. Notifies the observer.
+     * Sends to the error listener a {@link TooManyWorkers} or {@link NotEnoughInhabitants} if there is
+     * no space for a new worker in the building or if no inhabitant is enemployed.
+     *
+     * @param building the {@link Building} to add a worker into
+     */
     public void assignWorkerTo(Building building) {
         try{
             People worker = findUnemployed();
@@ -257,6 +310,11 @@ public class GameManager implements Subject {
 
     }
 
+    /**
+     * Finds a person without a job in the world inhabitants.
+     * If there are none, throws a {@link NotEnoughInhabitant} exception.
+     * @return {@link People} without a job yet
+     */
     public People findUnemployed(){
         for(People people : worldInhabitants){
             if(people.getJobPlace() == null){
@@ -266,6 +324,15 @@ public class GameManager implements Subject {
         throw new NotEnoughInhabitants("No unemployed person in town.");
     }
 
+    /**
+     * Finds the first worker of the building and delete him.
+     *
+     * If the building doesn't exist or doesn't have worker, it notifies the error listener.
+     *
+     * It finds the first worker in the list of the building, removes him from its job.
+     * It notifies the observers
+     * @param building the {@link Building} to remove an worker from
+     */
     public void deleteWorkerFrom(Building building) {
         if (!buildings.exists(building)){
             notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
@@ -281,25 +348,48 @@ public class GameManager implements Subject {
     }
 
 
+    /**
+     * Retrieves the set of buildings currently managed by the system.
+     *
+     * @return a {@link Set} of {@link Building} objects representing all buildings.
+     */
     public Set<Building> getBuildings() {
         return buildings.getBuildings();
     }
 
+    /**
+     * Adds the observer to the list
+     *
+     * @param o {@link Runnable} to add to the list of observers
+     */
     @Override
     public void addObserver(Runnable o) {
         observers.add(o);
     }
 
+    /**
+     * Assign the error listener field
+     *
+     * @param o {@link Runnable}
+     */
     @Override
     public void addErrorListener(Runnable o) {
         errorListener = o;
     }
 
+    /**
+     *  Remove the observer from the list
+     *
+     * @param o {@link Runnable}
+     */
     @Override
     public void removeObserver(Runnable o) {
         observers.remove(o);
     }
 
+    /**
+     * Notifies all the observers from the list
+     */
     @Override
     public void notifyObservers() {
         for (Runnable o : observers) {
@@ -307,6 +397,13 @@ public class GameManager implements Subject {
         }
     }
 
+    /**
+     * Notifies the error listener with the provided exception.
+     * The exception is stored in the {@code currentException} field, and if an error listener is set,
+     * it is executed on the JavaFX Application thread.
+     *
+     * @param e the {@link Exception} to be sent to the error listener.
+     */
     @Override
     public void notifyErrorListener(Exception e) {
         currentException = e;
@@ -314,4 +411,5 @@ public class GameManager implements Subject {
             Platform.runLater(errorListener);
         }
     }
+
 }
