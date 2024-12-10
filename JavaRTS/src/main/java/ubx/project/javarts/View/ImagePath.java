@@ -71,7 +71,7 @@ public class ImagePath {
                     return "/ubx/project/javarts/buildingSprites/woodenCabin.png";
                 }
                 case STEELMILL -> {
-                    return "/ubx/project/javarts/buildingSprites/woodenCabin.png";
+                    return "/ubx/project/javarts/buildingSprites/steelmill.png";
                 }
                 case TOOLFACTORY -> {
                     return "/ubx/project/javarts/buildingSprites/factory.png";
