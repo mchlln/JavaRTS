@@ -130,15 +130,22 @@ public class MapView extends ScrollPane {
 
     public void showBuildingStats(Building building) {
         Stage popup = new Stage();
-        popup.setMinHeight(300);
+        popup.setMinHeight(400);
         popup.setMinWidth(200);
         popup.initModality(Modality.APPLICATION_MODAL);
         popup.setTitle("Stats");
 
         Label nameLabel = new Label("Name: " + building.getName());
         Label stateLabel = new Label("State: " + building.getState());
+
+        Button repairButton = new Button("Repair (1 Tool)");
+        repairButton.setOnAction(event -> {
+            BagOfCommands.getInstance().addCommand(new RepairBuildingCommand(building));
+            System.out.println("Building repaired: " + building.getName());
+        });
+
         VBox layout = new VBox(10);
-        layout.getChildren().addAll(nameLabel, stateLabel);
+        layout.getChildren().addAll(nameLabel, stateLabel, repairButton);
 
         Label inhabitantsLabel = new Label();
         Label workersLabel = new Label();
@@ -169,7 +176,12 @@ public class MapView extends ScrollPane {
                 BagOfCommands.getInstance().addCommand(new RemoveWorkerFrom(building));
                 System.out.println("Worker removed from " + building);
             });
-            layout.getChildren().addAll(workersLabel, addWorkersButton, removeWorkersButton);
+            Button boostBuildingButton = new Button("Boost Production (1 Tool)");
+            boostBuildingButton.setOnAction(event -> {
+                BagOfCommands.getInstance().addCommand(new BoostBuildingCommand(building));
+                System.out.println("Building " + building.getName()+ " production boosted");
+            });
+            layout.getChildren().addAll(workersLabel, addWorkersButton, removeWorkersButton, boostBuildingButton);
         }
 
         Button removeButton = new Button("Remove Building");
@@ -178,8 +190,9 @@ public class MapView extends ScrollPane {
             System.out.println("Building removed: " + building);
             popup.close();
         });
-
         layout.getChildren().add(removeButton);
+
+
         Scene scene = new Scene(layout);
         popup.setScene(scene);
 

@@ -9,6 +9,7 @@ import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.Building.BuildingBuilder;
 import ubx.project.javarts.Model.Building.BuildingManager;
 import ubx.project.javarts.Model.Building.BuildingType;
+import ubx.project.javarts.Model.Building.State.States;
 import ubx.project.javarts.Model.Resource.ResourceManager;
 
 import java.util.ArrayList;
@@ -86,9 +87,39 @@ public class GameManager implements Subject {
         notifyObservers();
     }
 
+    public void repairBuilding(Building building) {
+        if (!buildings.exists(building)){
+            notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
+        }
+        if(building.getState() != States.BROKEN){
+            notifyErrorListener( new WrongState("No need to repair this building."));
+        }
+        try{
+            buildings.repairBuilding(building);
+            notifyObservers();
+        }catch (NotEnoughResources e){
+            notifyErrorListener(e);
+        }
+    }
+
+    public void boostBuilding(Building building) {
+        if (!buildings.exists(building)){
+            notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
+        }
+        if(building.getState() != States.RUNNING){
+            notifyErrorListener( new WrongState("Cannot boost a building in state"+ building.getState()));
+        }
+        try{
+            buildings.boostBuilding(building);
+            notifyObservers();
+        }catch (NotEnoughResources e){
+            notifyErrorListener(e);
+        }
+    }
+
     public void createInhabitantInto(Building building) {
         if (!buildings.exists(building)){
-            return;
+            notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
         }
         People people = new People();
         try{

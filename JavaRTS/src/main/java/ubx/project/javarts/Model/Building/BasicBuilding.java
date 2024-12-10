@@ -162,9 +162,11 @@ public class BasicBuilding implements Building{
                 if (stateCycleRemaining == 0){
                     if (rand.nextInt(4) == 0){
                         buildingState.setCurrentState(new BrokenState(buildingState));
-                        stateChanged = true;
-                        stateCycleRemaining = -1;
+                    }else{
+                        buildingState.setCurrentState(new RunningState(buildingState));
                     }
+                    stateChanged = true;
+                    stateCycleRemaining = -1;
                 } else {
                     stateChanged =false;
                     stateCycleRemaining--;
