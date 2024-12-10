@@ -2,6 +2,7 @@ package ubx.project.javarts.Model.Building;
 
 
 import ubx.project.javarts.Exception.WrongBuildingType;
+import ubx.project.javarts.Model.Building.State.States;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Position;
 import ubx.project.javarts.Model.Resource.ResourceType;
@@ -124,6 +125,16 @@ public abstract class BuildingDecorator implements Building {
     @Override
     public void removeInhabitant(People people) {
         throw new WrongBuildingType("Building cannot have inhabitants");
+    }
+
+    @Override
+    public States getState(){
+        return decoratedBuilding.getState();
+    }
+
+    @Override
+    public boolean needViewUpdate(){
+        return decoratedBuilding.needViewUpdate();
     }
 
     @Override

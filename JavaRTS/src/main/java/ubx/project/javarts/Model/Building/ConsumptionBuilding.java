@@ -1,6 +1,7 @@
 package ubx.project.javarts.Model.Building;
 
 import ubx.project.javarts.Exception.WrongBuildingType;
+import ubx.project.javarts.Model.Building.State.States;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Resource.ResourceType;
 
@@ -30,8 +31,10 @@ public class ConsumptionBuilding extends BuildingDecorator{
     @Override
     public HashMap<ResourceType, Integer> handle(){
         HashMap<ResourceType,Integer> resources = b.handle();
-        for(ResourceType rt : dailyConsumption.keySet()){
-            resources.put(rt, resources.getOrDefault(rt, 0) - dailyConsumption.get(rt));
+        if (b.getState() == States.RUNNING || b.getState() == States.BOOSTED){
+            for(ResourceType rt : dailyConsumption.keySet()){
+                resources.put(rt, resources.getOrDefault(rt, 0) - dailyConsumption.get(rt));
+            }
         }
         return resources;
     }

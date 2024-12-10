@@ -1,5 +1,6 @@
 package ubx.project.javarts.Model.Building;
 
+import ubx.project.javarts.Model.Building.State.States;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Position;
 import ubx.project.javarts.Model.Resource.ResourceType;
@@ -30,4 +31,6 @@ public interface Building {
     public void removeInhabitant(People people);
     public HashMap<ResourceType,Integer> handle();
     public String getName();
+    public States getState();
+    public boolean needViewUpdate();
 }

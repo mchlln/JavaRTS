@@ -17,6 +17,8 @@ import javafx.util.Duration;
 import ubx.project.javarts.Controller.*;
 import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.Building.BuildingFunction;
+import ubx.project.javarts.Model.Building.BuildingType;
+import ubx.project.javarts.Model.Building.State.States;
 import ubx.project.javarts.Model.Map;
 import ubx.project.javarts.Model.Position;
 import ubx.project.javarts.Model.Size;
@@ -64,9 +66,13 @@ public class MapView extends ScrollPane {
     public void drawBuildings(Set<Building> buildings) {
         HashMap<Building, ArrayList<ArrayList<ImageView>>> newBuildings = new HashMap<>();
         for (Building building : buildings) {
-            if (buildingSprites.containsKey(building)) {
-                newBuildings.put(building, buildingSprites.get(building));
-                continue;
+            if (buildingSprites.containsKey(building)){
+                if (!building.needViewUpdate()){
+                    newBuildings.put(building, buildingSprites.get(building));
+                    continue;
+                } else {
+                    eraseBuilding(building);
+                }
             }
             Size mapSize = Map.getInstance().getSize();
             int width = mapSize.getWidth();
@@ -78,8 +84,16 @@ public class MapView extends ScrollPane {
             for (int col = 0; col < buildingWidth; col++) {
                 ArrayList<ImageView> tileImageViews = new ArrayList<>();
                 for (int row = 0; row < buildingHeight; row++) {
-                    ImageView tileImageView = new ImageView(getClass()
-                            .getResource(imagePath+building.getType().toString().toLowerCase()+"/"+row+"_"+col+".png").toExternalForm());
+                    ImageView tileImageView;
+                    System.out.println(building.getState());
+                    if (building.getState() == States.CREATION && building.getType() == BuildingType.WOODENCABIN){
+                        tileImageView = new ImageView(getClass()
+                                .getResource(imagePath+building.getType().toString().toLowerCase()+"/creation/"+row+"_"+col+".png").toExternalForm());
+                    } else {
+                        tileImageView = new ImageView(getClass()
+                                .getResource(imagePath+building.getType().toString().toLowerCase()+"/"+row+"_"+col+".png").toExternalForm());
+                    }
+
                     tileImageViews.add(tileImageView);
                     tileImageView.fitWidthProperty().bind(Bindings.divide(this.widthProperty(), width));
                     tileImageView.fitHeightProperty().bind(Bindings.divide(this.heightProperty(), height));

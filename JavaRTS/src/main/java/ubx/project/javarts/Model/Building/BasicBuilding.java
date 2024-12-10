@@ -1,5 +1,6 @@
 package ubx.project.javarts.Model.Building;
 
+import ubx.project.javarts.Model.Building.State.*;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Position;
 import ubx.project.javarts.Model.Resource.Resource;
@@ -16,6 +17,10 @@ public class BasicBuilding implements Building{
     private BuildingType type;
     private final ArrayList<BuildingFunction> functions = new ArrayList<BuildingFunction>();
     private String name;
+    private final Automata buildingState = new Automata();
+    private int stateCycleRemaining = 8;
+    private boolean stateChanged = false;
+    private Random rand = new Random();
 
     public BasicBuilding(Position pos, Size s, String name, BuildingType type, Map<ResourceType, Integer> cost){
         this.id = UUID.randomUUID();
@@ -24,6 +29,7 @@ public class BasicBuilding implements Building{
         this.name = name;
         this.type = type;
         this.cost = cost;
+        buildingState.setCurrentState(new CreationState(buildingState));
     }
     @Override
     public Size getSize() {
@@ -126,7 +132,78 @@ public class BasicBuilding implements Building{
     }
     @Override
     public HashMap<ResourceType,Integer> handle(){
+        handleState();
         return new HashMap<>();
+    }
+
+    private void handleState(){
+        switch (buildingState.getCurrentState()){
+            case CREATION: // CREATION --> RUNNING
+                if (stateCycleRemaining == 0){
+                    buildingState.setCurrentState(new RunningState(buildingState));
+                    stateChanged = true;
+                    System.out.println("[STATE] building switched to running state");
+                    stateCycleRemaining = -1;
+                } else {
+                    stateChanged =false;
+                    stateCycleRemaining--;
+                }
+                break;
+            case RUNNING: // RUNNING --> BROKEN
+                if (rand.nextInt(100) == 0){// 1/100 chance to break
+                    buildingState.setCurrentState(new BrokenState(buildingState));
+                    stateChanged = true;
+                    stateCycleRemaining = -1;
+                } else {
+                    stateChanged =false;
+                }
+                break;
+            case BOOSTED: // BOOSTED --> BROKEN
+                if (stateCycleRemaining == 0){
+                    if (rand.nextInt(4) == 0){
+                        buildingState.setCurrentState(new BrokenState(buildingState));
+                        stateChanged = true;
+                        stateCycleRemaining = -1;
+                    }
+                } else {
+                    stateChanged =false;
+                    stateCycleRemaining--;
+                }
+            default:
+                stateChanged = false;
+                break;
+        }
+    }
+
+    public void switchState(States state, int numberOfCycles){
+        switch (state){
+            case RUNNING:
+                buildingState.setCurrentState(new RunningState(buildingState));
+                stateChanged = true;
+                stateCycleRemaining = -1;
+                break;
+            case BOOSTED:
+                buildingState.setCurrentState(new BoostState(buildingState));
+                stateChanged = true;
+                stateCycleRemaining = numberOfCycles;
+                break;
+            case BROKEN:
+                buildingState.setCurrentState(new BrokenState(buildingState));
+                stateChanged = true;
+                stateCycleRemaining = -1;
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public boolean needViewUpdate(){
+        return stateChanged;
+    }
+
+    public States getState(){
+        return buildingState.getCurrentState();
     }
 
     @Override

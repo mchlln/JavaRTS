@@ -39,6 +39,7 @@ public class GameManager implements Subject {
     private void loop(){
         timeline = new Timeline(new KeyFrame(Duration.millis(1000), e -> {
             try{
+                System.out.println("World Inhabitants = " + worldInhabitants.size());
                 buildings.handle();
                 notifyObservers();
             } catch (NotEnoughResources ex) {
@@ -88,12 +89,14 @@ public class GameManager implements Subject {
     public void createInhabitantInto(Building building) {
         if (!buildings.exists(building)){
             return;
-        }try{
-            People people = new People();
+        }
+        People people = new People();
+        try{
             worldInhabitants.add(people);
             buildings.addInhabitantInto(building,people);
             notifyObservers();
-        }catch (TooManyInhabitants e){
+        }catch (TooManyInhabitants | WrongState e){
+            worldInhabitants.remove(people); // NEED TO CHECK WORLD INHABITANT LENGTH
             notifyErrorListener(e);
         }
 
