@@ -84,6 +84,12 @@ public class GameManager implements Subject {
         }
         map.destruct(building.getPosition(), building.getSize());
         buildings.removeBuilding(building);
+        while(!building.getInhabitants().isEmpty()){
+            deleteInhabitantFrom(building);
+        }
+        while (!building.getWorkers().isEmpty()){
+            deleteWorkerFrom(building);
+        }
         notifyObservers();
     }
 
