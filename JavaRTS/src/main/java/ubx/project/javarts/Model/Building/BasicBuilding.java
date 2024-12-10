@@ -11,24 +11,27 @@ import java.util.*;
 
 public class BasicBuilding implements Building{
     private final UUID id;
-    private Map<ResourceType, Integer> cost;
+    private final Map<ResourceType, Integer> cost;
     private final Size size;
     private final Position position;
-    private BuildingType type;
+    private final BuildingType type;
     private final ArrayList<BuildingFunction> functions = new ArrayList<BuildingFunction>();
-    private String name;
+    private final String name;
+    private final int constructionTime;
     private final Automata buildingState = new Automata();
-    private int stateCycleRemaining = 8;
+    private int stateCycleRemaining;
     private boolean stateChanged = false;
     private Random rand = new Random();
 
-    public BasicBuilding(Position pos, Size s, String name, BuildingType type, Map<ResourceType, Integer> cost){
+    public BasicBuilding(Position pos, Size s, String name, BuildingType type, Map<ResourceType, Integer> cost, int constructionTime){
         this.id = UUID.randomUUID();
         this.position = pos;
         this.size = s;
         this.name = name;
         this.type = type;
         this.cost = cost;
+        this.constructionTime = constructionTime;
+        stateCycleRemaining = constructionTime;
         buildingState.setCurrentState(new CreationState(buildingState));
     }
     @Override
@@ -47,9 +50,16 @@ public class BasicBuilding implements Building{
     }
 
     @Override
-    public void getConstructionTime() {
-
+    public int getConstructionTime() {
+        return constructionTime;
     }
+
+    @Override
+    public int getRemainingTime(){
+        return stateCycleRemaining;
+    }
+
+
 
     @Override
     public BuildingType getType() {
@@ -171,6 +181,7 @@ public class BasicBuilding implements Building{
                     stateChanged =false;
                     stateCycleRemaining--;
                 }
+                break;
             default:
                 stateChanged = false;
                 break;

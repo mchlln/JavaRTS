@@ -12,7 +12,8 @@ public interface Building {
     Size getSize();
     Map<ResourceType, Integer> getCost();
     UUID getId();
-    void getConstructionTime(); //TODO: find return type
+    int getConstructionTime();
+    public int getRemainingTime();
     BuildingType getType();
     Position getPosition();
     ArrayList<BuildingFunction> getFunctions();
