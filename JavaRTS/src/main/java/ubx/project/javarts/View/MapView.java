@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -44,6 +45,13 @@ public class MapView extends ScrollPane {
             for (int row = 0; row < height; row++) {
                 ImageView tileImageView = new ImageView(getClass()
                         .getResource("/ubx/project/javarts/mapTiles/tile_0002.png").toExternalForm());
+                tileImageView.setOnMouseEntered((MouseEvent t) -> {
+
+                    tileImageView.setOpacity(0.5);
+                });
+                tileImageView.setOnMouseExited((MouseEvent t) -> {
+                    tileImageView.setOpacity(1);
+                });
                 int finalCol = col;
                 int finalRow = row;
                 tileImageView.setOnMouseClicked(event -> {
@@ -148,7 +156,7 @@ public class MapView extends ScrollPane {
         });
 
         ProgressBar constructionProgressBar = new ProgressBar();
-        if(building.getState()!=States.CREATION){
+        if(building.getState()!=States.CONSTRUCTION){
             constructionProgressBar.setVisible(false);
         }
         constructionProgressBar.setMinWidth(200);
@@ -223,7 +231,7 @@ public class MapView extends ScrollPane {
                     if(building.needViewUpdate()){
                         stateLabel.setText("State: " + building.getState());
                     }
-                    if (building.getState() == States.CREATION) {
+                    if (building.getState() == States.CONSTRUCTION) {
                         constructionProgressBar.setVisible(true);
                         double progress = (double) (building.getConstructionTime()-building.getRemainingTime()) / building.getConstructionTime();
                         constructionProgressBar.setProgress(progress);
