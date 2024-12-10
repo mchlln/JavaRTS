@@ -30,7 +30,7 @@ public class ProductionBuilding extends BuildingDecorator{
     public HashMap<ResourceType, Integer> handle(){
         States currentState = b.getState();
         HashMap<ResourceType,Integer> resources = b.handle();
-        if (currentState == States.CREATION || currentState == States.BROKEN) return resources;
+        if (currentState == States.CONSTRUCTION || currentState == States.BROKEN) return resources;
         int boost = 1;
         if (currentState == States.BOOSTED) boost = 2;
         for(ResourceType rt : dailyProduction.keySet()){

@@ -35,7 +35,7 @@ public class WorkingBuilding extends BuildingDecorator{
     }
     @Override
     public void addWorker(People people){
-        if (b.getState() == States.CREATION) return;
+        if (b.getState() == States.CONSTRUCTION) return;
         if(getNumberWorkers()<maxWorkers){
             workers.add(people);
         }else{
@@ -44,7 +44,7 @@ public class WorkingBuilding extends BuildingDecorator{
     }
     @Override
     public void removeWorker(People people){
-        if (b.getState() == States.CREATION) return;
+        if (b.getState() == States.CONSTRUCTION) return;
         if(getNumberWorkers()>0){
             workers.remove(people);
         }else{

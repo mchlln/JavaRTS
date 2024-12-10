@@ -1,10 +1,10 @@
 package ubx.project.javarts.Model.Building.State;
 
-public class CreationState extends AbstractState{
+public class ConstructionState extends AbstractState{
     private final Automata automata;
 
-    public CreationState(Automata automata) {
-        super(States.CREATION);
+    public ConstructionState(Automata automata) {
+        super(States.CONSTRUCTION);
         this.automata = automata;
     }
 

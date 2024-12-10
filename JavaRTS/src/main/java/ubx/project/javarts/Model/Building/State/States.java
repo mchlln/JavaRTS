@@ -1,7 +1,7 @@
 package ubx.project.javarts.Model.Building.State;
 
 public enum States {
-    CREATION,
+    CONSTRUCTION,
     RUNNING,
     BROKEN,
     BOOSTED

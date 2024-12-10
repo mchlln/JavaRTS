@@ -3,7 +3,6 @@ package ubx.project.javarts.Model.Building;
 import ubx.project.javarts.Model.Building.State.*;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Position;
-import ubx.project.javarts.Model.Resource.Resource;
 import ubx.project.javarts.Model.Resource.ResourceType;
 import ubx.project.javarts.Model.Size;
 
@@ -32,7 +31,7 @@ public class BasicBuilding implements Building{
         this.cost = cost;
         this.constructionTime = constructionTime;
         stateCycleRemaining = constructionTime;
-        buildingState.setCurrentState(new CreationState(buildingState));
+        buildingState.setCurrentState(new ConstructionState(buildingState));
     }
     @Override
     public Size getSize() {
@@ -148,7 +147,7 @@ public class BasicBuilding implements Building{
 
     private void handleState(){
         switch (buildingState.getCurrentState()){
-            case CREATION: // CREATION --> RUNNING
+            case CONSTRUCTION: // CREATION --> RUNNING
                 if (stateCycleRemaining == 0){
                     buildingState.setCurrentState(new RunningState(buildingState));
                     stateChanged = true;
@@ -160,7 +159,7 @@ public class BasicBuilding implements Building{
                 }
                 break;
             case RUNNING: // RUNNING --> BROKEN
-                if (rand.nextInt(100) == 0){// 1/100 chance to break
+                if (rand.nextInt(1000) == 0){// 1/100 chance to break
                     buildingState.setCurrentState(new BrokenState(buildingState));
                     stateChanged = true;
                     stateCycleRemaining = -1;

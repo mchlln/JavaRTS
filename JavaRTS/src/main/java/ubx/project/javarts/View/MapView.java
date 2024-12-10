@@ -88,9 +88,10 @@ public class MapView extends ScrollPane {
                 for (int row = 0; row < buildingHeight; row++) {
                     ImageView tileImageView;
                     System.out.println(building.getState());
-                    if (building.getState() == States.CREATION && building.getType() == BuildingType.WOODENCABIN){
+                    if (building.getState() != States.RUNNING && row == buildingHeight - 1 && col == 0) {
+                        System.out.println(imagePath+building.getType().toString().toLowerCase() + "/"+row+"_"+col+ "_" +building.getState().toString().toLowerCase() + ".png");
                         tileImageView = new ImageView(getClass()
-                                .getResource(imagePath+building.getType().toString().toLowerCase()+"/creation/"+row+"_"+col+".png").toExternalForm());
+                                .getResource(imagePath+building.getType().toString().toLowerCase() + "/"+row+"_"+col+ "_" +building.getState().toString().toLowerCase() + ".png").toExternalForm());
                     } else {
                         tileImageView = new ImageView(getClass()
                                 .getResource(imagePath+building.getType().toString().toLowerCase()+"/"+row+"_"+col+".png").toExternalForm());
