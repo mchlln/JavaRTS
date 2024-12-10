@@ -2,6 +2,7 @@ package ubx.project.javarts.Model.Building;
 
 import ubx.project.javarts.Exception.NotEnoughResources;
 import ubx.project.javarts.Exception.WrongBuildingType;
+import ubx.project.javarts.Model.Building.State.States;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Resource.ResourceType;
 import ubx.project.javarts.Model.Resource.ResourceManager;
@@ -69,6 +70,16 @@ public class BuildingManager {
                 throw new NotEnoughResources("Not enough resources to create a " + building.getType());
             }
         }
+    }
+
+    public void repairBuilding(Building building) {
+        ResourceManager.removeResource(ResourceType.TOOLS,1);
+        building.switchState(States.RUNNING,-1);
+    }
+
+    public void boostBuilding(Building building) {
+        ResourceManager.removeResource(ResourceType.TOOLS,1);
+        building.switchState(States.BOOSTED,5);
     }
 
     public void removeBuilding(Building building) {

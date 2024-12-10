@@ -19,7 +19,7 @@ public class ResourceManager {
         resources.put(ResourceType.CEMENT, new Cement(0));
         resources.put(ResourceType.LUMBER, new Lumber(0));
         resources.put(ResourceType.FOOD, new Food(25));
-        resources.put(ResourceType.TOOLS, new Tools(0));
+        resources.put(ResourceType.TOOLS, new Tools(5));
     }
 
     public static void addResource(ResourceType type, int quantity) {

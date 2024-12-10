@@ -33,4 +33,5 @@ public interface Building {
     public String getName();
     public States getState();
     public boolean needViewUpdate();
+    public void switchState(States state, int numberOfCycles);
 }
