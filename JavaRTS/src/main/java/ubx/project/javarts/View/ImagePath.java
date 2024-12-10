@@ -65,10 +65,10 @@ public class ImagePath {
                     return "/ubx/project/javarts/buildingSprites/quarry.png";
                 }
                 case LUMBERMILL -> {
-                    return "/ubx/project/javarts/buildingSprites/woodenCabin.png";
+                    return "/ubx/project/javarts/buildingSprites/lumbermill.png";
                 }
                 case CEMENTPLANT -> {
-                    return "/ubx/project/javarts/buildingSprites/woodenCabin.png";
+                    return "/ubx/project/javarts/buildingSprites/cementplant.png";
                 }
                 case STEELMILL -> {
                     return "/ubx/project/javarts/buildingSprites/steelmill.png";

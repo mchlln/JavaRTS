@@ -34,7 +34,7 @@ public class LivingBuilding extends BuildingDecorator{
     }
     @Override
     public void addInhabitant(People people){
-        if (b.getState() == States.CREATION) throw new WrongState("You can't add an inhabitant to a building in construction.");
+        if (b.getState() == States.CONSTRUCTION) throw new WrongState("You can't add an inhabitant to a building in construction.");
         if(getNumberInhabitants()<getMaxInhabitants()){
             inhabitants.add(people);
         }else{
@@ -43,7 +43,7 @@ public class LivingBuilding extends BuildingDecorator{
     }
     @Override
     public void removeInhabitant(People people){
-        if (b.getState() == States.CREATION) throw new WrongState("You can't remove an inhabitant to a building in construction.");
+        if (b.getState() == States.CONSTRUCTION) throw new WrongState("You can't remove an inhabitant to a building in construction.");
         if(getNumberInhabitants()>0){
             inhabitants.remove(people);
         }
