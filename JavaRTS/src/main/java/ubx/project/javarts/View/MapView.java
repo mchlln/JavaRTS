@@ -136,8 +136,9 @@ public class MapView extends ScrollPane {
         popup.setTitle("Stats");
 
         Label nameLabel = new Label("Name: " + building.getName());
+        Label stateLabel = new Label("State: " + building.getState());
         VBox layout = new VBox(10);
-        layout.getChildren().add(nameLabel);
+        layout.getChildren().addAll(nameLabel, stateLabel);
 
         Label inhabitantsLabel = new Label();
         Label workersLabel = new Label();
@@ -147,7 +148,6 @@ public class MapView extends ScrollPane {
             Button addInhabitantsButton = new Button("Add Inhabitants");
             addInhabitantsButton.setOnAction(event -> {
                 BagOfCommands.getInstance().addCommand(new AddInhabitantInto(building));
-                updateLabel(building,inhabitantsLabel,BuildingFunction.LIVING);
                 System.out.println("Inhabitant added to  " + building);
             });
             Button removeInhabitantsButton = new Button("Remove Inhabitants");
@@ -183,7 +183,7 @@ public class MapView extends ScrollPane {
         Scene scene = new Scene(layout);
         popup.setScene(scene);
 
-        // Create a Timeline to update the labels periodically
+        // Update the labels every second while the popup is open
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.seconds(1), event -> {
                     if (building.getFunctions().contains(BuildingFunction.LIVING)) {
@@ -191,6 +191,9 @@ public class MapView extends ScrollPane {
                     }
                     if (building.getFunctions().contains(BuildingFunction.WORKING)) {
                         workersLabel.setText("Workers: " + building.getNumberWorkers() + "/" + building.getMaxWorkers());
+                    }
+                    if(building.needViewUpdate()){
+                        stateLabel.setText("State: " + building.getState());
                     }
                 })
         );
@@ -200,16 +203,6 @@ public class MapView extends ScrollPane {
         // Stop the timeline when the popup is closed
         popup.setOnCloseRequest(event -> timeline.stop());
         popup.showAndWait();
-    }
-
-    public void updateLabel(Building building, Label label, BuildingFunction function) {
-        if(function.equals(BuildingFunction.LIVING)){
-            label.setText("Inhabitants: " + building.getNumberInhabitants() + "/" + building.getMaxInhabitants());
-        }
-        else if (function.equals(BuildingFunction.WORKING)){
-            label.setText("Workers: " + building.getNumberWorkers() + "/" + building.getMaxWorkers());
-        }
-
     }
 
 }
