@@ -1,5 +1,6 @@
 package ubx.project.javarts.Model.Building;
 
+import ubx.project.javarts.Exception.NotEnoughInhabitants;
 import ubx.project.javarts.Exception.TooManyInhabitants;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Resource.ResourceType;
@@ -42,6 +43,8 @@ public class LivingBuilding extends BuildingDecorator{
     public void removeInhabitant(People people){
         if(getNumberInhabitants()>0){
             inhabitants.remove(people);
+        }else{
+            throw new NotEnoughInhabitants("Not enough inhabitants in the building");
         }
     }
 

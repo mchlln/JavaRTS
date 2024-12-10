@@ -88,6 +88,8 @@ public class BuildingManager {
             if (building.getFunctions().contains(BuildingFunction.LIVING)){
                 building.addInhabitant(people);
                 people.affectHouse(building);
+            }else{
+                throw new WrongBuildingType("Building cannot have inhabitant " + building.getType());
             }
 
         }
@@ -97,6 +99,8 @@ public class BuildingManager {
         if (buildings.contains(building)) {
             if (building.getFunctions().contains(BuildingFunction.LIVING)){
                 building.removeInhabitant(people);
+            }else{
+                throw new WrongBuildingType("Building cannot have inhabitant " + building.getType());
             }
         }
     }
@@ -112,7 +116,6 @@ public class BuildingManager {
             if (building.getFunctions().contains(BuildingFunction.WORKING)){
                 HashMap<ResourceType, Integer> resources = building.handle();
                 double percentage = ((double) building.getNumberWorkers() / building.getMaxWorkers());
-                System.out.println("percentage : " + percentage);
                 for(ResourceType rt : resources.keySet()){
                     global.put(rt, (int) (global.getOrDefault(rt, 0) + resources.get(rt)*percentage)); //update the resources according to the number of workers in the building
                 }

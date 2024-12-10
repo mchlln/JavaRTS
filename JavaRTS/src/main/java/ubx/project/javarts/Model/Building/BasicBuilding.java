@@ -1,5 +1,6 @@
 package ubx.project.javarts.Model.Building;
 
+import ubx.project.javarts.Exception.WrongBuildingType;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Position;
 import ubx.project.javarts.Model.Resource.Resource;
@@ -67,62 +68,62 @@ public class BasicBuilding implements Building{
 
     @Override
     public Map<ResourceType, Integer> getDailyConsumption() {
-        throw new WrongThreadException("Building cannot consume resources");
+        throw new WrongBuildingType("Building cannot consume resources");
     }
 
     @Override
     public List<People> getWorkers() {
-        throw new WrongThreadException("Building cannot have workers");
+        throw new WrongBuildingType("Building cannot have workers");
     }
 
     @Override
     public int getMaxWorkers() {
-        throw new WrongThreadException("Building cannot have workers");
+        throw new WrongBuildingType("Building cannot have workers");
     }
 
     @Override
     public int getNumberWorkers() {
-        throw new WrongThreadException("Building cannot have workers");
+        throw new WrongBuildingType("Building cannot have workers");
     }
 
     @Override
     public void addWorker(People people) {
-        throw new WrongThreadException("Building cannot have workers");
+        throw new WrongBuildingType("Building cannot have workers");
     }
 
     @Override
     public void removeWorker(People people) {
-        throw new WrongThreadException("Building cannot have workers");
+        throw new WrongBuildingType("Building cannot have workers");
     }
 
     @Override
     public Map<ResourceType, Integer> getDailyProduction() {
-        throw new WrongThreadException("Building cannot produce resources");
+        throw new WrongBuildingType("Building cannot produce resources");
     }
 
     @Override
     public List<People> getInhabitants() {
-        throw new WrongThreadException("Building cannot have inhabitants");
+        throw new WrongBuildingType("Building cannot have inhabitants");
     }
 
     @Override
     public int getMaxInhabitants() {
-        throw new WrongThreadException("Building cannot have inhabitants");
+        throw new WrongBuildingType("Building cannot have inhabitants");
     }
 
     @Override
     public int getNumberInhabitants() {
-        throw new WrongThreadException("Building cannot have inhabitants");
+        throw new WrongBuildingType("Building cannot have inhabitants");
     }
 
     @Override
     public void addInhabitant(People people) {
-        throw new WrongThreadException("Building cannot have inhabitants");
+        throw new WrongBuildingType("Building cannot have inhabitants");
     }
 
     @Override
     public void removeInhabitant(People people) {
-        throw new WrongThreadException("Building cannot have inhabitants");
+        throw new WrongBuildingType("Building cannot have inhabitants");
     }
     @Override
     public HashMap<ResourceType,Integer> handle(){
