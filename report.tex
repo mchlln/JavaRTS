@@ -1,0 +1,91 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+
+\usepackage{graphics}
+
+\author{
+    Valentin Jonquière,
+    Mathilde Chollon
+}
+
+\title{Rapport Projet Approche Objet}
+
+\begin{document}
+
+\maketitle
+
+\pagebreak
+
+\tableofcontents
+
+\pagebreak
+
+\section{Design pattern}
+\subsection{Decorator}
+Nous avons utilisé le design pattern decorator afin de rendre plus simple l'ajout de nouveaux bâtiments.
+En effet, nous avons vite distingué qu'il y avait seulement 4 fonctions pour les bâtiments:
+\begin{itemize}
+    \item Avoir des travailleurs
+    \item Avoir des habitants
+    \item Générer des ressources
+    \item Consommer des ressources
+\end{itemize}
+Tous les bâtiments possédant au moins une de ces caractéristiques nous avons créé les 4 décorateurs correspondants
+(qui nous permettent d'intégrer tous ceux du sujet). L'utilisation de ce design pattern rend ainsi l'intégration
+d'un nouveau type de batiment immédiat (il n'y a pas besoin de créer de classes compliquées, mais uniquement de choisir
+si l'on veut qu'il puisse accueillir des habitants par exemple). Le point fort de ce design pattern et qu'il nous permet
+de ne pas à avoir à se soucier de savoir si un batiment doit produire des ressources par exemple, et de devoir stocker les
+batiments en plusieurs exemplaires. En effet, ils sont tous de type \textit{Building} avec pour chacun ses spécificités.
+
+\subsection{Builder}
+Pour venir compléter le design pattern \textit{Decorator} et rendre les batiments modulaires nous avons utilisé le design
+pattern builder pour associer les bons décorateurs aux batiments que l'on souhaite construire. C'est ici le rôle de la
+classe \textit{BuildingBuilder} qui avec uniquement le type du batiment voulu (\textit{WoodenCabin}, \textit{Factory}), 
+nous permet d'obtenir un batiment bien formé (avec sa consommation, production, nombre d'habitants et de travailleurs bien 
+initialisés). Le builder rend la création de batiment simple (pas besoin de chercher les paramètres à chaque fois) et permet 
+d'ajouter un nouveau type en ne le définissant qu'une seule fois.
+
+\subsection{Observer/Listener}
+Nous avons utilisé le design pattern \textit{Observer} sous sa forme \textit{Listener} afin de pouvoir mettre à jour automatiquement
+notre vu lors d'un changement du modèle. Ceci casse l'architecture traditionnelle du \textit{MVC} mais évite d'avoir un \textit{Controller}
+redondant de manière 'inutile'. Afin de traiter les traiter les erreurs montrées à l'utilisateur différemment, nous avons mis en place
+un second \textit{Listener} spécifique aux erreurs, notamment car nous avons créé plusieurs exceptions spécifiques que l'on intercepte
+dans le model (classe \textit{GameManager}) et que l'on peut faire remonter à l'utilisateur par l'intermédiaire de la vue.
+
+\subsection{State}
+En voyant que les buildings devaient avoir un temps de construction avant d'être opérationnels, nous avons pensé qu'un design pattern
+\textit{State} était une bonne solution. Pour que celui-ci ait plus d'intérêt, nous avons décidé d'ajouter plusieurs autres états possibles
+pour un batiments.
+\begin{itemize}
+    \item Construction: état de base lorsque l'on construit un bâtiment (initial state)
+    \item Running: le bâtiment fait ses actions normales tels que générer/consommer des ressources
+    \item Blocked: le bâtiment est mis en 'pause', il ne génère/consomme plus de ressources
+    \item Boosted: le bâtiment produit deux fois plus de ressources pendant un temps donné
+    \item Broken: le bâtiment ne produit plus de ressources à moins d'être réparé
+\end{itemize}
+
+\subsection{MVC}
+Nous avons utilisé l'architecture \textit{MVC} pour structurer notre application. Nous avons séparé les 3 principales composantes
+dans des packages différents. Nous nous sommes tout de même laisser la liberté de mettre la vue en \textit{Observer} du model pour
+que celle-ci se mette à jour automatiquement. Nous avons également une vue qui a connaissance du model afin de rendre la mise à
+jour des informations à l'écran moins lourde que si tout devait transiter par le \textit{Controller}.
+
+\subsection{Singleton}
+Le design pattern Singleton est celui le plus représenté dans notre application. Nous l'avons utilisé à plusieurs reprises en commençant par
+notre model (classe \textit{GameManager}). Comme celui doit être unique et accessible à plusieurs endroits du code, il est plus simple d'en créer 
+une instance unique et de la partager dans toute l'application. De nombreuses autres classes telles que \textit{ResourcesManager} servant à la gestion
+des resources du jeu où \textit{BuildingManager} servant à la gestion des batiments intègrent également le design pattern. On peut noter que la carte 
+(classe \textit{map}) est, elle aussi, basée sur le pattern afin d'assurer que le jeu ne possède qu'une seule carte. Pour finir, notre \textit{BagOfCommand}
+est également Singleton et est donc accessible facilement depuis les éléments de la vue, leur permettant de déposer facilement des commandes à traiter.
+
+\subsection{BagOfCommand + Command}
+Nous avons choisi d'utiliser ce design patter dans notre \textit{controller} car il permet de facilement ajouter de nouvelles commandes et, par conséquent,
+de nouvelles fonctionnalités. 
+
+\subsection{Bilan}
+La principale utilité de tous les design pattern mis en œuvre sont la flexibilité qu'ils nous offrent. En effet, ajouter de nouvelles fonctionnalités sera
+très simple. On peut facilement ajouter un nouveau batiment à l'aide du decorator ainsi que du builder, ajouter un nouveau cycle de vie sur les batiments 
+avec state, ajouter des fonctionnalités de gameplay en créant de nouvelles commandes.
+\end{document}
