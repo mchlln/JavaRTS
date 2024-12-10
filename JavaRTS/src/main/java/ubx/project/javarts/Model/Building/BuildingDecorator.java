@@ -5,7 +5,6 @@ import ubx.project.javarts.Exception.WrongBuildingType;
 import ubx.project.javarts.Model.Building.State.States;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Position;
-import ubx.project.javarts.Model.Resource.ResourceManager;
 import ubx.project.javarts.Model.Resource.ResourceType;
 import ubx.project.javarts.Model.Size;
 
@@ -34,9 +33,12 @@ public abstract class BuildingDecorator implements Building {
     }
 
     @Override
-    public void getConstructionTime() {
-
+    public int getConstructionTime() {
+        return decoratedBuilding.getConstructionTime();
     }
+
+    @Override
+    public int getRemainingTime(){ return decoratedBuilding.getRemainingTime(); }
 
     @Override
     public BuildingType getType() {

@@ -6,9 +6,11 @@ import javafx.beans.binding.Bindings;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -132,7 +134,7 @@ public class MapView extends ScrollPane {
     public void showBuildingStats(Building building) {
         Stage popup = new Stage();
         popup.setMinHeight(400);
-        popup.setMinWidth(200);
+        popup.setMinWidth(400);
         popup.initModality(Modality.APPLICATION_MODAL);
         popup.setTitle("Stats");
 
@@ -145,9 +147,21 @@ public class MapView extends ScrollPane {
             System.out.println("Building repaired: " + building.getName());
         });
 
-        VBox layout = new VBox(10);
-        layout.getChildren().addAll(nameLabel, stateLabel, repairButton);
+        ProgressBar constructionProgressBar = new ProgressBar();
+        if(building.getState()!=States.CREATION){
+            constructionProgressBar.setVisible(false);
+        }
+        constructionProgressBar.setMinWidth(200);
 
+        HBox layout = new HBox(10);
+        layout.setSpacing(10);
+
+        VBox buildingManagement = new VBox(10);
+
+        buildingManagement.getChildren().addAll(nameLabel, stateLabel, repairButton, constructionProgressBar);
+        layout.getChildren().addAll();
+
+        VBox peopleManagement = new VBox(10);
         Label inhabitantsLabel = new Label();
         Label workersLabel = new Label();
 
@@ -163,7 +177,7 @@ public class MapView extends ScrollPane {
                 BagOfCommands.getInstance().addCommand(new RemoveInhabitantFrom(building));
                 System.out.println("Inhabitant removed from  " + building);
             });
-            layout.getChildren().addAll(inhabitantsLabel, addInhabitantsButton,removeInhabitantsButton);
+            peopleManagement.getChildren().addAll(inhabitantsLabel, addInhabitantsButton,removeInhabitantsButton);
         }
         if (building.getFunctions().contains(BuildingFunction.WORKING)) {
             workersLabel.setText("Workers: " + building.getNumberWorkers() + "/" + building.getMaxWorkers());
@@ -182,7 +196,7 @@ public class MapView extends ScrollPane {
                 BagOfCommands.getInstance().addCommand(new BoostBuildingCommand(building));
                 System.out.println("Building " + building.getName()+ " production boosted");
             });
-            layout.getChildren().addAll(workersLabel, addWorkersButton, removeWorkersButton, boostBuildingButton);
+            peopleManagement.getChildren().addAll(workersLabel, addWorkersButton, removeWorkersButton, boostBuildingButton);
         }
 
         Button removeButton = new Button("Remove Building");
@@ -191,9 +205,9 @@ public class MapView extends ScrollPane {
             System.out.println("Building removed: " + building);
             popup.close();
         });
-        layout.getChildren().add(removeButton);
+        buildingManagement.getChildren().add(removeButton);
 
-
+        layout.getChildren().addAll( buildingManagement, peopleManagement);
         Scene scene = new Scene(layout);
         popup.setScene(scene);
 
@@ -208,6 +222,13 @@ public class MapView extends ScrollPane {
                     }
                     if(building.needViewUpdate()){
                         stateLabel.setText("State: " + building.getState());
+                    }
+                    if (building.getState() == States.CREATION) {
+                        constructionProgressBar.setVisible(true);
+                        double progress = (double) (building.getConstructionTime()-building.getRemainingTime()) / building.getConstructionTime();
+                        constructionProgressBar.setProgress(progress);
+                    } else {
+                        constructionProgressBar.setVisible(false);
                     }
                 })
         );
