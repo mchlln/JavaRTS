@@ -14,7 +14,7 @@ public class ImagePath {
             throw new UnsupportedOperationException("Utility class");
         }
 
-        public static String getResourceLogoPath(ResourceType resource) {
+    public static String getResourceLogoPath(ResourceType resource) {
             switch (resource) {
                 case COAL -> {
                     return "/ubx/project/javarts/resourcesIcons/coal.png";
