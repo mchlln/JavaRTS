@@ -4,7 +4,7 @@ import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.GameManager;
 
 /**
- * Command to add block the production/consumption of a specific building.
+ * Command to block the production/consumption of a specific building.
  *
  * Part of the Command design pattern and works with the Bag of Commands.
  * Encapsulates the action of blocking a building
