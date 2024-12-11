@@ -35,6 +35,12 @@ public class MapView extends ScrollPane {
     private HashMap<Building, ArrayList<ArrayList<ImageView>>> buildingSprites = new HashMap<>();
     private final String imagePath = "/ubx/project/javarts/buildingSprites/";
 
+    /**
+     * Creates the view of the {@link Map}.
+     * Gets the size of the map and creates a {@link GridPane} of the same size.
+     * Link an event on the click of a tile : send a command to the {@link BagOfCommands} to add a building on this tile.
+     * Contains a {@link ScrollPane} to see the map even if it is larger than our window to avoid having tiles too small.
+     */
     public MapView() {
         grid = new GridPane();
         Size mapSize = Map.getInstance().getSize();
@@ -73,6 +79,23 @@ public class MapView extends ScrollPane {
         this.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     }
 
+    /**
+     * Draws a set of buildings on the map.
+     *
+     * This method handles the following:
+     * - If a building already exists on the map and its state has not changed, the existing sprites are reused.
+     * - If a building exists on the map but its state has changed, the old sprites are removed, and the building is redrawn with the updated state.
+     * - New buildings are drawn and their corresponding sprites are added to a {@link HashMap} for future reference.
+     *
+     * For each building:
+     * - The size and position are taken into account to render its tiles accurately on the grid.
+     * - Tile images are dynamically loaded based on the building's type and state.
+     * - Tile dimensions are adjusted to match the map's grid size, and event handlers are attached to tiles to allow interaction (e.g., opening the building stats popup when clicked).
+     *
+     * Buildings that no longer exist in the provided set are erased from the map and removed from the sprite collection.
+     *
+     * @param buildings the set of {@link Building} objects currently on the map
+     */
     public void drawBuildings(Set<Building> buildings) {
         HashMap<Building, ArrayList<ArrayList<ImageView>>> newBuildings = new HashMap<>();
         for (Building building : buildings) {
@@ -119,6 +142,7 @@ public class MapView extends ScrollPane {
             newBuildings.put(building, buildingView);
         }
 
+        // Erase the buildings that were removed from the map
         for (Building building : buildingSprites.keySet()) {
             if (!newBuildings.containsKey(building)) {
                 eraseBuilding(building);
@@ -129,6 +153,11 @@ public class MapView extends ScrollPane {
 
     }
 
+    /**
+     * Erase the specified building from the map.
+     *
+     * @param building the {@link Building} instance that we need to remove
+     */
     public void eraseBuilding(Building building){
         int buildingHeight = building.getSize().getHeight();
         int buildingWidth = building.getSize().getWidth();

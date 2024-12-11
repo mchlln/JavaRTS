@@ -13,6 +13,11 @@ public class BuildingFooter extends ScrollPane {
 
     private HBox container;
 
+    /**
+     * Creates the footer composed of {@link BuildingCards}.
+     * Used to select a {@link BuildingType} before clicking on the {@link Map} and adding
+     * a new {@link Building}.
+     */
     public BuildingFooter() {
         // Initialize container to hold the widgets
         container = new HBox(10); // 10px spacing between widgets
@@ -29,12 +34,20 @@ public class BuildingFooter extends ScrollPane {
         this.setPrefWidth(Double.MAX_VALUE);
     }
 
+    /**
+     * Method needed to add a {@link BuildingCard} to the Footer.
+     * Keep the scale of the card.
+     *
+     * @param widget
+     */
     public void addWidget(javafx.scene.Node widget) {
         Scale scale = new Scale(0.8, 0.8); // Scale factor 0.5 to reduce to 50%
         widget.getTransforms().add(scale);
         container.getChildren().add(widget);
     }
 
+
+    //TODO: REMOVE FUNCTION
     public void setBuildingCardHeightFromFooter() {
         // Get the height of the FooterWidget
         this.heightProperty().addListener(new ChangeListener<Number>() {

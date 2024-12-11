@@ -14,6 +14,13 @@ public class ImagePath {
             throw new UnsupportedOperationException("Utility class");
         }
 
+    /**
+     * Returns the path of the image that corresponds to the resource in the parameters.
+     * To use when creating the resource menu at the top or in the cards in the footer.
+     *
+     * @param resource a ResourceType
+     * @return path of the resource
+     */
     public static String getResourceLogoPath(ResourceType resource) {
             switch (resource) {
                 case COAL -> {
@@ -47,6 +54,13 @@ public class ImagePath {
             }
     }
 
+    /**
+     * Returns the path of the image that corresponds to the buildingType in the parameters.
+     * To use when creating the different cards in the footer.
+     *
+     * @param buildingType a BuildingType
+     * @return path of the buildingtype
+     */
     public static String getBuildingSpritePath(BuildingType buildingType) {
             switch (buildingType) {
                 case WOODENCABIN -> {

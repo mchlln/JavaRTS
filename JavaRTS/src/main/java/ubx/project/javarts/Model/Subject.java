@@ -1,7 +1,8 @@
 package ubx.project.javarts.Model;
 
-import ubx.project.javarts.View.Observer;
-
+/**
+ * Interface Subject for the Design pattern Observer
+ */
 public interface Subject {
     public void addObserver(Runnable o);
     public void addErrorListener(Runnable o);

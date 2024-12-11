@@ -6,6 +6,9 @@ import ubx.project.javarts.Model.GameManager;
 import ubx.project.javarts.Model.Position;
 import ubx.project.javarts.View.MainView;
 
+/**
+ * Controller of the Design Pattern MVC (Model View Controller)
+ */
 public class Controller {
     private GameManager model;
     private MainView view;
@@ -13,6 +16,13 @@ public class Controller {
     public BuildingType selectedBuilding;
     public Building selectedBuildingInfo;
 
+    /**
+     * Instanciation of a controller needed to execute commands given by the view on the model
+     *
+     * @param model {@link GameManager} to send commands to
+     * @param view {@link MainView} to update after execution of commands
+     * @param bagOfCommands {@link BagOfCommands} to put commands into
+     */
     public Controller(GameManager model, MainView view, BagOfCommands bagOfCommands) {
         this.model = model;
         this.view = view;

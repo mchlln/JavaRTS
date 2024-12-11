@@ -30,6 +30,16 @@ public class BuildingCard extends VBox {
     private final BuildingType buildingType;
 
 
+    /**
+     * Creates a BuildingCard of a certain type.
+     * Composed of the caracterictics of the building such as capacity of inhabitants and workers,
+     * maximum consumption and production.
+     * If you let you mouse on the card (hover) you will see the construction cost.
+     * If you click on the card, the card gets selected ({@link BuildingType} saved in field
+     * currentlySelected).
+     *
+     * @param buildingType {@link BuildingType} of the card to create
+     */
     public BuildingCard(BuildingType buildingType) {
         Building b = new BuildingBuilder().build(buildingType, new Position(0,0));
         this.buildingType = buildingType;
@@ -103,10 +113,20 @@ public class BuildingCard extends VBox {
         createAndLinkToolTip(b);
     }
 
+    /**
+     * @return {@link BuildingType} of the card
+     */
     public BuildingType getBuildingType() {
         return buildingType;
     }
 
+    /**
+     *  Create a {@link VBox} composed of an image and a text below it
+     *
+     * @param imagePath {@link String} of the image to load
+     * @param labelText {@link String} to be displayed in the label
+     * @return {@link VBox} of an image on top of a text
+     */
     private VBox createSpriteWithLabel(String imagePath, String labelText){
         ImageView imageView = new ImageView(new Image(getClass().getResource(imagePath).toExternalForm()));
         imageView.setFitWidth(40);
@@ -122,6 +142,12 @@ public class BuildingCard extends VBox {
         return vbox;
     }
 
+    /**
+     * Similar method to {@link createSpriteWithLabel} but puts the label on the right of the image.
+     * @param imagePath {@link String} of the image to load
+     * @param labelText {@link String} to be displayed in the label
+     * @return {@link VBox} of an image next to a text
+     */
     private HBox createSpriteWithTextRight(String imagePath, String labelText) {
         ImageView imageView = new ImageView(new Image(getClass().getResource(imagePath).toExternalForm()));
         imageView.setFitWidth(40);
@@ -137,6 +163,10 @@ public class BuildingCard extends VBox {
         return hbox;
     }
 
+    /**
+     * Sets the background of the card depending on wheter the user has clicked on it.
+     * @param buildingType {@link BuildingType} of the card
+     */
     public void isSelected(BuildingType buildingType) {
         if (buildingType == this.buildingType) {
             BackgroundImage backgroundImage = new BackgroundImage(
@@ -169,11 +199,20 @@ public class BuildingCard extends VBox {
         }
     }
 
+    /**
+     * Sets the currently selected type to the type given
+     * @param buildingType
+     */
     public void setSelected(BuildingType buildingType){
         currentlySelected = buildingType;
         isSelected(buildingType);
     }
 
+    /**
+     * Create the tooltip seen on hover of a card.
+     * Composed of the construction cost of the given building.
+     * @param building {@link Building} to display the cost of
+     */
  public void createAndLinkToolTip(Building building) {
      VBox tooltipContent = new VBox(5);
      Label lbl = new Label("Building cost");
