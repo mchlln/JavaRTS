@@ -1,5 +1,6 @@
 package ubx.project.javarts.Model.Building;
 
+import ubx.project.javarts.Exception.NotEnoughInhabitants;
 import ubx.project.javarts.Exception.TooManyInhabitants;
 import ubx.project.javarts.Exception.WrongState;
 import ubx.project.javarts.Model.Building.State.States;
@@ -46,6 +47,8 @@ public class LivingBuilding extends BuildingDecorator{
         if (b.getState() == States.CONSTRUCTION) throw new WrongState("You can't remove an inhabitant to a building in construction.");
         if(getNumberInhabitants()>0){
             inhabitants.remove(people);
+        }else{
+            throw new NotEnoughInhabitants("Not enough inhabitants in the building");
         }
     }
 

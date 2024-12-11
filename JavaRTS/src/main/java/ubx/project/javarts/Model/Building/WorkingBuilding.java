@@ -48,7 +48,7 @@ public class WorkingBuilding extends BuildingDecorator{
         if(getNumberWorkers()>0){
             workers.remove(people);
         }else{
-            throw new NotEnoughWorkers("Not enough in building.");
+            throw new NotEnoughWorkers("Not enough workers in building "+b.getName());
         }
     }
 

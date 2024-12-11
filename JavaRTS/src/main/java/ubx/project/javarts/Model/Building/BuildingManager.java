@@ -107,6 +107,8 @@ public class BuildingManager {
             if (building.getFunctions().contains(BuildingFunction.LIVING)){
                 building.addInhabitant(people);
                 people.affectHouse(building);
+            }else{
+                throw new WrongBuildingType("Building cannot have inhabitant " + building.getType());
             }
 
         }

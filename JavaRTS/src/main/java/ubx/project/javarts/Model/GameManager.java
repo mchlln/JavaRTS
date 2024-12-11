@@ -5,11 +5,7 @@ import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.util.Duration;
 import ubx.project.javarts.Exception.*;
-import ubx.project.javarts.Model.Building.Building;
-import ubx.project.javarts.Model.Building.BuildingBuilder;
-import ubx.project.javarts.Model.Building.BuildingManager;
-import ubx.project.javarts.Model.Building.BuildingType;
-import ubx.project.javarts.Model.Building.State.States;
+import ubx.project.javarts.Model.Building.*;
 import ubx.project.javarts.Model.Resource.ResourceManager;
 
 import java.util.ArrayList;
@@ -273,19 +269,23 @@ public class GameManager implements Subject {
         if (!buildings.exists(building)){
             notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
         }
-        if(building.getNumberInhabitants() == 0){
-            notifyErrorListener( new NotEnoughInhabitants("No inhabitant to be deleted."));
+        try{
+            if(building.getInhabitants().isEmpty()){
+                throw new NotEnoughInhabitants("There are no inhabitants");
+            }
+            People people = building.getInhabitants().getFirst();
+            if(people.getJobPlace() != null){
+                //people.getJobPlace().removeWorker(people);
+                people.affectJobPlace(null);
+                building.removeWorker(people);
+            }
+            building.removeInhabitant(people);
+            people.affectHouse(null);
+            worldInhabitants.remove(people);
+            notifyObservers();
+        }catch(NotEnoughInhabitants | WrongBuildingType e){
+            notifyErrorListener(e);
         }
-        People people = building.getInhabitants().getFirst();
-        if(people.getJobPlace() != null){
-            people.getJobPlace().removeWorker(people);
-            people.affectJobPlace(null);
-            building.removeWorker(people);
-        }
-        building.removeInhabitant(people);
-        people.affectHouse(null);
-        worldInhabitants.remove(people);
-        notifyObservers();
     }
 
     /**
@@ -299,12 +299,12 @@ public class GameManager implements Subject {
     public void assignWorkerTo(Building building) {
         try{
             People worker = findUnemployed();
-            if (building.getMaxWorkers() > building.getWorkers().size()){
+            if (building.getMaxWorkers() > building.getNumberWorkers()){
                 building.addWorker(worker);
                 worker.affectJobPlace(building);
                 notifyObservers();
             }
-        }catch (TooManyWorkers | NotEnoughInhabitants e){
+        }catch (TooManyWorkers | NotEnoughInhabitants | WrongBuildingType e){
             notifyErrorListener(e);
         }
 
@@ -337,14 +337,30 @@ public class GameManager implements Subject {
         if (!buildings.exists(building)){
             notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
         }
-        if(building.getNumberWorkers() == 0){
-            notifyErrorListener( new NotEnoughWorkers("No worker to be deleted."));
+        try{
+            if(building.getWorkers().isEmpty()){
+                throw new NotEnoughWorkers("There are no workers");
+            }
+            People people = building.getWorkers().getFirst();
+            people.getJobPlace().removeWorker(people);
+            people.affectJobPlace(null);
+            building.removeWorker(people);
+            notifyObservers();
+        }catch(NotEnoughWorkers | WrongBuildingType e){
+            notifyErrorListener(e);
         }
-        People people = building.getWorkers().getFirst();
-        people.getJobPlace().removeWorker(people);
-        people.affectJobPlace(null);
-        building.removeWorker(people);
-        notifyObservers();
+
+    }
+
+    public void killPeople(int count){
+        while(count != 0){
+           for(Building b : getBuildings()){
+               if(b.getFunctions().contains(BuildingFunction.LIVING) && b.getNumberInhabitants() != 0){
+                   deleteInhabitantFrom(b);
+                   count--;
+               }
+           }
+        }
     }
 
 
