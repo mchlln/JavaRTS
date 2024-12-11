@@ -3,7 +3,9 @@
 \usepackage[utf8]{inputenc}
 \usepackage[french]{babel}
 
-\usepackage{graphics}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\graphicspath{ {./resources/} }
 
 \author{
     Valentin Jonquière,
@@ -34,7 +36,22 @@ et \textit{Controller}. À l'interieur de ces packages, nous avons parfois dû r
 la structure de l'application plus simple. C'est pour cela que l'on retrouve un package \textit{Building} regroupant toutes les classes relatives
 aux bâtiments (le décorateur, leur gestion, ...). Nous avons créé un diagramme des classes UML complet que vous pouvez retrouver ci-dessous.
 
+\begin{figure}[h]
+    \caption{Diagramme des classes général}
+    \centering
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{complete_UML}
+    \label{fig:UML_complet}
+\end{figure}
+
+
 Celui-ci étant trop étendu pour bien distinguer toutes les classes, voici un découpage par les principaux packages (\textit{Model}, \textit{View}, \textit{Controller}).
+
+\begin{figure}[h]
+    \caption{Diagramme des classes package controller}
+    \centering
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{controller_UML}
+    \label{fig:UML_complet}
+\end{figure}
 
 \section{Design pattern}
 \subsection{Decorator}
