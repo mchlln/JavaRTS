@@ -1,14 +1,10 @@
 package ubx.project.javarts.View;
 
-import javafx.animation.PauseTransition;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.util.Duration;
+
 import ubx.project.javarts.Controller.BagOfCommands;
 import ubx.project.javarts.Controller.Controller;
 import ubx.project.javarts.Controller.SetSelectedBuilding;
@@ -40,7 +36,8 @@ public class MainView implements Observer {
      * Creates the main window of the application
      *
      * @param stage {@link Stage} window if the application
-     * @param model {@link GameManager} to save because the view know the model for simplicity
+     * @param model {@link GameManager} to save because the view know the model for
+     *              simplicity
      */
     public MainView(Stage stage, GameManager model) {
         stage.setTitle("JAVA RTS");
@@ -56,9 +53,13 @@ public class MainView implements Observer {
         root.setBottom(footer);
         HBox modeSelection = new HBox();
         Button buildingModeButton = new Button("Building");
-        buildingModeButton.onMouseClickedProperty().setValue(event -> {switchEditionMode("building");});
+        buildingModeButton.onMouseClickedProperty().setValue(event -> {
+            switchEditionMode("building");
+        });
         Button peopleModeButton = new Button("People");
-        peopleModeButton.onMouseClickedProperty().setValue(event -> {switchEditionMode("people");});
+        peopleModeButton.onMouseClickedProperty().setValue(event -> {
+            switchEditionMode("people");
+        });
         modeSelection.getChildren().addAll(buildingModeButton, peopleModeButton);
         footer.getChildren().add(modeSelection);
         footer.getChildren().add(buildingFooter);
@@ -100,17 +101,17 @@ public class MainView implements Observer {
         peopleFooter.setSelectedBuildingInfo(building);
     }
 
-    public void setAvailability(){
-        for(BuildingCard b : cards){
-            if( ! BuildingManager.isBuildable(b.getBuildingType())){
+    public void setAvailability() {
+        for (BuildingCard b : cards) {
+            if (!BuildingManager.isBuildable(b.getBuildingType())) {
                 b.setOpacity(0.4);
-            }else{
+            } else {
                 b.setOpacity(1);
             }
         }
     }
 
-    public void switchEditionMode(String mode){
+    public void switchEditionMode(String mode) {
         if (Objects.equals(mode, "building")) {
             if (!footerState.equals("building")) {
                 footer.getChildren().remove(peopleFooter);
@@ -125,7 +126,6 @@ public class MainView implements Observer {
                 footerState = "people";
             }
 
-
         }
     }
 
@@ -138,10 +138,8 @@ public class MainView implements Observer {
 
     }
 
-
     public void updateError() {
         topContainer.showError(model.currentException.getMessage());
     }
-
 
 }

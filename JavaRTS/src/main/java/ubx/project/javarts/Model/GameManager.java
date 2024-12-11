@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.util.Duration;
 import ubx.project.javarts.Exception.*;
 import ubx.project.javarts.Model.Building.*;
+import ubx.project.javarts.Model.Building.State.States;
 import ubx.project.javarts.Model.Resource.ResourceManager;
 
 import java.util.ArrayList;
@@ -42,15 +43,17 @@ public class GameManager implements Subject {
 
     /**
      * GameLoop
-     * Creates a {@link Timeline} that calls the method Handle from the building manager to execute all
+     * Creates a {@link Timeline} that calls the method Handle from the building
+     * manager to execute all
      * actions from each building of the map.
      * We notify the observers to update the view.
-     * If we don't have enough resources, we notify the error listener to be able to show an error on the map.
+     * If we don't have enough resources, we notify the error listener to be able to
+     * show an error on the map.
      *
      */
-    private void loop(){
+    private void loop() {
         timeline = new Timeline(new KeyFrame(Duration.millis(1000), e -> {
-            try{
+            try {
                 System.out.println("World Inhabitants = " + worldInhabitants.size());
                 buildings.handle();
                 notifyObservers();
@@ -64,7 +67,8 @@ public class GameManager implements Subject {
     }
 
     /**
-     * Following the design pattern singleton, creates an instance if there are none or return the existing one if it has been created previously.
+     * Following the design pattern singleton, creates an instance if there are none
+     * or return the existing one if it has been created previously.
      *
      * @return instance of {@link GameManager} needed to do operations on the model
      */
@@ -79,30 +83,34 @@ public class GameManager implements Subject {
      * Adds a new building of the specified type to the map at the given position.
      *
      * This method performs the following:
-     * - Validates the building type. If the type is `null`, it notifies an error listener with a {@link WrongBuildingType} exception.
+     * - Validates the building type. If the type is `null`, it notifies an error
+     * listener with a {@link WrongBuildingType} exception.
      * - Creates a new building instance using the specified type and position.
      * - Checks if the specified area on the map is free to place the building.
-     *   - If the area is free, attempts to add the building to the list of buildings and marks the area as occupied on the map.
-     *   - If there are insufficient resources to construct the building, notifies an error listener with a {@link NotEnoughResources} exception.
-     * - Notifies all observers after attempting to add the building, regardless of the outcome.
+     * - If the area is free, attempts to add the building to the list of buildings
+     * and marks the area as occupied on the map.
+     * - If there are insufficient resources to construct the building, notifies an
+     * error listener with a {@link NotEnoughResources} exception.
+     * - Notifies all observers after attempting to add the building, regardless of
+     * the outcome.
      *
-     * @param type the {@link BuildingType} of the building to add
+     * @param type     the {@link BuildingType} of the building to add
      * @param position the {@link Position} where the building should be placed
      */
 
-    public void addBuilding(BuildingType type, Position position) { // TODO: review + refactor
-        if (type == null){
+    public void addBuilding(BuildingType type, Position position) {
+        if (type == null) {
             notifyErrorListener(new WrongBuildingType("No building type selected."));
             return;
         }
         Building building = b.build(type, position);
         System.out.println(building.getType());
-        if (map.isAreaFree(position, building.getSize())){
-            try{
+        if (map.isAreaFree(position, building.getSize())) {
+            try {
                 System.out.println("Adding building " + type + " to position " + position);
                 buildings.addBuilding(building);
                 map.construct(building.getPosition(), building.getSize());
-            }catch (NotEnoughResources e){
+            } catch (NotEnoughResources e) {
                 notifyErrorListener(e);
             }
         }
@@ -115,22 +123,22 @@ public class GameManager implements Subject {
      * The method performs the following :
      * - If the building doesn't exist it throws a {@link RuntimeException}
      * - If it exists :
-     *  - Removes it from the map
-     *  - Removes it from the {@link BuildingManager}
-     *  - Notifies the observers
+     * - Removes it from the map
+     * - Removes it from the {@link BuildingManager}
+     * - Notifies the observers
      *
      * @param building the {@link Building} to remove
      */
     public void removeBuilding(Building building) {
-        if (!buildings.exists(building)){
+        if (!buildings.exists(building)) {
             throw new RuntimeException("cannot remove building " + building);
         }
         map.destruct(building.getPosition(), building.getSize());
         buildings.removeBuilding(building);
-        while(!building.getInhabitants().isEmpty()){
+        while (!building.getInhabitants().isEmpty()) {
             deleteInhabitantFrom(building);
         }
-        while (!building.getWorkers().isEmpty()){
+        while (!building.getWorkers().isEmpty()) {
             deleteWorkerFrom(building);
         }
         notifyObservers();
@@ -138,93 +146,101 @@ public class GameManager implements Subject {
 
     /**
      * Checks whether the building exists, if not notifies the error Listener
-     * If the building is not in the right state, it will notify the error listener that
+     * If the building is not in the right state, it will notify the error listener
+     * that
      * we are in the wrong state.
-     * If the conditions are right, it tries to repair the building by calling the {@link BuildingManager}
+     * If the conditions are right, it tries to repair the building by calling the
+     * {@link BuildingManager}
      * Notifies the error listener if we don't have enough resources.
      *
      * @param building the {@link Building} to repair
      */
     public void repairBuilding(Building building) {
-        if (!buildings.exists(building)){
-            notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
+        if (!buildings.exists(building)) {
+            notifyErrorListener(new WrongBuildingType("The building doesn't exist"));
         }
-        if(building.getState() != States.BROKEN){
-            notifyErrorListener( new WrongState("No need to repair this building."));
+        if (building.getState() != States.BROKEN) {
+            notifyErrorListener(new WrongState("No need to repair this building."));
         }
-        try{
+        try {
             buildings.repairBuilding(building);
             notifyObservers();
-        }catch (NotEnoughResources e){
+        } catch (NotEnoughResources e) {
             notifyErrorListener(e);
         }
     }
 
     /**
      * Checks whether the building exists, if not notifies the error Listener
-     * If the building is not in the right state, it will notify the error listener that
+     * If the building is not in the right state, it will notify the error listener
+     * that
      * we are in the wrong state.
-     * If the conditions are right, it tries to boost the building by calling the {@link BuildingManager}
+     * If the conditions are right, it tries to boost the building by calling the
+     * {@link BuildingManager}
      * Notifies the error listener if we don't have enough resources.
      *
      * @param building the {@link Building} to boost
      */
     public void boostBuilding(Building building) {
-        if (!buildings.exists(building)){
-            notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
+        if (!buildings.exists(building)) {
+            notifyErrorListener(new WrongBuildingType("The building doesn't exist"));
         }
-        if(building.getState() != States.RUNNING){
-            notifyErrorListener( new WrongState("Cannot boost a building in state"+ building.getState()));
+        if (building.getState() != States.RUNNING) {
+            notifyErrorListener(new WrongState("Cannot boost a building in state" + building.getState()));
         }
-        try{
+        try {
             buildings.boostBuilding(building);
             notifyObservers();
-        }catch (NotEnoughResources e){
+        } catch (NotEnoughResources e) {
             notifyErrorListener(e);
         }
     }
 
     /**
      * Checks whether the building exists, if not notifies the error Listener
-     * If the building is not in the right state, it will notify the error listener that
+     * If the building is not in the right state, it will notify the error listener
+     * that
      * we are in the wrong state.
-     * If the conditions are right, it tries to block the building by calling the {@link BuildingManager}
+     * If the conditions are right, it tries to block the building by calling the
+     * {@link BuildingManager}
      * Notifies the error listener if we don't have enough resources.
      *
      * @param building the {@link Building} to block
      */
     public void blockBuilding(Building building) {
-        if (!buildings.exists(building)){
-            notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
+        if (!buildings.exists(building)) {
+            notifyErrorListener(new WrongBuildingType("The building doesn't exist"));
         }
-        if(building.getState() != States.RUNNING && building.getState() != States.BLOCKED){
-            notifyErrorListener( new WrongState("Cannot block a building in state"+ building.getState()));
+        if (building.getState() != States.RUNNING && building.getState() != States.BLOCKED) {
+            notifyErrorListener(new WrongState("Cannot block a building in state" + building.getState()));
         }
-        try{
+        try {
             buildings.blockBuilding(building);
             notifyObservers();
-        }catch (NotEnoughResources e){
+        } catch (NotEnoughResources e) {
             notifyErrorListener(e);
         }
     }
 
     /**
      * Checks whether the building exists, if not notifies the error Listener
-     * If the building is not in the right state, it will notify the error listener that
+     * If the building is not in the right state, it will notify the error listener
+     * that
      * we are in the wrong state.
-     * If the conditions are right, it tries to repair the building by calling the {@link BuildingManager}
+     * If the conditions are right, it tries to repair the building by calling the
+     * {@link BuildingManager}
      * Notifies the error listener if we don't have enough resources.
      *
      * @param building the {@link Building} to put in running {@link State}
      */
     public void runBuilding(Building building) {
-        if (!buildings.exists(building)){
-            notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
+        if (!buildings.exists(building)) {
+            notifyErrorListener(new WrongBuildingType("The building doesn't exist"));
         }
-        try{
+        try {
             buildings.runBuilding(building);
             notifyObservers();
-        }catch (NotEnoughResources e){
+        } catch (NotEnoughResources e) {
             notifyErrorListener(e);
         }
     }
@@ -233,49 +249,54 @@ public class GameManager implements Subject {
      * Create an inhabitant and adds it to the building.
      *
      * If the building doesn't exist : it returns.
-     * It tries to create a {@link People} and calls the {@link BuildingManager} to add him in the building.
+     * It tries to create a {@link People} and calls the {@link BuildingManager} to
+     * add him in the building.
      * It gets added to the list of WorldInhabitants and then notify the observers.
      *
-     * If too many inhabitants are in the building or the building is in a wrong state, it notifies the error listeners.
+     * If too many inhabitants are in the building or the building is in a wrong
+     * state, it notifies the error listeners.
      *
      * @param building the {@link Building} to add an inhabitant into
      */
     public void createInhabitantInto(Building building) {
-        if (!buildings.exists(building)){
-            notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
+        if (!buildings.exists(building)) {
+            notifyErrorListener(new WrongBuildingType("The building doesn't exist"));
         }
         People people = new People();
-        try{
+        try {
             worldInhabitants.add(people);
-            buildings.addInhabitantInto(building,people);
+            buildings.addInhabitantInto(building, people);
             notifyObservers();
-        }catch (TooManyInhabitants | WrongState e){
+        } catch (TooManyInhabitants | WrongState e) {
             worldInhabitants.remove(people); // NEED TO CHECK WORLD INHABITANT LENGTH
             notifyErrorListener(e);
         }
 
     }
+
     /**
      * Finds the first inhabitant of the building and delete him.
      *
-     * If the building doesn't exist or doesn't have inhabitants, it notifies the error listener.
+     * If the building doesn't exist or doesn't have inhabitants, it notifies the
+     * error listener.
      *
-     * It finds the first inhabitant in the list of the building, removes him from its job and his house.
+     * It finds the first inhabitant in the list of the building, removes him from
+     * its job and his house.
      * It notifies the observers
      *
      * @param building the {@link Building} to remove an inhabitant from
      */
     public void deleteInhabitantFrom(Building building) {
-        if (!buildings.exists(building)){
-            notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
+        if (!buildings.exists(building)) {
+            notifyErrorListener(new WrongBuildingType("The building doesn't exist"));
         }
-        try{
-            if(building.getInhabitants().isEmpty()){
+        try {
+            if (building.getInhabitants().isEmpty()) {
                 throw new NotEnoughInhabitants("There are no inhabitants");
             }
             People people = building.getInhabitants().getFirst();
-            if(people.getJobPlace() != null){
-                //people.getJobPlace().removeWorker(people);
+            if (people.getJobPlace() != null) {
+                // people.getJobPlace().removeWorker(people);
                 people.affectJobPlace(null);
                 building.removeWorker(people);
             }
@@ -283,7 +304,7 @@ public class GameManager implements Subject {
             people.affectHouse(null);
             worldInhabitants.remove(people);
             notifyObservers();
-        }catch(NotEnoughInhabitants | WrongBuildingType e){
+        } catch (NotEnoughInhabitants | WrongBuildingType e) {
             notifyErrorListener(e);
         }
     }
@@ -291,20 +312,21 @@ public class GameManager implements Subject {
     /**
      * Tries to find an unemplyed person in towns, add it to the list of workers of
      * the building, and assign the job place to the worker. Notifies the observer.
-     * Sends to the error listener a {@link TooManyWorkers} or {@link NotEnoughInhabitants} if there is
+     * Sends to the error listener a {@link TooManyWorkers} or
+     * {@link NotEnoughInhabitants} if there is
      * no space for a new worker in the building or if no inhabitant is enemployed.
      *
      * @param building the {@link Building} to add a worker into
      */
     public void assignWorkerTo(Building building) {
-        try{
+        try {
             People worker = findUnemployed();
-            if (building.getMaxWorkers() > building.getNumberWorkers()){
+            if (building.getMaxWorkers() > building.getNumberWorkers()) {
                 building.addWorker(worker);
                 worker.affectJobPlace(building);
                 notifyObservers();
             }
-        }catch (TooManyWorkers | NotEnoughInhabitants | WrongBuildingType e){
+        } catch (TooManyWorkers | NotEnoughInhabitants | WrongBuildingType e) {
             notifyErrorListener(e);
         }
 
@@ -313,11 +335,12 @@ public class GameManager implements Subject {
     /**
      * Finds a person without a job in the world inhabitants.
      * If there are none, throws a {@link NotEnoughInhabitant} exception.
+     * 
      * @return {@link People} without a job yet
      */
-    public People findUnemployed(){
-        for(People people : worldInhabitants){
-            if(people.getJobPlace() == null){
+    public People findUnemployed() {
+        for (People people : worldInhabitants) {
+            if (people.getJobPlace() == null) {
                 return people;
             }
         }
@@ -327,18 +350,21 @@ public class GameManager implements Subject {
     /**
      * Finds the first worker of the building and delete him.
      *
-     * If the building doesn't exist or doesn't have worker, it notifies the error listener.
+     * If the building doesn't exist or doesn't have worker, it notifies the error
+     * listener.
      *
-     * It finds the first worker in the list of the building, removes him from its job.
+     * It finds the first worker in the list of the building, removes him from its
+     * job.
      * It notifies the observers
+     * 
      * @param building the {@link Building} to remove an worker from
      */
     public void deleteWorkerFrom(Building building) {
-        if (!buildings.exists(building)){
-            notifyErrorListener( new WrongBuildingType("The building doesn't exist"));
+        if (!buildings.exists(building)) {
+            notifyErrorListener(new WrongBuildingType("The building doesn't exist"));
         }
-        try{
-            if(building.getWorkers().isEmpty()){
+        try {
+            if (building.getWorkers().isEmpty()) {
                 throw new NotEnoughWorkers("There are no workers");
             }
             People people = building.getWorkers().getFirst();
@@ -346,23 +372,22 @@ public class GameManager implements Subject {
             people.affectJobPlace(null);
             building.removeWorker(people);
             notifyObservers();
-        }catch(NotEnoughWorkers | WrongBuildingType e){
+        } catch (NotEnoughWorkers | WrongBuildingType e) {
             notifyErrorListener(e);
         }
 
     }
 
-    public void killPeople(int count){
-        while(count != 0){
-           for(Building b : getBuildings()){
-               if(b.getFunctions().contains(BuildingFunction.LIVING) && b.getNumberInhabitants() != 0){
-                   deleteInhabitantFrom(b);
-                   count--;
-               }
-           }
+    public void killPeople(int count) {
+        while (count != 0) {
+            for (Building b : getBuildings()) {
+                if (b.getFunctions().contains(BuildingFunction.LIVING) && b.getNumberInhabitants() != 0) {
+                    deleteInhabitantFrom(b);
+                    count--;
+                }
+            }
         }
     }
-
 
     /**
      * Retrieves the set of buildings currently managed by the system.
@@ -394,7 +419,7 @@ public class GameManager implements Subject {
     }
 
     /**
-     *  Remove the observer from the list
+     * Remove the observer from the list
      *
      * @param o {@link Runnable}
      */
@@ -415,7 +440,8 @@ public class GameManager implements Subject {
 
     /**
      * Notifies the error listener with the provided exception.
-     * The exception is stored in the {@code currentException} field, and if an error listener is set,
+     * The exception is stored in the {@code currentException} field, and if an
+     * error listener is set,
      * it is executed on the JavaFX Application thread.
      *
      * @param e the {@link Exception} to be sent to the error listener.

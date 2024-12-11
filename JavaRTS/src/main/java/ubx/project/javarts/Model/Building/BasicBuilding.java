@@ -1,6 +1,7 @@
 package ubx.project.javarts.Model.Building;
 
 import ubx.project.javarts.Model.Building.State.*;
+import ubx.project.javarts.Exception.WrongBuildingType;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Position;
 import ubx.project.javarts.Model.Resource.ResourceType;
@@ -8,7 +9,7 @@ import ubx.project.javarts.Model.Size;
 
 import java.util.*;
 
-public class BasicBuilding implements Building{
+public class BasicBuilding implements Building {
     private final UUID id;
     private final Map<ResourceType, Integer> cost;
     private final Size size;
@@ -22,7 +23,8 @@ public class BasicBuilding implements Building{
     private boolean stateChanged = false;
     private Random rand = new Random();
 
-    public BasicBuilding(Position pos, Size s, String name, BuildingType type, Map<ResourceType, Integer> cost, int constructionTime){
+    public BasicBuilding(Position pos, Size s, String name, BuildingType type, Map<ResourceType, Integer> cost,
+            int constructionTime) {
         this.id = UUID.randomUUID();
         this.position = pos;
         this.size = s;
@@ -33,6 +35,7 @@ public class BasicBuilding implements Building{
         stateCycleRemaining = constructionTime;
         buildingState.setCurrentState(new ConstructionState(buildingState));
     }
+
     @Override
     public Size getSize() {
         return size;
@@ -54,11 +57,9 @@ public class BasicBuilding implements Building{
     }
 
     @Override
-    public int getRemainingTime(){
+    public int getRemainingTime() {
         return stateCycleRemaining;
     }
-
-
 
     @Override
     public BuildingType getType() {
@@ -76,7 +77,7 @@ public class BasicBuilding implements Building{
     }
 
     @Override
-    public void addFunction(ArrayList<BuildingFunction> functions){
+    public void addFunction(ArrayList<BuildingFunction> functions) {
         this.functions.addAll(functions);
     }
 
@@ -139,45 +140,46 @@ public class BasicBuilding implements Building{
     public void removeInhabitant(People people) {
         throw new WrongBuildingType("Building cannot have inhabitants");
     }
+
     @Override
-    public HashMap<ResourceType,Integer> handle(){
+    public HashMap<ResourceType, Integer> handle() {
         handleState();
         return new HashMap<>();
     }
 
-    private void handleState(){
-        switch (buildingState.getCurrentStateName()){
+    private void handleState() {
+        switch (buildingState.getCurrentStateName()) {
             case CONSTRUCTION: // CREATION --> RUNNING
-                if (stateCycleRemaining == 0){
+                if (stateCycleRemaining == 0) {
                     buildingState.setCurrentState(new RunningState(buildingState));
                     stateChanged = true;
                     System.out.println("[STATE] building switched to running state");
                     stateCycleRemaining = -1;
                 } else {
-                    stateChanged =false;
+                    stateChanged = false;
                     stateCycleRemaining--;
                 }
                 break;
             case RUNNING: // RUNNING --> BROKEN
-                if (rand.nextInt(1000) == 0){// 1/1000 chance to break
+                if (rand.nextInt(1000) == 0) {// 1/1000 chance to break
                     buildingState.getCurrentState().broken();
                     stateChanged = true;
                     stateCycleRemaining = -1;
                 } else {
-                    stateChanged =false;
+                    stateChanged = false;
                 }
                 break;
             case BOOSTED: // BOOSTED --> BROKEN
-                if (stateCycleRemaining == 0){
-                    if (rand.nextInt(4) == 0){
+                if (stateCycleRemaining == 0) {
+                    if (rand.nextInt(4) == 0) {
                         buildingState.getCurrentState().broken();
-                    }else{
+                    } else {
                         buildingState.getCurrentState().running();
                     }
                     stateChanged = true;
                     stateCycleRemaining = -1;
                 } else {
-                    stateChanged =false;
+                    stateChanged = false;
                     stateCycleRemaining--;
                 }
                 break;
@@ -187,8 +189,8 @@ public class BasicBuilding implements Building{
         }
     }
 
-    public void switchState(States state, int numberOfCycles){
-        switch (state){
+    public void switchState(States state, int numberOfCycles) {
+        switch (state) {
             case RUNNING:
                 buildingState.getCurrentState().running();
                 stateChanged = true;
@@ -214,11 +216,11 @@ public class BasicBuilding implements Building{
     }
 
     @Override
-    public boolean needViewUpdate(){
+    public boolean needViewUpdate() {
         return stateChanged;
     }
 
-    public States getState(){
+    public States getState() {
         return buildingState.getCurrentStateName();
     }
 

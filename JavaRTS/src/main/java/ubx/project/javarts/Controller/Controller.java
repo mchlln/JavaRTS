@@ -3,7 +3,6 @@ package ubx.project.javarts.Controller;
 import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.Building.BuildingType;
 import ubx.project.javarts.Model.GameManager;
-import ubx.project.javarts.Model.Position;
 import ubx.project.javarts.View.MainView;
 
 /**
@@ -17,10 +16,11 @@ public class Controller {
     public Building selectedBuildingInfo;
 
     /**
-     * Instanciation of a controller needed to execute commands given by the view on the model
+     * Instanciation of a controller needed to execute commands given by the view on
+     * the model
      *
-     * @param model {@link GameManager} to send commands to
-     * @param view {@link MainView} to update after execution of commands
+     * @param model         {@link GameManager} to send commands to
+     * @param view          {@link MainView} to update after execution of commands
      * @param bagOfCommands {@link BagOfCommands} to put commands into
      */
     public Controller(GameManager model, MainView view, BagOfCommands bagOfCommands) {
@@ -36,7 +36,7 @@ public class Controller {
     }
 
     public void ChangeSelectedBuildingInfo(Building building) {
-        selectedBuildingInfo= building;
+        selectedBuildingInfo = building;
         view.setSelectedBuildingInfo(building);
     }
 

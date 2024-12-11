@@ -9,17 +9,12 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import ubx.project.javarts.Model.Building.Building;
-import ubx.project.javarts.Model.Building.BuildingBuilder;
 import ubx.project.javarts.Model.Building.BuildingFunction;
-import ubx.project.javarts.Model.Building.BuildingType;
-import ubx.project.javarts.Model.Position;
-import ubx.project.javarts.Model.Resource.ResourceType;
 
-import java.util.Map;
-
-public class BuildingInfoCard extends VBox{
+public class BuildingInfoCard extends VBox {
     private Building selectedBuilding;
     private final HBox root = new HBox();
+
     public BuildingInfoCard(Building building, Building selectedBuilding) {
         root.setPadding(new Insets(10));
         root.setSpacing(15);
@@ -28,7 +23,8 @@ public class BuildingInfoCard extends VBox{
         this.selectedBuilding = selectedBuilding;
 
         VBox house = new VBox();
-        ImageView houseView = new ImageView(new Image(getClass().getResource(ImagePath.getBuildingSpritePath(building.getType())).toExternalForm()));
+        ImageView houseView = new ImageView(new Image(
+                getClass().getResource(ImagePath.getBuildingSpritePath(building.getType())).toExternalForm()));
         houseView.setFitWidth(100);
         houseView.setFitHeight(100);
 
@@ -45,33 +41,39 @@ public class BuildingInfoCard extends VBox{
         for (BuildingFunction buildingFunction : building.getFunctions()) {
             switch (buildingFunction) {
                 case LIVING:
-                    HBox personBox = createSpriteWithTextRight("/ubx/project/javarts/icons/house.png", String.valueOf(building.getInhabitants().size()), String.valueOf(building.getMaxInhabitants()));
+                    HBox personBox = createSpriteWithTextRight("/ubx/project/javarts/icons/house.png",
+                            String.valueOf(building.getInhabitants().size()),
+                            String.valueOf(building.getMaxInhabitants()));
                     bottomSection.getChildren().add(personBox);
                     break;
                 case WORKING:
-                    HBox workerBox = createSpriteWithTextRight("/ubx/project/javarts/icons/worker.png", String.valueOf(building.getWorkers().size()), String.valueOf(building.getMaxWorkers()));
+                    HBox workerBox = createSpriteWithTextRight("/ubx/project/javarts/icons/worker.png",
+                            String.valueOf(building.getWorkers().size()), String.valueOf(building.getMaxWorkers()));
                     bottomSection.getChildren().add(workerBox);
                     break;
             }
         }
         house.getChildren().addAll(houseView, farmLabel);
         root.getChildren().addAll(house, bottomSection);
-       // root.setPrefSize(500,250);
+        // root.setPrefSize(500,250);
 
         this.getChildren().addAll(root);
         isSelected(building);
         /*
-        this.setBackground(new Background(new BackgroundImage(
-                new Image(getClass().getResource("/ubx/project/javarts/buildingCards/not_selected_info_background.png").toExternalForm()),
-                BackgroundRepeat.NO_REPEAT,    // Repeat horizontally
-                BackgroundRepeat.NO_REPEAT,    // Repeat vertically
-                BackgroundPosition.CENTER,     // Position
-                new BackgroundSize(
-                        BackgroundSize.DEFAULT.getWidth(),
-                        BackgroundSize.DEFAULT.getHeight(),
-                        true, true, true, false // Scale to container size
-                )
-        )));*/
+         * this.setBackground(new Background(new BackgroundImage(
+         * new Image(getClass().getResource(
+         * "/ubx/project/javarts/buildingCards/not_selected_info_background.png").
+         * toExternalForm()),
+         * BackgroundRepeat.NO_REPEAT, // Repeat horizontally
+         * BackgroundRepeat.NO_REPEAT, // Repeat vertically
+         * BackgroundPosition.CENTER, // Position
+         * new BackgroundSize(
+         * BackgroundSize.DEFAULT.getWidth(),
+         * BackgroundSize.DEFAULT.getHeight(),
+         * true, true, true, false // Scale to container size
+         * )
+         * )));
+         */
     }
 
     private HBox createSpriteWithTextRight(String imagePath, String current, String max) {
@@ -89,34 +91,34 @@ public class BuildingInfoCard extends VBox{
         return hbox;
     }
 
-
     public void isSelected(Building b) {
         if (b == this.selectedBuilding) {
             BackgroundImage backgroundImage = new BackgroundImage(
-                    new Image(getClass().getResource("/ubx/project/javarts/buildingCards/selected_info_background.png").toExternalForm()),
-                    BackgroundRepeat.NO_REPEAT,    // Repeat horizontally
-                    BackgroundRepeat.NO_REPEAT,    // Repeat vertically
-                    BackgroundPosition.CENTER,     // Position
+                    new Image(getClass().getResource("/ubx/project/javarts/buildingCards/selected_info_background.png")
+                            .toExternalForm()),
+                    BackgroundRepeat.NO_REPEAT, // Repeat horizontally
+                    BackgroundRepeat.NO_REPEAT, // Repeat vertically
+                    BackgroundPosition.CENTER, // Position
                     new BackgroundSize(
                             BackgroundSize.DEFAULT.getWidth(),
                             BackgroundSize.DEFAULT.getHeight(),
                             true, true, true, false // Scale to container size
-                    )
-            );
+                    ));
 
             root.setBackground(new Background(backgroundImage));
         } else {
             BackgroundImage backgroundImage = new BackgroundImage(
-                    new Image(getClass().getResource("/ubx/project/javarts/buildingCards/not_selected_info_background.png").toExternalForm()),
-                    BackgroundRepeat.NO_REPEAT,    // Repeat horizontally
-                    BackgroundRepeat.NO_REPEAT,    // Repeat vertically
-                    BackgroundPosition.CENTER,     // Position
+                    new Image(getClass()
+                            .getResource("/ubx/project/javarts/buildingCards/not_selected_info_background.png")
+                            .toExternalForm()),
+                    BackgroundRepeat.NO_REPEAT, // Repeat horizontally
+                    BackgroundRepeat.NO_REPEAT, // Repeat vertically
+                    BackgroundPosition.CENTER, // Position
                     new BackgroundSize(
                             BackgroundSize.DEFAULT.getWidth(),
                             BackgroundSize.DEFAULT.getHeight(),
                             true, true, true, false // Scale to container size
-                    )
-            );
+                    ));
 
             root.setBackground(new Background(backgroundImage));
         }

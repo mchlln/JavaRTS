@@ -175,10 +175,7 @@ package "Resource"{
         Design Pattern Decorator
     end note
 
-    interface Durability{
-        + getDurability() : time??
-    }
-    class Food extends ResourceDecorator implements Durability{
+    class Food extends ResourceDecorator{
 
     }
     class Wood extends ResourceDecorator{
@@ -202,7 +199,7 @@ package "Resource"{
     class Lumber extends ResourceDecorator{
 
     }
-    class Tools extends ResourceDecorator implements Durability{
+    class Tools extends ResourceDecorator{
 
     }
     enum ResourceType{
@@ -292,6 +289,12 @@ package "Controller" {
     }
     class SetSelectedBuilding implements Command{
          - type : BuildingType
+    }
+    class BlockBuildingCommand implements Command{
+        - type : BuildingType
+    }
+    class BoostBuildingCommand implements Command{
+        - type : BuildingType
     }
 
     class BagOfCommands  <<(S,#FF7700)Singleton>>{
