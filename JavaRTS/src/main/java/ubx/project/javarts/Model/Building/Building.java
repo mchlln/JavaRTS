@@ -1,5 +1,6 @@
 package ubx.project.javarts.Model.Building;
 
+import ubx.project.javarts.Model.Building.State.States;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Position;
 import ubx.project.javarts.Model.Resource.ResourceType;
@@ -11,7 +12,8 @@ public interface Building {
     Size getSize();
     Map<ResourceType, Integer> getCost();
     UUID getId();
-    void getConstructionTime(); //TODO: find return type
+    int getConstructionTime();
+    public int getRemainingTime();
     BuildingType getType();
     Position getPosition();
     ArrayList<BuildingFunction> getFunctions();
@@ -30,4 +32,7 @@ public interface Building {
     public void removeInhabitant(People people);
     public HashMap<ResourceType,Integer> handle();
     public String getName();
+    public States getState();
+    public boolean needViewUpdate();
+    public void switchState(States state, int numberOfCycles);
 }

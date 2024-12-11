@@ -2,6 +2,7 @@ package ubx.project.javarts.Model.Building;
 
 import ubx.project.javarts.Exception.NotEnoughResources;
 import ubx.project.javarts.Exception.WrongBuildingType;
+import ubx.project.javarts.Model.Building.State.States;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Resource.ResourceType;
 import ubx.project.javarts.Model.Resource.ResourceManager;
@@ -71,6 +72,24 @@ public class BuildingManager {
         }
     }
 
+    public void repairBuilding(Building building) {
+        ResourceManager.removeResource(ResourceType.TOOLS,1);
+        building.switchState(States.RUNNING,-1);
+    }
+
+    public void boostBuilding(Building building) {
+        ResourceManager.removeResource(ResourceType.TOOLS,1);
+        building.switchState(States.BOOSTED,5);
+    }
+
+    public void blockBuilding(Building building) {
+        building.switchState(States.BLOCKED,-1);
+    }
+
+    public void runBuilding(Building building) {
+        building.switchState(States.RUNNING,-1);
+    }
+
     public void removeBuilding(Building building) {
         if (!exists(building)) {
             return;
@@ -95,15 +114,6 @@ public class BuildingManager {
         }
     }
 
-    public void removeInhabitantFrom(Building building, People people) {
-        if (buildings.contains(building)) {
-            if (building.getFunctions().contains(BuildingFunction.LIVING)){
-                building.removeInhabitant(people);
-            }else{
-                throw new WrongBuildingType("Building cannot have inhabitant " + building.getType());
-            }
-        }
-    }
 
     public Set<Building> getBuildings() {
         return buildings;
@@ -113,9 +123,10 @@ public class BuildingManager {
         //get global consumption and production
         HashMap<ResourceType, Integer> global = new HashMap<>();
         for (Building building : buildings) {
+            HashMap<ResourceType, Integer> resources = building.handle();
             if (building.getFunctions().contains(BuildingFunction.WORKING)){
-                HashMap<ResourceType, Integer> resources = building.handle();
                 double percentage = ((double) building.getNumberWorkers() / building.getMaxWorkers());
+                //System.out.println("percentage : " + percentage);
                 for(ResourceType rt : resources.keySet()){
                     global.put(rt, (int) (global.getOrDefault(rt, 0) + resources.get(rt)*percentage)); //update the resources according to the number of workers in the building
                 }
@@ -128,7 +139,21 @@ public class BuildingManager {
         System.out.println("[Game cycle] Daily resources: " + global);
         // update the resources
         for(ResourceType rt : global.keySet()){
-            ResourceManager.addResource(rt, global.get(rt));
+            try {
+                ResourceManager.addResource(rt, global.get(rt));
+            } catch (NotEnoughResources e) {
+                System.out.println("[Game cycle] Not enough resources: " + global.get(rt));
+                for (Building b : buildings) {
+                    if(b.getFunctions().contains(BuildingFunction.CONSUMING)){
+                        if (b.getDailyConsumption().containsKey(rt)){
+                            if (b.getState() != States.BLOCKED || b.getState() != States.BROKEN){
+                                b.switchState(States.BLOCKED,-1);
+                            }
+                        }
+                    }
+                }
+            }
+
         }
 
     }

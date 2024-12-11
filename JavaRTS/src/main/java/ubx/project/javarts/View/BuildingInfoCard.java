@@ -56,7 +56,7 @@ public class BuildingInfoCard extends VBox{
         }
         house.getChildren().addAll(houseView, farmLabel);
         root.getChildren().addAll(house, bottomSection);
-        //root.setPrefSize(250,400);
+       // root.setPrefSize(500,250);
 
         this.getChildren().addAll(root);
         isSelected(building);

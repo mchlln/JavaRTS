@@ -14,7 +14,14 @@ public class ImagePath {
             throw new UnsupportedOperationException("Utility class");
         }
 
-        public static String getResourceLogoPath(ResourceType resource) {
+    /**
+     * Returns the path of the image that corresponds to the resource in the parameters.
+     * To use when creating the resource menu at the top or in the cards in the footer.
+     *
+     * @param resource a ResourceType
+     * @return path of the resource
+     */
+    public static String getResourceLogoPath(ResourceType resource) {
             switch (resource) {
                 case COAL -> {
                     return "/ubx/project/javarts/resourcesIcons/coal.png";
@@ -47,6 +54,13 @@ public class ImagePath {
             }
     }
 
+    /**
+     * Returns the path of the image that corresponds to the buildingType in the parameters.
+     * To use when creating the different cards in the footer.
+     *
+     * @param buildingType a BuildingType
+     * @return path of the buildingtype
+     */
     public static String getBuildingSpritePath(BuildingType buildingType) {
             switch (buildingType) {
                 case WOODENCABIN -> {
@@ -65,13 +79,13 @@ public class ImagePath {
                     return "/ubx/project/javarts/buildingSprites/quarry.png";
                 }
                 case LUMBERMILL -> {
-                    return "/ubx/project/javarts/buildingSprites/woodenCabin.png";
+                    return "/ubx/project/javarts/buildingSprites/lumbermill.png";
                 }
                 case CEMENTPLANT -> {
-                    return "/ubx/project/javarts/buildingSprites/woodenCabin.png";
+                    return "/ubx/project/javarts/buildingSprites/cementplant.png";
                 }
                 case STEELMILL -> {
-                    return "/ubx/project/javarts/buildingSprites/woodenCabin.png";
+                    return "/ubx/project/javarts/buildingSprites/steelmill.png";
                 }
                 case TOOLFACTORY -> {
                     return "/ubx/project/javarts/buildingSprites/factory.png";

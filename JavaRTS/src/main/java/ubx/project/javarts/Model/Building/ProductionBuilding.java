@@ -1,5 +1,6 @@
 package ubx.project.javarts.Model.Building;
 
+import ubx.project.javarts.Model.Building.State.States;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Resource.ResourceType;
 
@@ -27,9 +28,13 @@ public class ProductionBuilding extends BuildingDecorator{
 
     @Override
     public HashMap<ResourceType, Integer> handle(){
+        States currentState = b.getState();
         HashMap<ResourceType,Integer> resources = b.handle();
+        if (currentState == States.CONSTRUCTION || currentState == States.BROKEN || currentState == States.BLOCKED) return resources;
+        int boost = 1;
+        if (currentState == States.BOOSTED) boost = 2;
         for(ResourceType rt : dailyProduction.keySet()){
-            resources.put(rt, resources.getOrDefault(rt, 0) + dailyProduction.get(rt));
+            resources.put(rt, resources.getOrDefault(rt, 0) + dailyProduction.get(rt)*boost);
         }
         return resources;
     }

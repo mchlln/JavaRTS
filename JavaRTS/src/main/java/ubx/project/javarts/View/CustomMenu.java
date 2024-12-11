@@ -24,7 +24,12 @@ public class CustomMenu extends VBox {
     private Label errorLabel;
 
 
+    /**
+     * Creates a Menu composed of a drop-down menu, the resources of the game and
+     * a place to show errors if they are given to the error Listener
+     */
     public CustomMenu() {
+        // classic game menu
         Menu menu = new Menu("Game");
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(menu);
@@ -34,6 +39,7 @@ public class CustomMenu extends VBox {
         MenuItem exitItem = new MenuItem("Exit");
         menuBar.setPrefHeight(40);
 
+        // List of resources
         HBox resourceBox = new HBox();
         Map<ResourceType, ResourceDecorator> resources = ResourceManager.getResources();
         for (ResourceType resource : resources.keySet()) {
@@ -54,19 +60,23 @@ public class CustomMenu extends VBox {
         resourceBox.setStyle("-fx-alignment: center-left;");
         resourceBox.setPrefHeight(menuBar.getPrefHeight());
 
+        // place to show errors
         errorBox = new HBox();
         errorBox.setStyle("-fx-alignment: center-right;");
         errorLabel = new Label();
 
         menu.getItems().addAll(newGameItem, loadGameItem, saveGameItem, exitItem);
         container = new HBox(menuBar,resourceBox, errorBox);
-        container.setSpacing(10); // Space between menu and resources
+        container.setSpacing(10);
         container.setPadding(new Insets(5));
         container.setStyle("-fx-alignment: center-left;");
         container.setBackground(new Background(new BackgroundImage(new Image(getClass().getResource("/ubx/project/javarts/menu_background.png").toExternalForm()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
         this.getChildren().addAll(container);
     }
 
+    /**
+     * Method that updates the labels of the resources list on the menu
+     */
     public void actualiseResources() {
         Map<ResourceType, ResourceDecorator> resources = ResourceManager.getResources();
         for (ResourceType resource : resources.keySet()) {
@@ -74,6 +84,12 @@ public class CustomMenu extends VBox {
         }
     }
 
+    /**
+     * Shows an error message when called.
+     * The message lasts 2 seconds and appears in bold on a red background
+     * to be seen easily.
+     * @param message
+     */
     public void showError(String message) {
         errorBox.getChildren().clear();
         errorLabel.setText(message);

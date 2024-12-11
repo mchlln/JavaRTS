@@ -2,6 +2,7 @@ package ubx.project.javarts.Model.Building;
 
 import ubx.project.javarts.Exception.NotEnoughWorkers;
 import ubx.project.javarts.Exception.TooManyWorkers;
+import ubx.project.javarts.Model.Building.State.States;
 import ubx.project.javarts.Model.People;
 import ubx.project.javarts.Model.Resource.ResourceType;
 
@@ -34,6 +35,7 @@ public class WorkingBuilding extends BuildingDecorator{
     }
     @Override
     public void addWorker(People people){
+        if (b.getState() == States.CONSTRUCTION) return;
         if(getNumberWorkers()<maxWorkers){
             workers.add(people);
         }else{
@@ -42,6 +44,7 @@ public class WorkingBuilding extends BuildingDecorator{
     }
     @Override
     public void removeWorker(People people){
+        if (b.getState() == States.CONSTRUCTION) return;
         if(getNumberWorkers()>0){
             workers.remove(people);
         }else{
