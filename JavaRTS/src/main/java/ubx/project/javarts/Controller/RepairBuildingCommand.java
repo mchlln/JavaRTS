@@ -3,6 +3,14 @@ package ubx.project.javarts.Controller;
 import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.GameManager;
 
+/**
+ * Command to repair a specific building.
+ *
+ * Part of the Command design pattern and works with the Bag of Commands.
+ * Encapsulates the action of repairing a building
+ * so it can be executed later or managed in a queue.
+ *
+ */
 public class RepairBuildingCommand implements Command {
     private final Building building;
 

@@ -3,7 +3,15 @@ package ubx.project.javarts.Controller;
 import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.GameManager;
 
-public class RemoveWorkerFrom  implements Command {
+/**
+ * Command to remove a worker of a specific building.
+ *
+ * Part of the Command design pattern and works with the Bag of Commands.
+ * Encapsulates the action of removing a worker
+ * so it can be executed later or managed in a queue.
+ *
+ */
+public class RemoveWorkerFrom implements Command {
     private final Building building;
 
     public RemoveWorkerFrom(Building b) {
@@ -15,4 +23,3 @@ public class RemoveWorkerFrom  implements Command {
         model.deleteWorkerFrom(building);
     }
 }
-
