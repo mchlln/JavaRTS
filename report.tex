@@ -22,6 +22,20 @@
 
 \pagebreak
 
+\section{Contributions}
+Le travail a été réparti sous forme de 'taches' ce qui nous a permis de toucher à tous les composants de notre application
+et de ne pas limiter une personne au développement du \textit{controller} pas exemple. Nous avons également passé beaucoup
+de temps à réfléchir à l'architecture des classes, les design pattern à employer que nous avons renseignés dans un diagramme
+UML avant de commencer à coder l'application.
+
+\section{Structure de code}
+Nous avons choisi d'utiliser une architecture \textit{MVC} et de donc diviser notre application dans trois grands packages: \textit{Model}, \textit{View}
+et \textit{Controller}. À l'interieur de ces packages, nous avons parfois dû regrouper des ensembles de classes dans d'autres sous-packages pour rendre
+la structure de l'application plus simple. C'est pour cela que l'on retrouve un package \textit{Building} regroupant toutes les classes relatives
+aux bâtiments (le décorateur, leur gestion, ...). Nous avons créé un diagramme des classes UML complet que vous pouvez retrouver ci-dessous.
+
+Celui-ci étant trop étendu pour bien distinguer toutes les classes, voici un découpage par les principaux packages (\textit{Model}, \textit{View}, \textit{Controller}).
+
 \section{Design pattern}
 \subsection{Decorator}
 Nous avons utilisé le design pattern decorator afin de rendre plus simple l'ajout de nouveaux bâtiments.
@@ -82,7 +96,8 @@ est également Singleton et est donc accessible facilement depuis les éléments
 
 \subsection{BagOfCommand + Command}
 Nous avons choisi d'utiliser ce design patter dans notre \textit{controller} car il permet de facilement ajouter de nouvelles commandes et, par conséquent,
-de nouvelles fonctionnalités. 
+de nouvelles fonctionnalités. Nous avons ajouté toutes les commandes nécessaires pour un jeu basique (\textit{addBuilding}, \textit{addInhabitantInto}, ...).
+Le \textit{BagOfCommand} tourne quant à lui sur un thread séparé, ce qui permet d'exécuter les commandes dès la reception de celles-ci.
 
 \subsection{Bilan}
 La principale utilité de tous les design pattern mis en œuvre sont la flexibilité qu'ils nous offrent. En effet, ajouter de nouvelles fonctionnalités sera
