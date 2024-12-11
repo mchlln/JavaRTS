@@ -15,18 +15,20 @@ public class BuildingFooter extends ScrollPane {
 
     /**
      * Creates the footer composed of {@link BuildingCards}.
-     * Used to select a {@link BuildingType} before clicking on the {@link Map} and adding
-     * a new {@link Building}.
+     * Used to select a {@link BuildingType} before clicking on the {@link Map} and
+     * adding a new {@link Building}.
      */
     public BuildingFooter() {
         // Initialize container to hold the widgets
         container = new HBox(10); // 10px spacing between widgets
         container.setPadding(new Insets(10));
         container.setAlignment(Pos.CENTER_LEFT);
-        container.setBackground(new Background(new BackgroundImage(new Image(getClass().getResource("/ubx/project/javarts/panel_blue.png").toExternalForm()), BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
+        container.setBackground(new Background(new BackgroundImage(
+                new Image(getClass().getResource("/ubx/project/javarts/panel_blue.png").toExternalForm()),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
 
         this.setContent(container);
-        this.setFitToHeight(true);  // Ensure ScrollPane fits to the full height of its content
+        this.setFitToHeight(true); // Ensure ScrollPane fits to the full height of its content
         this.setHbarPolicy(ScrollBarPolicy.AS_NEEDED); // Enable horizontal scrolling if the content overflows
         this.setVbarPolicy(ScrollBarPolicy.NEVER); // Disable vertical scrolling
 
@@ -46,21 +48,4 @@ public class BuildingFooter extends ScrollPane {
         container.getChildren().add(widget);
     }
 
-
-    //TODO: REMOVE FUNCTION
-    public void setBuildingCardHeightFromFooter() {
-        // Get the height of the FooterWidget
-        this.heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                // Set the maxHeight of all BuildingCard children to match the FooterWidget height
-                for (var child : getChildren()) {
-                    if (child instanceof BuildingCard) {
-                        ((BuildingCard) child).setMaxHeight(newValue.doubleValue());
-                    }
-                }
-            }
-        });
-    }
 }
-

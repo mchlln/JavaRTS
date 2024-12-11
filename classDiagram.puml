@@ -83,6 +83,60 @@ package "Building"{
         TOOLFACTORY
     }
 }
+package "State"{
+    interface State{
+        + loop() : void
+    }
+
+    abstract class AbstractState implements State{
+        - currentState : States
+        + creation() : void
+        + running() : void
+        + broken() : void
+        + boost() : void
+        + blocked() : void
+        + getStates() : States
+    }
+
+    class Automata{
+        - currentState : States
+        + setCurrentState(AbstractState currentState) : void
+        + GetCurrentState() : AbstractState
+        + getCurrentStateName() : States
+    }
+    class BlockedState extends AbstractState{
+        - automata : Automata
+        + running() : void
+    }
+    class BoostState extends AbstractState{
+        - automata : Automata
+        + running() : void
+        + broken() : void
+        + blocked() : void
+    }
+    class BrokenState extends AbstractState{
+        - automata : Automata
+        + running() : void
+    }
+    class ConstructionState extends AbstractState{
+        - automata : Automata
+        + running() : void
+    }
+    class RunningState extends AbstractState{
+        - automata : Automata
+        + boost() : void
+        + broken() : void
+        + blocked() : void
+    }
+
+    enum States{
+        CONSTRUCTION
+        RUNNING
+        BROKEN
+        BOOSTED
+        BLOCKED
+    }
+}
 
     class People{
         - id : UUID
@@ -242,6 +296,7 @@ package "Exception" <<Frame>>{
     exception TooManyWorkers{}
     exception WrongBuildingType{}
     exception WrongResourceType{}
+    exception WrongState{}
 }
 
 package "View" {
@@ -284,16 +339,25 @@ package "Controller" {
     class AddWorkerInto implements Command{
          - building : Building
     }
-    class RemoveWorkers implements Command{
+    class RemoveWorkerFrom implements Command{
          - building : Building
     }
     class SetSelectedBuilding implements Command{
+         - type : BuildingType
+    }
+    class SetSelectedBuildingInfo implements Command{
          - type : BuildingType
     }
     class BlockBuildingCommand implements Command{
         - type : BuildingType
     }
     class BoostBuildingCommand implements Command{
+        - type : BuildingType
+    }
+    class RepairBuildingCommand implements Command{
+        - type : BuildingType
+    }
+    class RunBuildingCommand implements Command{
         - type : BuildingType
     }
 

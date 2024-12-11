@@ -4,7 +4,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
 import ubx.project.javarts.Controller.BagOfCommands;
 import ubx.project.javarts.Controller.Controller;
 import ubx.project.javarts.Controller.SetSelectedBuilding;

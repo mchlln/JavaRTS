@@ -1,26 +1,12 @@
 package ubx.project.javarts.View;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
-import javafx.util.Duration;
 import ubx.project.javarts.Controller.*;
 import ubx.project.javarts.Model.Building.Building;
-import ubx.project.javarts.Model.Building.BuildingFunction;
-import ubx.project.javarts.Model.Building.BuildingType;
 import ubx.project.javarts.Model.Building.State.States;
 import ubx.project.javarts.Model.Map;
 import ubx.project.javarts.Model.Position;
@@ -38,8 +24,10 @@ public class MapView extends ScrollPane {
     /**
      * Creates the view of the {@link Map}.
      * Gets the size of the map and creates a {@link GridPane} of the same size.
-     * Link an event on the click of a tile : send a command to the {@link BagOfCommands} to add a building on this tile.
-     * Contains a {@link ScrollPane} to see the map even if it is larger than our window to avoid having tiles too small.
+     * Link an event on the click of a tile : send a command to the
+     * {@link BagOfCommands} to add a building on this tile.
+     * Contains a {@link ScrollPane} to see the map even if it is larger than our
+     * window to avoid having tiles too small.
      */
     public MapView() {
         grid = new GridPane();
@@ -62,7 +50,8 @@ public class MapView extends ScrollPane {
                 int finalRow = row;
                 tileImageView.setOnMouseClicked(event -> {
                     BagOfCommands.getInstance().addCommand(new AddBuildingCommand(new Position(finalCol, finalRow)));
-                    System.out.println("X=" + finalCol + ", Y=" + finalRow);});
+                    System.out.println("X=" + finalCol + ", Y=" + finalRow);
+                });
                 // Bind the tile size to the MapView's width and height
                 tileImageView.fitWidthProperty().bind(Bindings.divide(this.widthProperty(), width));
                 tileImageView.fitHeightProperty().bind(Bindings.divide(this.heightProperty(), height));
@@ -83,24 +72,31 @@ public class MapView extends ScrollPane {
      * Draws a set of buildings on the map.
      *
      * This method handles the following:
-     * - If a building already exists on the map and its state has not changed, the existing sprites are reused.
-     * - If a building exists on the map but its state has changed, the old sprites are removed, and the building is redrawn with the updated state.
-     * - New buildings are drawn and their corresponding sprites are added to a {@link HashMap} for future reference.
+     * - If a building already exists on the map and its state has not changed, the
+     * existing sprites are reused.
+     * - If a building exists on the map but its state has changed, the old sprites
+     * are removed, and the building is redrawn with the updated state.
+     * - New buildings are drawn and their corresponding sprites are added to a
+     * {@link HashMap} for future reference.
      *
      * For each building:
-     * - The size and position are taken into account to render its tiles accurately on the grid.
+     * - The size and position are taken into account to render its tiles accurately
+     * on the grid.
      * - Tile images are dynamically loaded based on the building's type and state.
-     * - Tile dimensions are adjusted to match the map's grid size, and event handlers are attached to tiles to allow interaction (e.g., opening the building stats popup when clicked).
+     * - Tile dimensions are adjusted to match the map's grid size, and event
+     * handlers are attached to tiles to allow interaction (e.g., opening the
+     * building stats popup when clicked).
      *
-     * Buildings that no longer exist in the provided set are erased from the map and removed from the sprite collection.
+     * Buildings that no longer exist in the provided set are erased from the map
+     * and removed from the sprite collection.
      *
      * @param buildings the set of {@link Building} objects currently on the map
      */
     public void drawBuildings(Set<Building> buildings) {
         HashMap<Building, ArrayList<ArrayList<ImageView>>> newBuildings = new HashMap<>();
         for (Building building : buildings) {
-            if (buildingSprites.containsKey(building)){
-                if (!building.needViewUpdate()){
+            if (buildingSprites.containsKey(building)) {
+                if (!building.needViewUpdate()) {
                     newBuildings.put(building, buildingSprites.get(building));
                     continue;
                 } else {
@@ -120,12 +116,17 @@ public class MapView extends ScrollPane {
                     ImageView tileImageView;
                     System.out.println(building.getState());
                     if (building.getState() != States.RUNNING && row == buildingHeight - 1 && col == 0) {
-                        System.out.println(imagePath+building.getType().toString().toLowerCase() + "/"+row+"_"+col+ "_" +building.getState().toString().toLowerCase() + ".png");
+                        System.out.println(imagePath + building.getType().toString().toLowerCase() + "/" + row + "_"
+                                + col + "_" + building.getState().toString().toLowerCase() + ".png");
                         tileImageView = new ImageView(getClass()
-                                .getResource(imagePath+building.getType().toString().toLowerCase() + "/"+row+"_"+col+ "_" +building.getState().toString().toLowerCase() + ".png").toExternalForm());
+                                .getResource(imagePath + building.getType().toString().toLowerCase() + "/" + row + "_"
+                                        + col + "_" + building.getState().toString().toLowerCase() + ".png")
+                                .toExternalForm());
                     } else {
                         tileImageView = new ImageView(getClass()
-                                .getResource(imagePath+building.getType().toString().toLowerCase()+"/"+row+"_"+col+".png").toExternalForm());
+                                .getResource(imagePath + building.getType().toString().toLowerCase() + "/" + row + "_"
+                                        + col + ".png")
+                                .toExternalForm());
                     }
 
                     tileImageViews.add(tileImageView);
@@ -133,8 +134,9 @@ public class MapView extends ScrollPane {
                     tileImageView.fitHeightProperty().bind(Bindings.divide(this.heightProperty(), height));
                     tileImageView.setPreserveRatio(true);
                     tileImageView.setOnMouseClicked(event -> {
-                        new BuildingInfoPopup(building);});
-                    grid.add(tileImageView, building.getPosition().getX()+col, building.getPosition().getY()+row);
+                        new BuildingInfoPopup(building);
+                    });
+                    grid.add(tileImageView, building.getPosition().getX() + col, building.getPosition().getY() + row);
                 }
                 buildingView.add(tileImageViews);
             }
@@ -158,12 +160,12 @@ public class MapView extends ScrollPane {
      *
      * @param building the {@link Building} instance that we need to remove
      */
-    public void eraseBuilding(Building building){
+    public void eraseBuilding(Building building) {
         int buildingHeight = building.getSize().getHeight();
         int buildingWidth = building.getSize().getWidth();
         for (int col = 0; col < buildingWidth; col++) {
             for (int row = 0; row < buildingHeight; row++) {
-               grid.getChildren().remove(buildingSprites.get(building).get(col).get(row));
+                grid.getChildren().remove(buildingSprites.get(building).get(col).get(row));
             }
         }
     }
