@@ -1,5 +1,9 @@
 package ubx.project.javarts.Model.Building.State;
 
+/**
+ * Implementation of State for the Design Pattern State
+ * Contains the different functions needed to set the automata to the right state
+ */
 public class AbstractState implements State {
     private final States currentState;
 
@@ -27,6 +31,9 @@ public class AbstractState implements State {
         throw new IllegalStateException("Unexpected blocked state");
     }
 
+    /**
+     * @return the currentState of type {@link States}
+     */
     public States getState() {
         return currentState;
     }

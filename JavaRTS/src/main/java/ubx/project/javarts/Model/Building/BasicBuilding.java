@@ -151,7 +151,7 @@ public class BasicBuilding implements Building {
         switch (buildingState.getCurrentStateName()) {
             case CONSTRUCTION: // CREATION --> RUNNING
                 if (stateCycleRemaining == 0) {
-                    buildingState.setCurrentState(new RunningState(buildingState));
+                    buildingState.getCurrentState().running();
                     stateChanged = true;
                     System.out.println("[STATE] building switched to running state");
                     stateCycleRemaining = -1;
