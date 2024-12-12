@@ -378,7 +378,16 @@ public class GameManager implements Subject {
 
     }
 
+    /**
+     * Remove a given number of people
+     * Used when you don't have enough food to feed everyone
+     *
+     * @param count number of {@link People} to remove from the game
+     */
     public void killPeople(int count) {
+        if(worldInhabitants.size() < count) {
+            count = worldInhabitants.size();
+        }
         while (count != 0) {
             for (Building b : getBuildings()) {
                 if (b.getFunctions().contains(BuildingFunction.LIVING) && b.getNumberInhabitants() != 0) {

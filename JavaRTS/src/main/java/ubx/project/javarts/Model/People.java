@@ -4,12 +4,14 @@ import ubx.project.javarts.Model.Building.Building;
 
 import java.util.UUID;
 
+/**
+ * Represents a person in the game with a unique identifier, assigned house and job,.
+ */
 public class People {
 
     private UUID id;
     private Building house;
     private Building job;
-    private int foodCost;
 
     public People() {
         id = UUID.randomUUID();
@@ -23,10 +25,17 @@ public class People {
         return job;
     }
 
+
+    /**
+     * @param house the building to be assigned as the person's house.
+     */
     public void affectHouse(Building house) {
         this.house = house;
     }
 
+    /**
+     * @param job the building to be assigned as the person's job.
+     */
     public void affectJobPlace(Building job) {
         this.job = job;
     }

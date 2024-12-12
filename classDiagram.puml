@@ -142,7 +142,6 @@ package "State"{
         - id : UUID
         - House : Building
         - Job : Building
-        - FoodCost : Integer
         + getHouse() : Building
         + getJobPlace() : Building
         + getId() : Building
@@ -170,17 +169,23 @@ package "State"{
         - buildings : BuildingManager
         - observers : Set<Runnable>
         - currentException : Exception
+        - errorListener : Runnable
         - timeline : Timeline
         - b : BuildingBuilder
         + loop() : void
         + getInstance() : GameManager
         + addBuilding(BuildingType, Position) : void
         + removeBuilding(Building) : void
+        + repairBuilding(Building) : void
+        + boostBuilding(Building) : void
+        + blockBuilding(Building) : void
+        + runBuilding(Building) : void
         + createInhabitantInto(Building) : void
         + deleteInhabitantFrom(Building) : void
         + assignWorkerTo(Building) : void
         + findUnemployed() : People
         + deleteWorkerFrom(Building) : void
+        + killPeople(int count) : void
         + getBuildings() : Set<Building>
     }
     note left of GameManager
