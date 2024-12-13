@@ -71,22 +71,22 @@ public class PeopleFooter extends VBox {
         buttons.setSpacing(15);
         Button addInhabitantButton = new Button("Add Inhabitant");
         addInhabitantButton.setOnAction(event -> {
-            BagOfCommands.getInstance().addCommand(new AddInhabitantInto(selectedBuilding));
+            BagOfCommands.getInstance().addCommand(new AddInhabitantIntoCommand(selectedBuilding));
             System.out.println("Inhabitant added to  " + selectedBuilding);
         });
         Button removeInhabitantButton = new Button("Remove Inhabitant");
         removeInhabitantButton.setOnAction(event -> {
-            BagOfCommands.getInstance().addCommand(new RemoveInhabitantFrom(selectedBuilding));
+            BagOfCommands.getInstance().addCommand(new RemoveInhabitantFromCommand(selectedBuilding));
             System.out.println("Inhabitant removed from  " + selectedBuilding);
         });
         Button assignWorkerButton = new Button("Assign Worker");
         assignWorkerButton.setOnAction(event -> {
-            BagOfCommands.getInstance().addCommand(new AddWorkerInto(selectedBuilding));
+            BagOfCommands.getInstance().addCommand(new AddWorkerIntoCommand(selectedBuilding));
             System.out.println("Worker added to " + selectedBuilding);
         });
         Button fireWorkerButton = new Button("Fire Worker");
         fireWorkerButton.setOnAction(event -> {
-            BagOfCommands.getInstance().addCommand(new RemoveWorkerFrom(selectedBuilding));
+            BagOfCommands.getInstance().addCommand(new RemoveWorkerFromCommand(selectedBuilding));
             System.out.println("Worker removed from " + selectedBuilding);
         });
         buttons.getChildren().addAll(addInhabitantButton, removeInhabitantButton, assignWorkerButton, fireWorkerButton);
@@ -128,7 +128,7 @@ public class PeopleFooter extends VBox {
 
             BuildingInfoCard bc = new BuildingInfoCard(building, selectedBuilding);
             bc.setOnMouseClicked(event -> {
-                BagOfCommands.getInstance().addCommand(new SetSelectedBuildingInfo(building));
+                BagOfCommands.getInstance().addCommand(new SetSelectedBuildingInfoCommand(building));
             });
             container3.getChildren().add(bc);
         }

@@ -6,7 +6,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import ubx.project.javarts.Controller.BagOfCommands;
 import ubx.project.javarts.Controller.Controller;
-import ubx.project.javarts.Controller.Commands.SetSelectedBuilding;
+import ubx.project.javarts.Controller.Commands.SetSelectedBuildingCommand;
 import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.Building.BuildingManager;
 import ubx.project.javarts.Model.Building.BuildingType;
@@ -72,7 +72,7 @@ public class MainView implements Observer {
             BuildingCard b = new BuildingCard(buildingType);
             cards.add(b);
             b.setOnMouseClicked(event -> {
-                BagOfCommands.getInstance().addCommand(new SetSelectedBuilding(buildingType));
+                BagOfCommands.getInstance().addCommand(new SetSelectedBuildingCommand(buildingType));
             });
             buildingFooter.addWidget(b);
         }

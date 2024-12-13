@@ -14,10 +14,10 @@ import ubx.project.javarts.Model.GameManager;
  * so it can be executed later or managed in a queue.
  *
  */
-public class SetSelectedBuildingInfo implements Command {
+public class SetSelectedBuildingInfoCommand implements Command {
     private Building b;
 
-    public SetSelectedBuildingInfo(Building b) {
+    public SetSelectedBuildingInfoCommand(Building b) {
         this.b = b;
     }
 

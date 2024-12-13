@@ -6,22 +6,23 @@ import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.GameManager;
 
 /**
- * Command to remove a worker of a specific building.
+ * Command to add a worker at into a specific building.
  *
  * Part of the Command design pattern and works with the Bag of Commands.
- * Encapsulates the action of removing a worker
+ * Encapsulates the action of adding a worker
  * so it can be executed later or managed in a queue.
  *
  */
-public class RemoveWorkerFrom implements Command {
-    private final Building building;
+public class AddWorkerIntoCommand implements Command {
+    private Building building;
 
-    public RemoveWorkerFrom(Building b) {
+    public AddWorkerIntoCommand(Building b) {
         this.building = b;
     }
 
     @Override
     public void execute(GameManager model, Controller controller) {
-        model.deleteWorkerFrom(building);
+
+        model.assignWorkerTo(building);
     }
 }

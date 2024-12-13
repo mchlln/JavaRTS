@@ -13,10 +13,10 @@ import ubx.project.javarts.Model.GameManager;
  * so it can be executed later or managed in a queue.
  *
  */
-public class SetSelectedBuilding implements Command {
+public class SetSelectedBuildingCommand implements Command {
     private BuildingType type;
 
-    public SetSelectedBuilding(BuildingType type) {
+    public SetSelectedBuildingCommand(BuildingType type) {
         this.type = type;
     }
 
