@@ -6,6 +6,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import ubx.project.javarts.Controller.*;
+import ubx.project.javarts.Controller.Commands.AddBuildingCommand;
 import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.Building.State.States;
 import ubx.project.javarts.Model.Map;

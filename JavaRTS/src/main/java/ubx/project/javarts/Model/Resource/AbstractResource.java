@@ -4,9 +4,9 @@ import ubx.project.javarts.Exception.NotEnoughResources;
 
 import java.util.HashMap;
 
-public abstract class ResourceDecorator implements Resource {
+public abstract class AbstractResource implements Resource {
     private int quantity;
-    public ResourceDecorator(int quantity) {
+    public AbstractResource(int quantity) {
         this.quantity = quantity;
     }
     public int getQuantity() {

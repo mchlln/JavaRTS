@@ -1,6 +1,6 @@
 package ubx.project.javarts.Model.Resource;
 
-public class Tools extends ResourceDecorator{
+public class Tools extends AbstractResource {
     public Tools(int quantity) {
         super(quantity);
     }

@@ -6,7 +6,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import ubx.project.javarts.Controller.BagOfCommands;
 import ubx.project.javarts.Controller.Controller;
-import ubx.project.javarts.Controller.SetSelectedBuilding;
+import ubx.project.javarts.Controller.Commands.SetSelectedBuilding;
 import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.Building.BuildingManager;
 import ubx.project.javarts.Model.Building.BuildingType;

@@ -1,6 +1,6 @@
 package ubx.project.javarts.Model.Resource;
 
-public class Lumber extends ResourceDecorator{
+public class Lumber extends AbstractResource {
     public Lumber(int quantity) {
         super(quantity);
     }

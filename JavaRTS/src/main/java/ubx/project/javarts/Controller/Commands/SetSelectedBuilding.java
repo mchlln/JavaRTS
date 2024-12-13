@@ -1,5 +1,7 @@
-package ubx.project.javarts.Controller;
+package ubx.project.javarts.Controller.Commands;
 
+import ubx.project.javarts.Controller.Command;
+import ubx.project.javarts.Controller.Controller;
 import ubx.project.javarts.Model.Building.BuildingType;
 import ubx.project.javarts.Model.GameManager;
 
