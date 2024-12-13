@@ -25,20 +25,10 @@ public class CustomMenu extends VBox {
 
 
     /**
-     * Creates a Menu composed of a drop-down menu, the resources of the game and
+     * Creates a bar composed the resources of the game and
      * a place to show errors if they are given to the error Listener
      */
     public CustomMenu() {
-        // classic game menu
-        Menu menu = new Menu("Game");
-        MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(menu);
-        MenuItem newGameItem = new MenuItem("New Game");
-        MenuItem loadGameItem = new MenuItem("Load Game");
-        MenuItem saveGameItem = new MenuItem("Save Game");
-        MenuItem exitItem = new MenuItem("Exit");
-        menuBar.setPrefHeight(40);
-
         // List of resources
         HBox resourceBox = new HBox();
         Map<ResourceType, ResourceDecorator> resources = ResourceManager.getResources();
@@ -58,15 +48,12 @@ public class CustomMenu extends VBox {
         resourceBox.setSpacing(15);
         resourceBox.setPadding(new Insets(10));
         resourceBox.setStyle("-fx-alignment: center-left;");
-        resourceBox.setPrefHeight(menuBar.getPrefHeight());
-
         // place to show errors
         errorBox = new HBox();
         errorBox.setStyle("-fx-alignment: center-right;");
         errorLabel = new Label();
 
-        menu.getItems().addAll(newGameItem, loadGameItem, saveGameItem, exitItem);
-        container = new HBox(menuBar,resourceBox, errorBox);
+        container = new HBox(resourceBox, errorBox);
         container.setSpacing(10);
         container.setPadding(new Insets(5));
         container.setStyle("-fx-alignment: center-left;");

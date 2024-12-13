@@ -32,26 +32,10 @@ public class PeopleFooter extends VBox {
 
         generateButtons();
 
-        /*
-         * this.setContent(container);
-         * this.setFitToHeight(true); // Ensure ScrollPane fits to the full height of
-         * its content
-         * this.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); // Enable horizontal
-         * scrolling if the content overflows
-         * this.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); // Disable vertical
-         * scrolling
-         * 
-         * // Set width to be dynamic, we want it to scale with the window size
-         * this.setPrefWidth(Double.MAX_VALUE);
-         */
         cardRoot.setContent(cardContainer);
         cardRoot.setFitToHeight(true);
         cardRoot.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS); // Enable horizontal scrolling if content overflows
         cardRoot.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); // Disable vertical scrolling
-        // cardRoot.setPrefWidth(300); // Set a preferred width to give it some initial
-        // space
-        // cardRoot.setMaxWidth(Double.MAX_VALUE); // Optional: max width (adjust as
-        // needed)
 
         // Allow cardRoot to take as much space as possible in the container without
         // overflowing
@@ -63,9 +47,7 @@ public class PeopleFooter extends VBox {
 
     public void generateButtons() {
         HBox buttons = new HBox();
-        // buttons.setStyle("-fx-background-color: lightblue;");
         buttons.setFillHeight(true);
-        // buttons.setPrefWidth(Double.MAX_VALUE);
         buttons.setPadding(new Insets(10));
         buttons.setSpacing(15);
         Button addInhabitantButton = new Button("Add Inhabitant");

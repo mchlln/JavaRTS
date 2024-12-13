@@ -18,13 +18,6 @@ import ubx.project.javarts.Model.Resource.ResourceType;
 import java.util.Map;
 
 public class BuildingCard extends VBox {
-    private VBox container;
-    private Menu menu;
-    private MenuBar menuBar;
-    private MenuItem newGameItem;
-    private MenuItem loadGameItem;
-    private MenuItem saveGameItem;
-    private MenuItem exitItem;
     private BuildingType currentlySelected;
     private final VBox root = new VBox();
     private final BuildingType buildingType;
@@ -146,7 +139,7 @@ public class BuildingCard extends VBox {
      * Similar method to {@link createSpriteWithLabel} but puts the label on the right of the image.
      * @param imagePath {@link String} of the image to load
      * @param labelText {@link String} to be displayed in the label
-     * @return {@link VBox} of an image next to a text
+     * @return {@link HBox} of an image next to a text
      */
     private HBox createSpriteWithTextRight(String imagePath, String labelText) {
         ImageView imageView = new ImageView(new Image(getClass().getResource(imagePath).toExternalForm()));

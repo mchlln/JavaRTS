@@ -353,6 +353,42 @@ package "View" {
         - createSpriteWithTextRight(String path, String label) : HBox
         + isSelected(Building) : void
     }
+
+    class BuildingInfoPopup{
+    }
+
+    class CustomMenu extends VBox{
+        -container : HBox
+        - resourcesLabels : HashMap<ResourceType,Label>
+        - errorBox : HBox
+        - errorLabel : Label
+        + actualiseResources() : void
+        + showError(String) : void
+    }
+
+    class ImagePath{
+        + getResourceLogoPath(ResourceType) : String
+        + getBuildingLogoPath(BuildingType) : String
+    }
+
+    class MapView extends ScrollPane{
+        - grid : GridPane
+        - buildingSprites : HashMap<Building, ArrayList<ArrayList<ImageView>>>
+        - imagePath : String
+        + drawBuildings(Set<Building>) : void
+        + eraseBuilding(Building) : void
+    }
+
+    class PeopleFooter extends VBox{
+        - inhabitantsLabel : Label
+        - workerLabel : Label
+        - cardContainer : HBox
+        - cardRoot : ScrollPane
+        -selectedBuilding : Building
+        + generateButtons() : void
+        + updateBuildings( Set<Building>) : void
+        + SetSelectedBuildingInfo(Building) : void
+    }
 }
 
 package "Controller" {
