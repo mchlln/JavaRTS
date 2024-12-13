@@ -158,9 +158,11 @@ public class GameManager implements Subject {
     public void repairBuilding(Building building) {
         if (!buildings.exists(building)) {
             notifyErrorListener(new WrongBuildingType("The building doesn't exist"));
+            return;
         }
         if (building.getState() != States.BROKEN) {
             notifyErrorListener(new WrongState("No need to repair this building."));
+            return;
         }
         try {
             buildings.repairBuilding(building);
@@ -184,9 +186,11 @@ public class GameManager implements Subject {
     public void boostBuilding(Building building) {
         if (!buildings.exists(building)) {
             notifyErrorListener(new WrongBuildingType("The building doesn't exist"));
+            return;
         }
         if (building.getState() != States.RUNNING) {
             notifyErrorListener(new WrongState("Cannot boost a building in state" + building.getState()));
+            return;
         }
         try {
             buildings.boostBuilding(building);
