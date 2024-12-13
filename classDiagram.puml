@@ -225,15 +225,10 @@ package "Resource"{
         + removeResources(quantity : Integer)
 
     }
-    abstract class ResourceDecorator implements Resource{
+    abstract class AbstractResource implements Resource{
         - Type : RessourceType
         - Quantity : Integer
-        + handle() : HashMap<ResourceType,Integer>
     }
-    note right of ResourceDecorator
-        Design Pattern Decorator
-    end note
-
     class Food extends ResourceDecorator{
 
     }
@@ -337,7 +332,7 @@ package "View" {
         - createSpriteWithLabel(String path, String label) : VBox
         - createSpriteWithTextRight(String path, String label) : HBox
         + getBuildingType() : BuildingType
-        + isSelected(BuildingType) : void
+        + setBackground(BuildingType) : void
         + setSelected(BuildingType) : void
         + createAndLinkToolTip(Building) : void
     }
@@ -347,11 +342,11 @@ package "View" {
         + addWidget(javafx.scene.Node) : void
     }
 
-    class BuildingInfoCard extend VBox{
+    class BuildingInfoCard extends VBox{
         - selectedBuilding : Building
         - root : HBox
         - createSpriteWithTextRight(String path, String label) : HBox
-        + isSelected(Building) : void
+        + setBackground(Building) : void
     }
 
     class BuildingInfoPopup{
@@ -405,43 +400,45 @@ package "Controller" {
     note left of Command
         Design Pattern Command
     end note
-
-    class AddBuildingCommand implements Command{
+    package Commands{
+        class AddBuildingCommand implements Command{
         - position : Position
+        }
+        class RemoveBuildingCommand implements Command{
+            - building : Building
+        }
+        class AddInhabitantIntoCommand implements Command{
+            - building : Building
+        }
+        class RemoveInhabitantFromCommand implements Command{
+            - building : Building
+        }
+        class AddWorkerIntoCommand implements Command{
+            - building : Building
+        }
+        class RemoveWorkerFromCommand implements Command{
+            - building : Building
+        }
+        class SetSelectedBuildingCommand implements Command{
+            - type : BuildingType
+        }
+        class SetSelectedBuildingInfoCommand implements Command{
+            - type : BuildingType
+        }
+        class BlockBuildingCommand implements Command{
+            - type : BuildingType
+        }
+        class BoostBuildingCommand implements Command{
+            - type : BuildingType
+        }
+        class RepairBuildingCommand implements Command{
+            - type : BuildingType
+        }
+        class RunBuildingCommand implements Command{
+            - type : BuildingType
+        }
     }
-    class RemoveBuildingCommand implements Command{
-        - building : Building
-    }
-    class AddInhabitantInto implements Command{
-         - building : Building
-    }
-    class RemoveInhabitantFrom implements Command{
-         - building : Building
-    }
-    class AddWorkerInto implements Command{
-         - building : Building
-    }
-    class RemoveWorkerFrom implements Command{
-         - building : Building
-    }
-    class SetSelectedBuilding implements Command{
-         - type : BuildingType
-    }
-    class SetSelectedBuildingInfo implements Command{
-         - type : BuildingType
-    }
-    class BlockBuildingCommand implements Command{
-        - type : BuildingType
-    }
-    class BoostBuildingCommand implements Command{
-        - type : BuildingType
-    }
-    class RepairBuildingCommand implements Command{
-        - type : BuildingType
-    }
-    class RunBuildingCommand implements Command{
-        - type : BuildingType
-    }
+    
 
     class BagOfCommands  <<(S,#FF7700)Singleton>>{
         - instance : BagOfCommands
@@ -459,24 +456,15 @@ package "Controller" {
     }
     note bottom of BagOfCommands
         Design Pattern Singleton
+        Design Pattern Bag of commands
     end note
 }
 
+class MainApp extends Application{
+    + start(Stage) : void
+}
+class Main{
+    + main(String[]) : void
+}
 
-    ResourceType -->ResourceDecorator::Type
-    BuildingType -->BuildingDecorator::Type
-    Map --> GameManager::Map
-    Size --> Map::size
-    People --> GameManager::worldInhabitants
-    People --> LivingBuilding::inhabitants
-    People --> WorkingBuilding::workers
-    BuildingDecorator --> GameManager::buildings
-    ResourceManager --> GameManager::resources
-    MapTileStatus --> Map::tiles
-    ResourceDecorator --> ResourceManager::resources
-    BuildingFunction --> BuildingDecorator::functions
-    BagOfCommands --> Controller::commands
-    GameManager --> Controller::model
-    Position --> Map::getTileStatus
-    Command --> BagOfCommands::commands
 @enduml
