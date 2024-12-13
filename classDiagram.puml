@@ -311,7 +311,48 @@ package "View" {
     note left of Observer
         Design Pattern Observer
     end note
-    class View implements Observer{}
+    class MainView implements Observer{
+        - controller : Controller
+        - cards : ArrayList<BuildingCards>
+        - topContainer : CustomMenu
+        - map : MapView
+        - model : GameModel
+        - footer : VBox
+        - buildingFooter : BuildingFooter
+        - peopleFooter : PeopleFooter
+        - root : BorderPane
+        - footerState : String
+        + setController(Controller) : void
+        + SetSelectedBuilding(BuildingType) : void
+        + SetSelectedBuildingInfo(Building) : void
+        + setAvailability() : void
+        + switchEditionMode(String) : void
+        + updateError() : void
+    }
+
+    class BuildingCard extends VBox{
+        - currentlySelected : BuildingType
+        - root : VBox
+        - buildingType : BuildingType
+        - createSpriteWithLabel(String path, String label) : VBox
+        - createSpriteWithTextRight(String path, String label) : HBox
+        + getBuildingType() : BuildingType
+        + isSelected(BuildingType) : void
+        + setSelected(BuildingType) : void
+        + createAndLinkToolTip(Building) : void
+    }
+
+    class BuildingFooter extends ScrollPane{
+        - container : HBox
+        + addWidget(javafx.scene.Node) : void
+    }
+
+    class BuildingInfoCard extend VBox{
+        - selectedBuilding : Building
+        - root : HBox
+        - createSpriteWithTextRight(String path, String label) : HBox
+        + isSelected(Building) : void
+    }
 }
 
 package "Controller" {
