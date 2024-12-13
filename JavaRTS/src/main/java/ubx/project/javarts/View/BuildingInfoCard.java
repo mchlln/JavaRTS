@@ -15,6 +15,13 @@ public class BuildingInfoCard extends VBox {
         private Building selectedBuilding;
         private final HBox root = new HBox();
 
+        /**
+         * Creates a building card for the {@link PeopleFooter} composed of a building,
+         * its number of workers and inhabitants.
+         *
+         * @param building on the card
+         * @param selectedBuilding building selected by the user by clicking on a card
+         */
         public BuildingInfoCard(Building building, Building selectedBuilding) {
                 root.setPadding(new Insets(10));
                 root.setSpacing(15);
@@ -65,6 +72,15 @@ public class BuildingInfoCard extends VBox {
                 setBackground(building);
         }
 
+        /**
+         * Creates an image with text on the right
+         * usage : logo  current/max
+         *
+         * @param imagePath {@link String} of the image to load
+         * @param current number of inhabitants/workers
+         * @param max number of inhabitans/workers
+         * @return {@link HBox} of an image next to a text
+         */
         private HBox createSpriteWithTextRight(String imagePath, String current, String max) {
                 ImageView imageView = new ImageView(new Image(getClass().getResource(imagePath).toExternalForm()));
                 imageView.setFitWidth(40);
@@ -80,6 +96,10 @@ public class BuildingInfoCard extends VBox {
                 return hbox;
         }
 
+        /**
+         * Sets the background of the card depending on wheter the user has clicked on it.
+         * @param b {@link Building} on the card
+         */
         public void setBackground(Building b) {
                 if (b == this.selectedBuilding) {
                         BackgroundImage backgroundImage = new BackgroundImage(

@@ -80,13 +80,7 @@ public class MapView extends ScrollPane {
      * - New buildings are drawn and their corresponding sprites are added to a
      * {@link HashMap} for future reference.
      *
-     * For each building:
-     * - The size and position are taken into account to render its tiles accurately
-     * on the grid.
-     * - Tile images are dynamically loaded based on the building's type and state.
-     * - Tile dimensions are adjusted to match the map's grid size, and event
-     * handlers are attached to tiles to allow interaction (e.g., opening the
-     * building stats popup when clicked).
+     * For each building event handlers are attached to the tiles to allow an operation
      *
      * Buildings that no longer exist in the provided set are erased from the map
      * and removed from the sprite collection.

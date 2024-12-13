@@ -86,20 +86,38 @@ public class MainView implements Observer {
         stage.show();
     }
 
+    /**
+     * Sets the controller for the view
+     * @param controller
+     */
     public void setController(Controller controller) {
         this.controller = controller;
     }
 
+    /**
+     * Sets the selected building in the building cards
+     *
+     * @param buildingType
+     */
     public void setSelectedBuilding(BuildingType buildingType) {
         for (BuildingCard b : cards) {
             b.setSelected(buildingType);
         }
     }
 
+    /**
+     * Sets the selected building in the people's footer.
+     *
+     * @param building selected by the user
+     */
     public void setSelectedBuildingInfo(Building building) {
         peopleFooter.setSelectedBuildingInfo(building);
     }
 
+    /**
+     *  For all buildings in the building footer, sets the opacity of a card
+     *  to 0.4 if we don't have the resources to build the building or 1 if we can build it.
+     */
     public void setAvailability() {
         for (BuildingCard b : cards) {
             if (!BuildingManager.isBuildable(b.getBuildingType())) {
@@ -110,6 +128,12 @@ public class MainView implements Observer {
         }
     }
 
+    /**
+     * Switches the footer to the building or people footer depending on
+     * the parameter mode.
+     *
+     * @param mode to switch to
+     */
     public void switchEditionMode(String mode) {
         if (Objects.equals(mode, "building")) {
             if (!footerState.equals("building")) {
@@ -137,6 +161,9 @@ public class MainView implements Observer {
 
     }
 
+    /**
+     * Puts the error message on the error label in the top container
+     */
     public void updateError() {
         topContainer.showError(model.currentException.getMessage());
     }

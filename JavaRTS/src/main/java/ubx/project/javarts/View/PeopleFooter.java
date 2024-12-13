@@ -21,6 +21,10 @@ public class PeopleFooter extends VBox {
     private ScrollPane cardRoot;
     private Building selectedBuilding;
 
+    /**
+     * Creates a footer that contains the buildings on the map.
+     * Buttons to manage the people in each buildings
+     */
     public PeopleFooter() {
         cardRoot = new ScrollPane();
         // Initialize container to hold the widgets
@@ -46,6 +50,9 @@ public class PeopleFooter extends VBox {
         this.getChildren().addAll();
     }
 
+    /**
+     * Generates the buttons to manage the people in the buildings
+     */
     public void generateButtons() {
         HBox buttons = new HBox();
         buttons.setFillHeight(true);
@@ -86,6 +93,11 @@ public class PeopleFooter extends VBox {
         this.getChildren().addAll(buttons);
     }
 
+    /**
+     * Updates the inhabitants and workers for each card
+     *
+     * @param buildings updated by the model
+     */
     public void updateBuildings(Set<Building> buildings) {
         int inhabitants = 0;
         int workers = 0;
@@ -121,6 +133,11 @@ public class PeopleFooter extends VBox {
 
     }
 
+    /**
+     * Sets the selected building.
+     *
+     * @param building
+     */
     public void setSelectedBuildingInfo(Building building) {
         this.selectedBuilding = building;
     }
