@@ -1,6 +1,6 @@
 package ubx.project.javarts.Model.Resource;
 
-public class Coal extends ResourceDecorator{
+public class Coal extends AbstractResource {
     public Coal(int quantity) {
         super(quantity);
     }

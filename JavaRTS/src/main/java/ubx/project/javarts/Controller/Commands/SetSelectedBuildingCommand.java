@@ -1,5 +1,7 @@
-package ubx.project.javarts.Controller;
+package ubx.project.javarts.Controller.Commands;
 
+import ubx.project.javarts.Controller.Command;
+import ubx.project.javarts.Controller.Controller;
 import ubx.project.javarts.Model.Building.BuildingType;
 import ubx.project.javarts.Model.GameManager;
 
@@ -11,10 +13,10 @@ import ubx.project.javarts.Model.GameManager;
  * so it can be executed later or managed in a queue.
  *
  */
-public class SetSelectedBuilding implements Command {
+public class SetSelectedBuildingCommand implements Command {
     private BuildingType type;
 
-    public SetSelectedBuilding(BuildingType type) {
+    public SetSelectedBuildingCommand(BuildingType type) {
         this.type = type;
     }
 

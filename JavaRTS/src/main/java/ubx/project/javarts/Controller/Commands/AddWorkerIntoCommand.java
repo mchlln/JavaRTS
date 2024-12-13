@@ -1,5 +1,7 @@
-package ubx.project.javarts.Controller;
+package ubx.project.javarts.Controller.Commands;
 
+import ubx.project.javarts.Controller.Command;
+import ubx.project.javarts.Controller.Controller;
 import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.GameManager;
 
@@ -11,10 +13,10 @@ import ubx.project.javarts.Model.GameManager;
  * so it can be executed later or managed in a queue.
  *
  */
-public class AddWorkerInto implements Command {
+public class AddWorkerIntoCommand implements Command {
     private Building building;
 
-    public AddWorkerInto(Building b) {
+    public AddWorkerIntoCommand(Building b) {
         this.building = b;
     }
 

@@ -1,6 +1,6 @@
 package ubx.project.javarts.Model.Resource;
 
-public class Iron extends ResourceDecorator{
+public class Iron extends AbstractResource {
     public Iron(int quantity) {
         super(quantity);
     }

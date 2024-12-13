@@ -62,7 +62,7 @@ public class BuildingInfoCard extends VBox {
                 // root.setPrefSize(500,250);
 
                 this.getChildren().addAll(root);
-                isSelected(building);
+                setBackground(building);
         }
 
         private HBox createSpriteWithTextRight(String imagePath, String current, String max) {
@@ -80,7 +80,7 @@ public class BuildingInfoCard extends VBox {
                 return hbox;
         }
 
-        public void isSelected(Building b) {
+        public void setBackground(Building b) {
                 if (b == this.selectedBuilding) {
                         BackgroundImage backgroundImage = new BackgroundImage(
                                         new Image(getClass().getResource(

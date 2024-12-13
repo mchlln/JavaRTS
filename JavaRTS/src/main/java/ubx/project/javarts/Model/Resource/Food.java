@@ -1,6 +1,6 @@
 package ubx.project.javarts.Model.Resource;
 
-public class Food extends ResourceDecorator{
+public class Food extends AbstractResource {
     public Food(int quantity) {
         super(quantity);
     }

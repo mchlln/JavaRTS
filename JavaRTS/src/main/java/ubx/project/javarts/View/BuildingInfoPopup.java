@@ -12,6 +12,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import ubx.project.javarts.Controller.*;
+import ubx.project.javarts.Controller.Commands.*;
 import ubx.project.javarts.Model.Building.Building;
 import ubx.project.javarts.Model.Building.BuildingFunction;
 import ubx.project.javarts.Model.Building.State.States;
@@ -71,12 +72,12 @@ public class BuildingInfoPopup {
                 inhabitantsLabel.setText("Inhabitants: " + building.getNumberInhabitants() + "/" + building.getMaxInhabitants());
                 Button addInhabitantsButton = new Button("Add Inhabitants");
                 addInhabitantsButton.setOnAction(event -> {
-                    BagOfCommands.getInstance().addCommand(new AddInhabitantInto(building));
+                    BagOfCommands.getInstance().addCommand(new AddInhabitantIntoCommand(building));
                     System.out.println("Inhabitant added to  " + building);
                 });
                 Button removeInhabitantsButton = new Button("Remove Inhabitants");
                 removeInhabitantsButton.setOnAction(event -> {
-                    BagOfCommands.getInstance().addCommand(new RemoveInhabitantFrom(building));
+                    BagOfCommands.getInstance().addCommand(new RemoveInhabitantFromCommand(building));
                     System.out.println("Inhabitant removed from  " + building);
                 });
                 peopleManagement.getChildren().addAll(inhabitantsLabel, addInhabitantsButton,removeInhabitantsButton);
@@ -87,12 +88,12 @@ public class BuildingInfoPopup {
                 workersLabel.setText("Workers: " + building.getNumberWorkers() + "/" + building.getMaxWorkers());
                 Button addWorkersButton = new Button("Add Workers");
                 addWorkersButton.setOnAction(event -> {
-                    BagOfCommands.getInstance().addCommand(new AddWorkerInto(building));
+                    BagOfCommands.getInstance().addCommand(new AddWorkerIntoCommand(building));
                     System.out.println("Worker added to " + building);
                 });
                 Button removeWorkersButton = new Button("Remove Workers");
                 removeWorkersButton.setOnAction(event -> {
-                    BagOfCommands.getInstance().addCommand(new RemoveWorkerFrom(building));
+                    BagOfCommands.getInstance().addCommand(new RemoveWorkerFromCommand(building));
                     System.out.println("Worker removed from " + building);
                 });
                 Button boostBuildingButton = new Button("Boost Production (1 Tool)");

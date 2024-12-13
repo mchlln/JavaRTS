@@ -9,7 +9,7 @@ import java.util.Map;
 import static java.lang.Math.abs;
 
 public class ResourceManager {
-    private static Map<ResourceType,ResourceDecorator> resources;
+    private static Map<ResourceType, AbstractResource> resources;
     private static ResourceManager instance = null;
 
     private ResourceManager() {
@@ -72,7 +72,7 @@ public class ResourceManager {
         return true;
     }
 
-    public static Map<ResourceType, ResourceDecorator> getResources() {
+    public static Map<ResourceType, AbstractResource> getResources() {
         return resources;
     }
 }

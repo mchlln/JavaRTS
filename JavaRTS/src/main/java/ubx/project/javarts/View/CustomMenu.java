@@ -10,7 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
-import ubx.project.javarts.Model.Resource.ResourceDecorator;
+import ubx.project.javarts.Model.Resource.AbstractResource;
 import ubx.project.javarts.Model.Resource.ResourceManager;
 import ubx.project.javarts.Model.Resource.ResourceType;
 
@@ -31,7 +31,7 @@ public class CustomMenu extends VBox {
     public CustomMenu() {
         // List of resources
         HBox resourceBox = new HBox();
-        Map<ResourceType, ResourceDecorator> resources = ResourceManager.getResources();
+        Map<ResourceType, AbstractResource> resources = ResourceManager.getResources();
         for (ResourceType resource : resources.keySet()) {
             HBox resourceDisplay = new HBox();
 
@@ -65,7 +65,7 @@ public class CustomMenu extends VBox {
      * Method that updates the labels of the resources list on the menu
      */
     public void actualiseResources() {
-        Map<ResourceType, ResourceDecorator> resources = ResourceManager.getResources();
+        Map<ResourceType, AbstractResource> resources = ResourceManager.getResources();
         for (ResourceType resource : resources.keySet()) {
             resourcesLabels.get(resource).setText(String.valueOf(resources.get(resource).getQuantity()));
         }

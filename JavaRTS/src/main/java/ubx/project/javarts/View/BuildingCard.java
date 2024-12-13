@@ -100,7 +100,7 @@ public class BuildingCard extends VBox {
 
         root.getChildren().addAll(topSection, houseView, farmLabel, bottomSection);
         root.setPrefSize(250,400);
-        isSelected(currentlySelected);
+        setBackground(currentlySelected);
 
         this.getChildren().addAll(root);
         createAndLinkToolTip(b);
@@ -160,7 +160,7 @@ public class BuildingCard extends VBox {
      * Sets the background of the card depending on wheter the user has clicked on it.
      * @param buildingType {@link BuildingType} of the card
      */
-    public void isSelected(BuildingType buildingType) {
+    public void setBackground(BuildingType buildingType) {
         if (buildingType == this.buildingType) {
             BackgroundImage backgroundImage = new BackgroundImage(
                     new Image(getClass().getResource("/ubx/project/javarts/buildingCards/selected_background.png").toExternalForm()),
@@ -198,7 +198,7 @@ public class BuildingCard extends VBox {
      */
     public void setSelected(BuildingType buildingType){
         currentlySelected = buildingType;
-        isSelected(buildingType);
+        setBackground(buildingType);
     }
 
     /**
