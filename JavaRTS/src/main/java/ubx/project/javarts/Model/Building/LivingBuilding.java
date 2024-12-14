@@ -11,7 +11,7 @@ import java.util.*;
 
 public class LivingBuilding extends BuildingDecorator{
     private final List<People> inhabitants = new ArrayList<>();
-    private int maxInhabitants;
+    private final int maxInhabitants;
     Building b;
 
     public LivingBuilding(Building b, int maxInhabitants) {

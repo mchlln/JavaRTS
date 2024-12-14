@@ -8,7 +8,7 @@ package "Building"{
         + getSize() : Size
         + getCost() : HashMap<Resource, Integer>
         + getId() : UUID
-        + getConstructionTime() : ??
+        + getConstructionTime() : int
         + getType() : BuildingType
         + getPosition() : Position
         + getFunctions() : ArrayList<BuildingFunctions>
@@ -26,6 +26,11 @@ package "Building"{
         + getDailyProduction() : Map<ResourceType, Integer> 
         + getDailyConsumption() : Map<ResourceType, Integer>
         + handle() : HashMap<ResourceType,Integer>
+        + needViewUpdate() : boolean
+        + switchState(States state, int numberOfCycles) : void
+        + getState() : States
+        + getRemainingTime() : int
+
     }
 
     class BasicBuilding implements Building{}
@@ -40,10 +45,12 @@ package "Building"{
     }
     class LivingBuilding extends BuildingDecorator{
         - inhabitants : List<People>
+        - maxInhabitants : int
         
     }
     class WorkingBuilding extends BuildingDecorator{
         - workers : List<People>
+        - maxWorkers : int
     }
 
     abstract class BuildingDecorator implements Building{
@@ -55,9 +62,18 @@ package "Building"{
 
     class BuildingManager <<(S,#FF7700)Singleton>> {
         - buildings : Set<Building>
+        + getBuildings() : Set<Building>
         + addBuilding(Building) : void
+        + repairBuilding(Building) : void
+        + boostBuilding(Building) : void
+        + blockBuilding(Building) : void
+        + runBuilding(Building) : void
         + removeBuilding(Building) : void
-        + getInhabitants(Building) : void
+        + exists(Building) : boolean
+        + addInhabitantInto(Building, People) : void
+        + handle() : void
+        + {static} buildingCost(BuildingType) : HashMap<ResourceType, Integer>
+        + {static} isBuildable(BuildingType) : boolean
     }
 
     class BuildingBuilder{
@@ -394,6 +410,7 @@ package "Controller" {
         - bagOfCommands : BagOfCommands
         - selectedBuilding : BuildingType
         + changeSelectedBuilding(BuildingType)
+        + ChangeSelectedBuildingInfo(Building)
     }
     interface Command{
         + execute(GameManager, Controller)
@@ -446,7 +463,7 @@ package "Controller" {
         - commands : ConcurrentLinkedQueue<Command>
         - model : GameManager
         - controller : Controller
-        - is_running : boolean
+        - isRunning : boolean
         - processCommands() : void
         + getInstance() : BagOfCommands
         + executeFirst() : void
