@@ -77,7 +77,7 @@ public class MainView implements Observer {
             buildingFooter.addWidget(b);
         }
 
-        model.addObserver(this::update);
+        model.addListener(this::update);
         model.addErrorListener(this::updateError);
 
         setAvailability();

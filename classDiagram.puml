@@ -8,7 +8,7 @@ package "Building"{
         + getSize() : Size
         + getCost() : HashMap<Resource, Integer>
         + getId() : UUID
-        + getConstructionTime() : ??
+        + getConstructionTime() : int
         + getType() : BuildingType
         + getPosition() : Position
         + getFunctions() : ArrayList<BuildingFunctions>
@@ -26,6 +26,11 @@ package "Building"{
         + getDailyProduction() : Map<ResourceType, Integer> 
         + getDailyConsumption() : Map<ResourceType, Integer>
         + handle() : HashMap<ResourceType,Integer>
+        + needViewUpdate() : boolean
+        + switchState(States state, int numberOfCycles) : void
+        + getState() : States
+        + getRemainingTime() : int
+
     }
 
     class BasicBuilding implements Building{}
@@ -40,10 +45,12 @@ package "Building"{
     }
     class LivingBuilding extends BuildingDecorator{
         - inhabitants : List<People>
+        - maxInhabitants : int
         
     }
     class WorkingBuilding extends BuildingDecorator{
         - workers : List<People>
+        - maxWorkers : int
     }
 
     abstract class BuildingDecorator implements Building{
@@ -55,9 +62,18 @@ package "Building"{
 
     class BuildingManager <<(S,#FF7700)Singleton>> {
         - buildings : Set<Building>
+        + getBuildings() : Set<Building>
         + addBuilding(Building) : void
+        + repairBuilding(Building) : void
+        + boostBuilding(Building) : void
+        + blockBuilding(Building) : void
+        + runBuilding(Building) : void
         + removeBuilding(Building) : void
-        + getInhabitants(Building) : void
+        + exists(Building) : boolean
+        + addInhabitantInto(Building, People) : void
+        + handle() : void
+        + {static} buildingCost(BuildingType) : HashMap<ResourceType, Integer>
+        + {static} isBuildable(BuildingType) : boolean
     }
 
     class BuildingBuilder{
@@ -140,8 +156,8 @@ package "State"{
 
     class People{
         - id : UUID
-        - House : Building
-        - Job : Building
+        - house : Building
+        - job : Building
         + getHouse() : Building
         + getJobPlace() : Building
         + getId() : Building
@@ -153,8 +169,11 @@ package "State"{
         - tiles : MapTileStatus[][]
         + getTileStatus(Position) : MapTilestatus
         + isAreaFree(Position, Size) : Boolean
-        + Construct(Position, Size)
-        + Destruct(Position, Size)
+        + getSize() : Size
+        + getTiles() : MapTileStatus[][]
+        + construct(Position, Size) : void
+        + destruct(Position, Size) : void
+        + getInstace() : Map
     }
 
     enum MapTileStatus {
@@ -165,9 +184,9 @@ package "State"{
         - instance : GameManager
         - worldInhabitants : List<People>
         - map : Map
-        - resources : ResourceManager
         - buildings : BuildingManager
-        - observers : Set<Runnable>
+        - resources : ResourceManager
+        - listener : Set<Runnable>
         - currentException : Exception
         - errorListener : Runnable
         - timeline : Timeline
@@ -203,10 +222,9 @@ package "State"{
     }
 
     interface Subject{
-        + addObserver(Runnable) : void
+        + addListener(Runnable) : void
         + addErrorListener(Runnable) : void
-        + removeObserver(Runnable) : void
-        + notifyObservers() : void
+        + notifyListener() : void
         + notifyErrorListener(Exception) : void
     }
     class Position{
@@ -226,34 +244,33 @@ package "Resource"{
 
     }
     abstract class AbstractResource implements Resource{
-        - Type : RessourceType
         - Quantity : Integer
     }
-    class Food extends ResourceDecorator{
+    class Food extends AbstractResource{
 
     }
-    class Wood extends ResourceDecorator{
+    class Wood extends AbstractResource{
 
     }
-    class Stone extends ResourceDecorator{
+    class Stone extends AbstractResource{
 
     }
-    class Coal extends ResourceDecorator{
+    class Coal extends AbstractResource{
 
     }
-    class Iron extends ResourceDecorator{
+    class Iron extends AbstractResource{
 
     }
-    class Steel extends ResourceDecorator{
+    class Steel extends AbstractResource{
 
     }
-    class Cement extends ResourceDecorator{
+    class Cement extends AbstractResource{
 
     }
-    class Lumber extends ResourceDecorator{
+    class Lumber extends AbstractResource{
 
     }
-    class Tools extends ResourceDecorator{
+    class Tools extends AbstractResource{
 
     }
     enum ResourceType{
@@ -393,6 +410,7 @@ package "Controller" {
         - bagOfCommands : BagOfCommands
         - selectedBuilding : BuildingType
         + changeSelectedBuilding(BuildingType)
+        + ChangeSelectedBuildingInfo(Building)
     }
     interface Command{
         + execute(GameManager, Controller)
@@ -445,7 +463,7 @@ package "Controller" {
         - commands : ConcurrentLinkedQueue<Command>
         - model : GameManager
         - controller : Controller
-        - is_running : boolean
+        - isRunning : boolean
         - processCommands() : void
         + getInstance() : BagOfCommands
         + executeFirst() : void
