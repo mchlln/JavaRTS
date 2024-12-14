@@ -7,6 +7,7 @@ import javafx.util.Duration;
 import ubx.project.javarts.Exception.*;
 import ubx.project.javarts.Model.Building.*;
 import ubx.project.javarts.Model.Building.State.States;
+import ubx.project.javarts.Model.Resource.ResourceManager;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,6 +23,7 @@ public class GameManager implements Subject {
     private BuildingManager buildings = new BuildingManager();
     private List<People> worldInhabitants;
     private Map map;
+    private ResourceManager resources;
     private Set<Runnable> listener;
     public Exception currentException;
     private Runnable errorListener;
@@ -32,6 +34,7 @@ public class GameManager implements Subject {
      * private constructor (design pattern singleton)
      */
     private GameManager() {
+        resources = ResourceManager.getInstance();
         worldInhabitants = new ArrayList<>();
         listener = new HashSet<>();
         map = Map.getInstance();

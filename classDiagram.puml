@@ -169,6 +169,7 @@ package "State"{
         - worldInhabitants : List<People>
         - map : Map
         - buildings : BuildingManager
+        - resources : ResourceManager
         - listener : Set<Runnable>
         - currentException : Exception
         - errorListener : Runnable
