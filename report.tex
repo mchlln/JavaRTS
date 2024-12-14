@@ -56,20 +56,26 @@ Celui-ci étant trop étendu pour bien distinguer toutes les classes, voici un d
 \begin{figure}[h]
     \caption{Diagramme des classes package model}
     \centering
-    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{controller_UML}
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{model_UML}
     \label{fig:UML_complet}
 \end{figure}
-\pagebreak
 
 \begin{figure}[h]
     \caption{Diagramme des classes package view}
     \centering
-    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{controller_UML}
+    \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{view_UML}
     \label{fig:UML_complet}
 \end{figure}
-\pagebreak
-\pagebreak
 
+Les images ne sont pas très visibles car toujours trop grandes pour ce document. Pour pouvoir visualiser
+le diagramme plus agréablement vous pouvez ouvrir le fichier \href{run:./resources/complete_UML.svg}{complete\_UML.svg}
+ou copier/coller le fichier \href{run:./classDiagram.puml}{classDiagram.puml} sur le site \href{https://www.planttext.com/}{PlantText}
+(attention à bien choisir l'option 'svg' car le diagramme n'est pas complet si exporté en png).
+
+Nous avons également créé nos propres exceptions, afin d'avoir une communication plus simple entre notre modèle et notre vue
+(Afficher les erreurs à l'utilisateur). Ces exceptions permettent également d'avoir des erreurs plus claires et nous a permis
+de gagner du temps au débogage. Si l'on souhaite étendre le jeu, en ajoutant des bâtiments par exemple, ces erreurs mèneront
+directement aux endroits où  l'on a oublié d'implémenter quelque chose.
 \section{Design pattern}
 \subsection{Decorator}
 Nous avons utilisé le design pattern decorator afin de rendre plus simple l'ajout de nouveaux bâtiments.
@@ -137,6 +143,26 @@ Le \textit{BagOfCommand} tourne quant à lui sur un thread séparé, ce qui perm
 La principale utilité de tous les design pattern mis en œuvre sont la flexibilité qu'ils nous offrent. En effet, ajouter de nouvelles fonctionnalités sera
 très simple. On peut facilement ajouter un nouveau bâtiment à l'aide du decorator ainsi que du builder, ajouter un nouveau cycle de vie sur les bâtiments 
 avec state, ajouter des fonctionnalités de gameplay en créant de nouvelles commandes.
+
+\section{Facilité d'extension}
+Nous avons construit notre application sur la modularité. En effet, tous les design pattern que nous avons mis en œuvre permettent d'ajouter des bâtiments,
+des comportements, des effets graphiques de manière très simple.
+
+\begin{enumerate}
+    \item Ajout d'un comportement aux bâtiments: Il suffit d'ajouter un \textit{state} à l'automate et la/les commande(s) pour passer à ce nouvel état. Nous avons
+    illustrés cette partie avec l'ajout d'un state \textit{BOOSTED} où la production du bâtiment est double pendant 5 cycles de jeu, mais lors du retour à
+    l'état 'normal' la probabilité que le bâtiment casse est plus haute (\textit{state} 'broken' que nous avons également ajouté).
+    \item Ajout d'un nouveau bâtiment: 
+        \begin{itemize}
+            \item Vue: Il est nécessaire d'ajouter le sprite aux ressources ainsi que son chemin à la classe.
+            \item Modèle: Ajouter au le nom à l'enum \textit{BuildingType}, son constructeur au \textit{BuildingBuilder}
+            \item Controlleur: Rien à modifier
+        \end{itemize}
+    \item Ajout d'une nouvelle ressource: Ajouter son nom à l'enum \textit{ResourceType}, ainsi que la classe portant son nom et etendant la classe \textit{AbstractResource}
+    \item Modification de la vue: Tous les widgets étant indépendants, on peut imaginer modifier uniquement un composant sans avoir à changer toute l'implémentation. Si l'on
+    souhaite changer la manière dont la carte est affichée, on peut uniquement modifier la classe \textit{MapView} pour passer d'un \textit{GridPane} à un autre objet JavaFX
+    par exemple. 
+\end{enumerate}
 
 \section{Gameplay}
 
