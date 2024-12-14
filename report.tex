@@ -24,15 +24,21 @@
 
 \pagebreak
 
+\section{Avant de commencer}
+Tout le travail réalisé est disponible sur un git hébergé sur le \textit{GitLab} du \href{https://gitlab.emi.u-bordeaux.fr/}{crémi}. Si vous souhaitez y avoir accès 
+pour voir en détail le travail réalisé par chacun ou d'autres informations comme le sources de ce rapport vous pouvez nous 
+contacter par mail à \href{mailto:valentin.jonquiere@etu.u-bordeaux.fr}{valentin.jonquiere@etu.u-bordeaux.fr} ou 
+\href{mailto:mathilde.chollon@etu.u-bordeaux.fr}{mathilde.chollon@etu.u-bordeaux.fr}.
+
 \section{Contributions}
 Le travail a été réparti sous forme de 'taches' ce qui nous a permis de toucher à tous les composants de notre application
 et de ne pas limiter une personne au développement du \textit{controller} pas exemple. Nous avons également passé beaucoup
-de temps à réfléchir à l'architecture des classes, les design pattern à employer que nous avons renseignés dans un diagramme
+de temps à réfléchir à l'architecture des classes, les design patterns à employer que nous avons renseignés dans un diagramme
 UML avant de commencer à coder l'application.
 
 \section{Structure de code}
 Nous avons choisi d'utiliser une architecture \textit{MVC} et de donc diviser notre application dans trois grands packages: \textit{Model}, \textit{View}
-et \textit{Controller}. À l'interieur de ces packages, nous avons parfois dû regrouper des ensembles de classes dans d'autres sous-packages pour rendre
+et \textit{Controller}. À l'intérieur de ces packages, nous avons parfois dû regrouper des ensembles de classes dans d'autres sous-packages pour rendre
 la structure de l'application plus simple. C'est pour cela que l'on retrouve un package \textit{Building} regroupant toutes les classes relatives
 aux bâtiments (le décorateur, leur gestion, ...). Nous avons créé un diagramme des classes UML complet que vous pouvez retrouver ci-dessous.
 
@@ -40,7 +46,6 @@ aux bâtiments (le décorateur, leur gestion, ...). Nous avons créé un diagram
     \caption{Diagramme des classes général}
     \centering
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{complete_UML}
-    \label{fig:UML_complet}
 \end{figure}
 
 
@@ -50,31 +55,28 @@ Celui-ci étant trop étendu pour bien distinguer toutes les classes, voici un d
     \caption{Diagramme des classes package controller}
     \centering
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{controller_UML}
-    \label{fig:UML_complet}
 \end{figure}
 \pagebreak
 \begin{figure}[h]
     \caption{Diagramme des classes package model}
     \centering
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{model_UML}
-    \label{fig:UML_complet}
 \end{figure}
 
 \begin{figure}[h]
     \caption{Diagramme des classes package view}
     \centering
     \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{view_UML}
-    \label{fig:UML_complet}
 \end{figure}
-
+\pagebreak
 Les images ne sont pas très visibles car toujours trop grandes pour ce document. Pour pouvoir visualiser
-le diagramme plus agréablement vous pouvez ouvrir le fichier \href{run:./resources/complete_UML.svg}{complete\_UML.svg}
+le diagramme plus agréablement vous pouvez ouvrir le fichier \href{run:./complete_UML.svg}{complete\_UML.svg}
 ou copier/coller le fichier \href{run:./classDiagram.puml}{classDiagram.puml} sur le site \href{https://www.planttext.com/}{PlantText}
 (attention à bien choisir l'option 'svg' car le diagramme n'est pas complet si exporté en png).
 
 Nous avons également créé nos propres exceptions, afin d'avoir une communication plus simple entre notre modèle et notre vue
 (Afficher les erreurs à l'utilisateur). Ces exceptions permettent également d'avoir des erreurs plus claires et nous a permis
-de gagner du temps au débogage. Si l'on souhaite étendre le jeu, en ajoutant des bâtiments par exemple, ces erreurs mèneront
+de gagner du temps au débogage.De plus, si l'on souhaite étendre le jeu en ajoutant des bâtiments (par exemple), ces erreurs mèneront
 directement aux endroits où  l'on a oublié d'implémenter quelque chose.
 \section{Design pattern}
 \subsection{Decorator}
@@ -111,7 +113,7 @@ dans le model (classe \textit{GameManager}) et que l'on peut faire remonter à l
 \subsection{State}
 En voyant que les buildings devaient avoir un temps de construction avant d'être opérationnels, nous avons pensé qu'un design pattern
 \textit{State} était une bonne solution. Pour que celui-ci ait plus d'intérêt, nous avons décidé d'ajouter plusieurs autres états possibles
-pour un bâtiments.
+pour un bâtiment.
 \begin{itemize}
     \item Construction: état de base lorsque l'on construit un bâtiment (initial state)
     \item Running: le bâtiment fait ses actions normales tels que générer/consommer des ressources
@@ -122,43 +124,46 @@ pour un bâtiments.
 
 \subsection{MVC}
 Nous avons utilisé l'architecture \textit{MVC} pour structurer notre application. Nous avons séparé les 3 principales composantes
-dans des packages différents. Nous nous sommes tout de même laisser la liberté de mettre la vue en \textit{Observer} du model pour
-que celle-ci se mette à jour automatiquement. Nous avons également une vue qui a connaissance du model afin de rendre la mise à
+dans des packages différents. Nous nous sommes tout de même laisser la liberté de mettre la vue en \textit{Observer} du modèle pour
+que celle-ci se mette à jour automatiquement. Nous avons également une vue qui a connaissance du modèle afin de rendre la mise à
 jour des informations à l'écran moins lourde que si tout devait transiter par le \textit{Controller}.
 
 \subsection{Singleton}
 Le design pattern Singleton est celui le plus représenté dans notre application. Nous l'avons utilisé à plusieurs reprises en commençant par
-notre model (classe \textit{GameManager}). Comme celui doit être unique et accessible à plusieurs endroits du code, il est plus simple d'en créer 
+notre modèle (classe \textit{GameManager}). Comme celui doit être unique et accessible à plusieurs endroits du code, il est plus simple d'en créer 
 une instance unique et de la partager dans toute l'application. De nombreuses autres classes telles que \textit{ResourcesManager} servant à la gestion
-des resources du jeu où \textit{BuildingManager} servant à la gestion des bâtiments intègrent également le design pattern. On peut noter que la carte 
+des ressources du jeu ou \textit{BuildingManager} servant à la gestion des bâtiments intègrent également le design pattern. On peut noter que la carte 
 (classe \textit{map}) est, elle aussi, basée sur le pattern afin d'assurer que le jeu ne possède qu'une seule carte. Pour finir, notre \textit{BagOfCommand}
 est également Singleton et est donc accessible facilement depuis les éléments de la vue, leur permettant de déposer facilement des commandes à traiter.
 
 \subsection{BagOfCommand + Command}
-Nous avons choisi d'utiliser ce design patter dans notre \textit{controller} car il permet de facilement ajouter de nouvelles commandes et, par conséquent,
+Nous avons choisi d'utiliser ce design pattern dans notre \textit{controller} car il permet de facilement ajouter de nouvelles commandes et, par conséquent,
 de nouvelles fonctionnalités. Nous avons ajouté toutes les commandes nécessaires pour un jeu basique (\textit{addBuilding}, \textit{addInhabitantInto}, ...).
-Le \textit{BagOfCommand} tourne quant à lui sur un thread séparé, ce qui permet d'exécuter les commandes dès la reception de celles-ci.
+Le \textit{BagOfCommand} tourne quant à lui sur un thread séparé, ce qui permet d'exécuter les commandes dès la réception de celles-ci. 
 
 \subsection{Bilan}
 La principale utilité de tous les design pattern mis en œuvre sont la flexibilité qu'ils nous offrent. En effet, ajouter de nouvelles fonctionnalités sera
 très simple. On peut facilement ajouter un nouveau bâtiment à l'aide du decorator ainsi que du builder, ajouter un nouveau cycle de vie sur les bâtiments 
-avec state, ajouter des fonctionnalités de gameplay en créant de nouvelles commandes.
+avec state, ajouter des fonctionnalités de gameplay en créant de nouvelles commandes. Vous pouvez retrouver tous les design pattern annotés dans le diagramme
+des classes. Grâce à ces design pattern, nous avons pu construire une application complément découplée et asynchrone. En effet, le modèle, le contrôleur et la vue tournent 
+tous trois sur des threads différents. On a donc une vue qui génère des commandes pour le contrôleur, le contrôleur qui stocke et déclenche ces commandes, et le
+modèle qui exécute ces commandes et notifie la vue si des changements graphiques doivent être effectués. 
 
 \section{Facilité d'extension}
 Nous avons construit notre application sur la modularité. En effet, tous les design pattern que nous avons mis en œuvre permettent d'ajouter des bâtiments,
-des comportements, des effets graphiques de manière très simple.
+des comportements, des effets graphiques de manière très simple. En voici quelques exemples:
 
 \begin{enumerate}
-    \item Ajout d'un comportement aux bâtiments: Il suffit d'ajouter un \textit{state} à l'automate et la/les commande(s) pour passer à ce nouvel état. Nous avons
-    illustrés cette partie avec l'ajout d'un state \textit{BOOSTED} où la production du bâtiment est double pendant 5 cycles de jeu, mais lors du retour à
+    \item Ajout d'un comportement aux bâtiments: Il suffit d'ajouter un \textit{state} à l'automate et la/les condition(s) pour passer à ce nouvel état. Nous avons
+    illustré cette partie avec l'ajout d'un state \textit{BOOSTED} où la production du bâtiment est double pendant 5 cycles de jeu, mais lors du retour à
     l'état 'normal' la probabilité que le bâtiment casse est plus haute (\textit{state} 'broken' que nous avons également ajouté).
     \item Ajout d'un nouveau bâtiment: 
         \begin{itemize}
-            \item Vue: Il est nécessaire d'ajouter le sprite aux ressources ainsi que son chemin à la classe.
+            \item Vue: Il est nécessaire d'ajouter le sprite aux ressources ainsi que son chemin à la classe \textit{ImagePath}.
             \item Modèle: Ajouter au le nom à l'enum \textit{BuildingType}, son constructeur au \textit{BuildingBuilder}
-            \item Controlleur: Rien à modifier
+            \item Contrôleur: Rien à modifier
         \end{itemize}
-    \item Ajout d'une nouvelle ressource: Ajouter son nom à l'enum \textit{ResourceType}, ainsi que la classe portant son nom et etendant la classe \textit{AbstractResource}
+    \item Ajout d'une nouvelle ressource: Ajouter son nom à l'enum \textit{ResourceType}, ainsi que la classe portant son nom et étendant la classe \textit{AbstractResource}
     \item Modification de la vue: Tous les widgets étant indépendants, on peut imaginer modifier uniquement un composant sans avoir à changer toute l'implémentation. Si l'on
     souhaite changer la manière dont la carte est affichée, on peut uniquement modifier la classe \textit{MapView} pour passer d'un \textit{GridPane} à un autre objet JavaFX
     par exemple. 
